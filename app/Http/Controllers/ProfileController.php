@@ -63,7 +63,6 @@ class ProfileController extends Controller
     public function editSkills(Request $request): RedirectResponse
     {
         foreach ($request->user()->skills as $skill) {
-//            dd($skill);
             $request->user()->skills()->detach($skill);
         }
 

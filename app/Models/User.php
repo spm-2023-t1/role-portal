@@ -49,11 +49,16 @@ class User extends Authenticatable
 
     public function skills(): BelongsToMany
     {
-        return $this->belongsToMany(Skill::class, 'user_skill');
+        return $this->belongsToMany(Skill::class, 'user_skill')->withTimestamps();
     }
 
     public function jobs(): HasMany
     {
         return $this->hasMany(Job::class);
+    }
+
+    public function applications(): BelongsToMany
+    {
+        return $this->belongsToMany(Job::class, 'job_user')->withTimestamps();
     }
 }

@@ -6,6 +6,7 @@ use App\Enums\JobStatus;
 use App\Models\Job;
 use App\Models\Skill;
 use App\Models\User;
+use Carbon\Carbon;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\View\View;
@@ -123,5 +124,16 @@ class JobController extends Controller
     public function destroy(Job $job)
     {
         //
+    }
+
+    public function apply(Request $request, Job $job): RedirectResponse
+    {
+        if (!(new Carbon($job->deadline))->isPast()) {
+            $job->applicants()->attach($request->user());
+
+            return redirect(route('jobs.index'))->with('status', 'job-applied');
+        }
+
+        return redirect(route('jobs.index'));
     }
 }

@@ -25,11 +25,16 @@ class Job extends Model
 
     public function skills(): BelongsToMany
     {
-        return $this->belongsToMany(Skill::class);
+        return $this->belongsToMany(Skill::class)->withTimestamps();
     }
 
     public function owner(): BelongsTo
     {
         return $this->belongsTo(User::class);
+    }
+
+    public function applicants(): BelongsToMany
+    {
+        return $this->belongsToMany(User::class)->withTimestamps();
     }
 }
