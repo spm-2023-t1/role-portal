@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\ProfileUpdateRequest;
+use App\Models\Skill;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -18,6 +19,7 @@ class ProfileController extends Controller
     {
         return view('profile.edit', [
             'user' => $request->user(),
+            'skills' => Skill::all()->sortBy('name', SORT_NATURAL|SORT_FLAG_CASE),
         ]);
     }
 
@@ -56,5 +58,22 @@ class ProfileController extends Controller
         $request->session()->regenerateToken();
 
         return Redirect::to('/');
+    }
+
+    public function editSkills(Request $request): RedirectResponse
+    {
+        foreach ($request->user()->skills as $skill) {
+//            dd($skill);
+            $request->user()->skills()->detach($skill);
+        }
+
+        foreach ($request->skills as $skill) {
+            $skill = Skill::find($skill);
+            if ($skill != null) {
+                $request->user()->skills()->attach($skill);
+            }
+        }
+
+        return Redirect::route('profile.edit')->with('status', 'skills-updated');
     }
 }

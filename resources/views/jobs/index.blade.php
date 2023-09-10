@@ -30,7 +30,7 @@
                                 <div class="mt-3 text-gray-600">Skills required:</div>
                                 <div class="mt-1 flex">
                                     @foreach($job->skills as $skill)
-                                        @if(in_array($skill, Auth::user()->skills->toArray()))
+                                        @if(collect(Auth::user()->skills)->contains('id', $skill->id))
                                             <div class="bg-green-300 rounded mx-1 px-1">
                                                 {{ $skill->name }}
                                             </div>

@@ -41,6 +41,7 @@
                                 <option value="{{ $skill->id }}" @selected(collect(old('skills'))->contains('id', $skill->id))>{{ $skill->name }}</option>
                             @endforeach
                         </select>
+                        <x-input-error :messages="$errors->get('skills')" class="mt-2" />
                     </div>
 
                     <div class="flex items-center gap-4">
