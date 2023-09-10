@@ -15,6 +15,16 @@
                     <x-nav-link :href="route('dashboard')" :active="request()->routeIs('dashboard')">
                         {{ __('Dashboard') }}
                     </x-nav-link>
+
+                    <x-nav-link :href="route('jobs.index')" :active="request()->routeIs('jobs.index')">
+                        {{ __('Jobs') }}
+                    </x-nav-link>
+
+                    @can('viewAny', \App\Models\Skill::class)
+                        <x-nav-link :href="route('skills.index')" :active="request()->routeIs('skills.index')">
+                            {{ __('Skills') }}
+                        </x-nav-link>
+                    @endcan
                 </div>
             </div>
 
