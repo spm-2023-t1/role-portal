@@ -41,6 +41,17 @@
                                         @endif
                                     @endforeach
                                 </div>
+                                <div class="mt-3">
+                                    @if (collect(Auth::user()->applications)->contains('id', $job->id))
+                                        <div class="text-green-600">Applied successfully.</div>
+                                    @else
+                                        <form method="post" action="{{ route('jobs.apply', $job) }}">
+                                            @csrf
+                                            @method('patch')
+                                            <x-primary-button onclick="event.preventDefault(); this.closest('form').submit();">{{ __('Apply for this job') }}</x-primary-button>
+                                        </form>
+                                    @endif
+                                </div>
                             </div>
                             @can('update', $job)
                                 <x-dropdown>
