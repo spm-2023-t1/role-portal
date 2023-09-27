@@ -17,6 +17,8 @@ class Job extends Model
         'description',
         'status',
         'deadline',
+        'role_type',
+        'flags',
     ];
 
     protected $casts = [

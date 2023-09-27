@@ -44,6 +44,29 @@
                         </select>
                     </div>
 
+                    <div>
+                        <x-input-label for="role_type" :value="__('Role Type')" />
+                        <select name="role_type" id="role_type" multiple>
+                            
+                            <option value="permanent">Permanent</option>
+                            <option value="temporary">Temporary</option>
+                            
+                        </select>
+                        <x-input-error :messages="$errors->get('skills')" class="mt-2" />
+                    </div>
+
+                    <div>
+                        <x-input-label for="flags" :value="__('Flags')" />
+                        <select name="flags" id="flags" multiple>
+                            
+                            <option value="Open">Open</option>
+                            <option value="Private">Private</option>
+                            <option value="Closed">Closed</option>
+                            
+                        </select>
+                        <x-input-error :messages="$errors->get('skills')" class="mt-2" />
+                    </div>
+
                     <div class="flex items-center gap-4">
                         <x-primary-button>{{ __('Save') }}</x-primary-button>
                     </div>

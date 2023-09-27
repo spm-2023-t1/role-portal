@@ -49,7 +49,11 @@ class JobController extends Controller
             'title' => 'required|string',
             'description' => 'required|string',
             'deadline' => ['required', 'date', 'after_or_equal:' . now()->format('Y-m-d')],
-            'skills' => 'required'
+            'skills' => 'required',
+            'role_type' => 'required',
+            'flags' => 'required',
+            
+            
         ]);
 
         $validated['status'] = JobStatus::Open;
@@ -84,6 +88,9 @@ class JobController extends Controller
         return view('jobs.edit', [
             'job' => $job,
             'skills' => Skill::all()->sortBy('name', SORT_NATURAL|SORT_FLAG_CASE),
+            'role_type' => 'required',
+            'flags' => 'required',
+            
         ]);
     }
 
@@ -98,7 +105,9 @@ class JobController extends Controller
             'title' => 'required|string',
             'description' => 'required|string',
             'deadline' => ['required', 'date', 'after_or_equal:' . now()->format('Y-m-d')],
-            'skills' => 'required'
+            'skills' => 'required',
+            'role_type' => 'required',
+            'flags' => 'required'
         ]);
 
         $job->update($validated);

@@ -3,6 +3,7 @@
 use App\Http\Controllers\JobController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\SkillController;
+use App\Http\Controllers\UserController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -40,4 +41,8 @@ Route::resource('skills', SkillController::class)
     ->only(['index', 'create', 'store', 'edit', 'update'])
     ->middleware(['auth', 'verified']);
 
+Route::resource('users', UserController::class)
+    ->only(['index', 'create', 'store', 'edit', 'update'])
+    ->middleware(['auth', 'verified']);
+    
 require __DIR__.'/auth.php';
