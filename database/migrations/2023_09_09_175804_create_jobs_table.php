@@ -17,7 +17,8 @@ return new class extends Migration
             $table->string('description');
             $table->string('role_type');
             $table->string('listing_status');
-            $table->datetime('date_of_creation');
+            // $table->datetime('date_of_creation')->timestamps();
+            $table->timestamp('date_of_creation')->useCurrent();
             $table->datetime('deadline');
             $table->foreignId('user_id');
             $table->timestamps();

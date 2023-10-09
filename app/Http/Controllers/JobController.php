@@ -21,6 +21,7 @@ class JobController extends Controller
     {
         return view('jobs.index', [
             'jobs' => Job::all()->sortBy('deadline'),
+            // ['user_name' => User::with('user_id')->get()]
         ]); // for reference: return view('jobs.index', ['jobs' => Job::where([['listing_status', '=', JobStatus::Open],['deadline', '>', now()],])->get()->sortBy('deadline'),]);
     }
 
@@ -48,7 +49,8 @@ class JobController extends Controller
             'id' => ['required', 'integer', new UniqueId],
             'role_name' => 'required|string',
             'description' => 'required|string',
-            'date_of_creation' => ['required', 'date', 'date_equals:' . now()->format('Y-m-d\TH:i')],
+            // 'date_of_creation' => ['required', 'date', 'date_equals:' . now()->format('Y-m-d\TH:i')],
+            // 'date_of_creation' => ['required', 'date', 'date_equals:' . now()->format('Y-m-d\TH:i')],
             'deadline' => ['required', 'date', 'after:date_of_creation'],
             'skills' => 'required',
             'role_type' => 'required',
@@ -98,7 +100,7 @@ class JobController extends Controller
             'job' => $job,
             'skills' => Skill::all()->sortBy('name', SORT_NATURAL|SORT_FLAG_CASE),
             'role_type' => 'required',
-            'flags' => 'required',
+            'viewers' => User::all()->sortBy('fname', SORT_NATURAL|SORT_FLAG_CASE)
             
         ]);
     }
@@ -111,12 +113,14 @@ class JobController extends Controller
         $this->authorize('update', Job::class);
 
         $validated = $request->validate([
-            'title' => 'required|string',
+            'id' => ['required', 'integer', new UniqueId],
+            'role_name' => 'required|string',
             'description' => 'required|string',
-            'deadline' => ['required', 'date', 'after_or_equal:' . now()->format('Y-m-d')],
+            // 'date_of_creation' => ['required', 'date', 'date_equals:' . now()->format('Y-m-d\TH:i')],
+            'deadline' => ['required', 'date', 'after:date_of_creation'],
             'skills' => 'required',
             'role_type' => 'required',
-            'flags' => 'required'
+            'listing_status' => 'required',
         ]);
 
         $job->update($validated);

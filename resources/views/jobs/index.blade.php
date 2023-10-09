@@ -59,6 +59,8 @@
                                             <p class="mt-2 text-gray-800">Status: {{ ucfirst($job->listing_status) }}</p>
                                             <p class="mt-2 text-gray-800">Created on: {{ $job->date_of_creation }}</p>
                                             <p class="mt-2 text-gray-800">Created by: {{ $job->user_id }}</p>
+                                            {{-- <p class="mt-2 text-gray-800">Created by: {{ User::where('user_id','=',Auth::user())->whereIn('id', $job->user_id)->get(); }}</p> --}}
+                                            {{-- <p class="mt-2 text-gray-800">Created by: {{ $job->user_id->fname }}</p> --}}
                                             <p class="mt-2 text-gray-800">Time of last edit: {{ $job->updated_at }}</p>
                                             <p class="mt-2 text-gray-800">Application deadline: {{ $job->deadline }}</p>
                                         </div>

@@ -81,11 +81,11 @@
                         <x-input-error :messages="$errors->get('skills')" class="mt-2" />
                     </div>
 
-                    <div>
+                    {{-- <div>
                         <x-input-label for="date_of_creation" :value="__('Created on')" />
                         <x-text-input id="date_of_creation" name="date_of_creation" type="datetime-local" class="mt-1 block w-full" value="{{ old('date_of_creation', now()->format('Y-m-d\TH:i')) }}" />
                         <x-input-error :messages="$errors->get('date_of_creation')" class="mt-2" />
-                    </div>
+                    </div> --}}
 
                     <div>
                         <x-input-label for="deadline" :value="__('Application Deadline')" />

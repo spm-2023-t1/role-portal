@@ -48,4 +48,9 @@ class Job extends Model
     {
         return $this->belongsToMany(User::class, 'job_viewer')->withTimestamps();
     }
+
+    public function user_id(): BelongsTo
+    {
+        return $this->belongsTo(User::class);
+    }
 }

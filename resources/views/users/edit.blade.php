@@ -1,7 +1,7 @@
 <x-app-layout>
     <x-slot name="header">
         <h2 class="font-semibold text-xl text-gray-800 leading-tight">
-            {{ __('Skills') }}
+            {{ __('Users') }}
         </h2>
     </x-slot>
     <div class="max-w-7xl mx-auto sm:px-6 lg:px-8 space-y-6 my-4">
@@ -10,17 +10,39 @@
                 <header class="flex justify-between flex-col sm:flex-row border-b pb-4">
                     <div>
                         <h2 class="text-lg font-medium text-gray-900">
-                            {{ __('Update Skill') }}
+                            {{ __('Update User') }}
                         </h2>
                     </div>
                 </header>
-                <form method="post" action="{{ route('skills.update', $skill) }}" class="mt-6 space-y-6">
+                <form method="post" action="{{ route('users.update', $user) }}" class="mt-6 space-y-6">
                     @csrf
                     @method('patch')
                     <div>
-                        <x-input-label for="name" :value="__('Name of skill')" />
-                        <x-text-input id="name" name="name" type="text" class="mt-1 block w-full" value="{{ old('name', $skill->name) }}" />
-                        <x-input-error :messages="$errors->get('name')" class="mt-2" />
+                        <x-input-label for="fname" :value="__('First Name')" />
+                        <x-text-input id="fname" name="fname" type="text" class="mt-1 block w-full" value="{{ old('fname', $user->fname) }}" />
+                        <x-input-error :messages="$errors->get('fname')" class="mt-2" />
+                    </div>
+
+                    <div>
+                        <x-input-label for="lname" :value="__('Last Name')" />
+                        <x-text-input id="lname" name="lname" type="text" class="mt-1 block w-full" value="{{ old('lname', $user->lname) }}" />
+                        <x-input-error :messages="$errors->get('lname')" class="mt-2" />
+                    </div>
+
+                    <div>
+                        <x-input-label for="email" :value="__('Email')" />
+                        <x-text-input id="email" name="email" type="text" class="mt-1 block w-full" value="{{ old('email', $user->email) }}" />
+                        <x-input-error :messages="$errors->get('email')" class="mt-2" />
+                    </div>
+
+
+                    <div>
+                        <x-input-label for="skills" :value="__('User Skills')" />
+                        <select name="skills[]" id="skills" multiple>
+                            @foreach ($skills as $skill)
+                                <option value="{{ $skill->id }}" @selected(collect(old('skills', $user->skills))->contains('id', $skill->id))>{{ $skill->name }}</option>
+                            @endforeach
+                        </select>
                     </div>
 
                     <div class="flex items-center gap-4">
