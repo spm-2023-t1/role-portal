@@ -44,5 +44,5 @@ Route::resource('skills', SkillController::class)
 Route::resource('users', UserController::class)
     ->only(['index', 'create', 'store', 'edit', 'update'])
     ->middleware(['auth', 'verified']);
-    
+
 require __DIR__.'/auth.php';

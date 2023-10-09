@@ -10,16 +10,22 @@
                 <header class="flex justify-between flex-col sm:flex-row border-b pb-4">
                     <div>
                         <h2 class="text-lg font-medium text-gray-900">
-                            {{ __('Create New Job') }}
+                            {{ __('New Job Listing') }}
                         </h2>
                     </div>
                 </header>
                 <form method="post" action="{{ route('jobs.store') }}" class="mt-6 space-y-6">
                     @csrf
                     <div>
-                        <x-input-label for="title" :value="__('Title')" />
-                        <x-text-input id="title" name="title" type="text" class="mt-1 block w-full" value="{{ old('title') }}" />
-                        <x-input-error :messages="$errors->get('title')" class="mt-2" />
+                        <x-input-label for="id" :value="__('ID')" />
+                        <x-text-input id="id" name="id" type="text" class="mt-1 block w-full" value="{{ old('id') }}" />
+                        <x-input-error :messages="$errors->get('id')" class="mt-2" />
+                    </div>
+                    
+                    <div>
+                        <x-input-label for="role_name" :value="__('Name')" />
+                        <x-text-input id="role_name" name="role_name" type="text" class="mt-1 block w-full" value="{{ old('role_name') }}" />
+                        <x-input-error :messages="$errors->get('role_name')" class="mt-2" />
                     </div>
 
                     <div>
@@ -29,9 +35,40 @@
                     </div>
 
                     <div>
-                        <x-input-label for="deadline" :value="__('Deadline')" />
-                        <x-text-input id="deadline" name="deadline" type="datetime-local" class="mt-1 block w-full" value="{{ old('deadline') }}" />
-                        <x-input-error :messages="$errors->get('deadline')" class="mt-2" />
+                        <x-input-label for="role_type" :value="__('Type')" />
+                        <select name="role_type" id="role_type">
+                            
+                            <option value="permanent">Permanent</option>
+                            <option value="temporary">Temporary</option>
+                            
+                        </select>
+                        <x-input-error :messages="$errors->get('role_type')" class="mt-2" />
+                    </div>
+
+                    <div x-data="{ status: '' }">
+                        <div>
+                            <x-input-label for="listing_status" :value="__('Status')" />
+                            <select name="listing_status" id="listing_status" x-model="status">
+                                
+                                <option value="open">Open</option>
+                                <option value="closed">Closed</option>
+                                <option value="private">Private</option>
+                                
+                            </select>
+                            <x-input-error :messages="$errors->get('listing_status')" class="mt-2" />
+                        </div>
+
+                        <br x-show="status=='private'">
+
+                        <div x-show="status=='private'">
+                            <x-input-label for="staff_visibility" :value="__('Select Recipients')" />
+                            <select name="staff_visibility[]" id="staff_visibility" multiple>
+                                @foreach ($viewers as $s)
+                                    <option value="{{ $s->id }}" @selected(collect(old('staff_visibility'))->contains('id', $s->id))>{{ $s->fname." ".$s->lname }}</option>
+                                @endforeach
+                            </select>
+                            <x-input-error :messages="$errors->get('staff_visibility')" class="mt-2" />
+                        </div>
                     </div>
 
                     <div>
@@ -45,31 +82,36 @@
                     </div>
 
                     <div>
-                        <x-input-label for="role_type" :value="__('Role Type')" />
-                        <select name="role_type" id="role_type" multiple>
-                            
-                            <option value="permanent">Permanent</option>
-                            <option value="temporary">Temporary</option>
-                            
-                        </select>
-                        <x-input-error :messages="$errors->get('skills')" class="mt-2" />
+                        <x-input-label for="date_of_creation" :value="__('Created on')" />
+                        <x-text-input id="date_of_creation" name="date_of_creation" type="datetime-local" class="mt-1 block w-full" value="{{ old('date_of_creation', now()->format('Y-m-d\TH:i')) }}" />
+                        <x-input-error :messages="$errors->get('date_of_creation')" class="mt-2" />
                     </div>
 
                     <div>
-                        <x-input-label for="flags" :value="__('Flags')" />
-                        <select name="flags" id="flags" multiple>
-                            
-                            <option value="Open">Open</option>
-                            <option value="Private">Private</option>
-                            <option value="Closed">Closed</option>
-                            
-                        </select>
-                        <x-input-error :messages="$errors->get('skills')" class="mt-2" />
+                        <x-input-label for="deadline" :value="__('Application Deadline')" />
+                        <x-text-input id="deadline" name="deadline" type="datetime-local" class="mt-1 block w-full" value="{{ old('deadline') }}" />
+                        <x-input-error :messages="$errors->get('deadline')" class="mt-2" />
                     </div>
 
+                    <!-- while it doesn't show on the create page, the following information should be shown on the update and view page of the listing:
+                        1. Name of HR staff who created the job listing - based on the profile of user logged in
+                        2. Name of HR staff who last edited the job listing - based on profile of user logged in
+                        3. Time of last edit
+                    -->
+
                     <div class="flex items-center gap-4">
-                        <x-primary-button>{{ __('Save') }}</x-primary-button>
+                        <x-primary-button id="save-button">{{ __('Save') }}</x-primary-button>
                     </div>
+
+                    <script>
+                        document.getElementById('save-button').addEventListener('click', function() {
+                            const confirmation = confirm('Are you sure you want to create this job listing?');
+                            if (confirmation) {
+                                document.querySelector('form').submit();
+                            }
+                        });
+                    </script>
+
                 </form>
             </section>
         </div>

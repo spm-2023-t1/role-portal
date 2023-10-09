@@ -4,12 +4,13 @@ namespace App\Http\Controllers;
 
 use App\Enums\JobStatus;
 use App\Models\Job;
-use App\Models\Skill;
 use App\Models\User;
+use App\Models\Skill;
 use Carbon\Carbon;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\View\View;
+use App\Rules\UniqueId;
 
 class JobController extends Controller
 {
@@ -19,11 +20,8 @@ class JobController extends Controller
     public function index(): View
     {
         return view('jobs.index', [
-            'jobs' => Job::where([
-                ['status', '=', JobStatus::Open],
-                ['deadline', '>', now()],
-            ])->get()->sortBy('deadline'),
-        ]);
+            'jobs' => Job::all()->sortBy('deadline'),
+        ]); // for reference: return view('jobs.index', ['jobs' => Job::where([['listing_status', '=', JobStatus::Open],['deadline', '>', now()],])->get()->sortBy('deadline'),]);
     }
 
     /**
@@ -35,6 +33,7 @@ class JobController extends Controller
 
         return view('jobs.create', [
             'skills' => Skill::all()->sortBy('name', SORT_NATURAL|SORT_FLAG_CASE),
+            'viewers' => User::all()->sortBy('fname', SORT_NATURAL|SORT_FLAG_CASE)
         ]);
     }
 
@@ -46,17 +45,18 @@ class JobController extends Controller
         $this->authorize('create', Job::class);
 
         $validated = $request->validate([
-            'title' => 'required|string',
+            'id' => ['required', 'integer', new UniqueId],
+            'role_name' => 'required|string',
             'description' => 'required|string',
-            'deadline' => ['required', 'date', 'after_or_equal:' . now()->format('Y-m-d')],
+            'date_of_creation' => ['required', 'date', 'date_equals:' . now()->format('Y-m-d\TH:i')],
+            'deadline' => ['required', 'date', 'after:date_of_creation'],
             'skills' => 'required',
             'role_type' => 'required',
-            'flags' => 'required',
-            
-            
-        ]);
+            'listing_status' => 'required',
+        ]); // for reference: 'deadline' => ['required', 'date', 'after_or_equal:' . now()->format('Y-m-d')],
 
-        $validated['status'] = JobStatus::Open;
+        // ensure all Job Listings created are Open - might wanna make changes to the workflow logic
+        $validated['listing_status'] = JobStatus::Open;
 
         $job = $request->user()->jobs()->create($validated);
 
@@ -64,6 +64,15 @@ class JobController extends Controller
             $skill = Skill::find($skill);
             if ($skill != null) {
                 $job->skills()->attach($skill);
+            }
+        }
+
+        if ($request->staff_visibility) {
+            foreach ($request->staff_visibility as $viewer) {
+                $viewer = User::find($viewer);
+                if ($viewer != null) {
+                    $job->viewers()->attach($viewer);
+                }
             }
         }
 

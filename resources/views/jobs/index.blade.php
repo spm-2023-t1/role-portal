@@ -1,7 +1,7 @@
 <x-app-layout>
     <x-slot name="header">
         <h2 class="font-semibold text-xl text-gray-800 leading-tight">
-            {{ __('Job Listings') }}
+            {{ __('Job Listings Dashboard') }}
         </h2>
     </x-slot>
     <div class="max-w-7xl mx-auto sm:px-6 lg:px-8 space-y-6 my-4">
@@ -14,7 +14,7 @@
                         </h2>
                     </div>
                     @can('create', \App\Models\Job::class)
-                        <x-primary-button-link class="h-10 mt-4 sm:mt-0 sm:ml-2" :href="route('jobs.create')">{{ __('Create New Job') }}</x-primary-button-link>
+                        <x-primary-button-link class="h-10 mt-4 sm:mt-0 sm:ml-2" :href="route('jobs.create')">{{ __('Create New Job Listing') }}</x-primary-button-link>
                     @endcan
                 </header>
                 <div class="divide-y">
@@ -41,6 +41,45 @@
                                         @endif
                                     @endforeach
                                 </div>
+                                <div class="mt-3">
+                                    <x-primary-button onclick="openJobDetailsModal({{ $job->id }})">Show All Details</x-primary-button>
+                                </div>
+                                <div id="job-details-modal-{{ $job->id }}" class="fixed inset-0 z-10 hidden overflow-y-auto">
+                                    <div class="flex items-center justify-center min-h-screen p-4">
+                                        <!-- Modal background -->
+                                        <div class="fixed inset-0 bg-black opacity-50"></div>
+                                        <!-- Modal content -->
+                                        <div class="bg-white p-8 rounded-lg shadow-lg relative">
+                                            <button class="absolute top-0 right-0 p-4" onclick="closeJobDetailsModal({{ $job->id }})">Close</button>
+                                            <h2 class="text-lg font-medium text-gray-900">{{ $job->title }}</h2>
+                                            <p class="mt-2 text-gray-800">ID: {{ $job->id }}</p>
+                                            <p class="mt-2 text-gray-800">Name: {{ $job->role_name }}</p>
+                                            <p class="mt-2 text-gray-800">Description: {{ $job->description }}</p>
+                                            <p class="mt-2 text-gray-800">Type: {{ ucfirst($job->role_type) }}</p>
+                                            <p class="mt-2 text-gray-800">Status: {{ ucfirst($job->listing_status) }}</p>
+                                            <p class="mt-2 text-gray-800">Created on: {{ $job->date_of_creation }}</p>
+                                            <p class="mt-2 text-gray-800">Created by: {{ $job->user_id }}</p>
+                                            <p class="mt-2 text-gray-800">Time of last edit: {{ $job->updated_at }}</p>
+                                            <p class="mt-2 text-gray-800">Application deadline: {{ $job->deadline }}</p>
+                                        </div>
+                                    </div>
+                                </div>
+                                <script>
+                                    // JavaScript function to open the modal
+                                    function openJobDetailsModal(jobId) {
+                                        const modalElement = document.getElementById(`job-details-modal-${jobId}`);
+                                        if (modalElement) {
+                                            modalElement.classList.remove('hidden');
+                                        }
+                                    }
+                                    // JavaScript function to close the modal
+                                    function closeJobDetailsModal(jobId) {
+                                        const modalElement = document.getElementById(`job-details-modal-${jobId}`);
+                                        if (modalElement) {
+                                            modalElement.classList.add('hidden');
+                                        }
+                                    }
+                                </script>
                                 <div class="mt-3">
                                     @if (collect(Auth::user()->applications)->contains('id', $job->id))
                                         <div class="text-green-600">Applied successfully.</div>

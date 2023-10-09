@@ -12,13 +12,17 @@ class Job extends Model
 {
     use HasFactory;
 
+    protected $primaryKey = 'id';
+    public $incrementing = false;
+
     protected $fillable = [
-        'title',
+        'id',
+        'role_name',
         'description',
-        'status',
-        'deadline',
         'role_type',
-        'flags',
+        'listing_status',
+        'date_of_creation',
+        'deadline'
     ];
 
     protected $casts = [
@@ -38,5 +42,10 @@ class Job extends Model
     public function applicants(): BelongsToMany
     {
         return $this->belongsToMany(User::class)->withTimestamps();
+    }
+
+    public function viewers(): BelongsToMany
+    {
+        return $this->belongsToMany(User::class, 'job_viewer')->withTimestamps();
     }
 }
