@@ -10,7 +10,7 @@
                 <header class="flex justify-between flex-col sm:flex-row border-b pb-4">
                     <div>
                         <h2 class="text-lg font-medium text-gray-900">
-                            {{ __('Update Job') }}
+                            {{ __('Update Job Listing') }}
                         </h2>
                     </div>
                 </header>

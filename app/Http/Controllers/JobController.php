@@ -51,7 +51,7 @@ class JobController extends Controller
             'description' => 'required|string',
             // 'date_of_creation' => ['required', 'date', 'date_equals:' . now()->format('Y-m-d\TH:i')],
             // 'date_of_creation' => ['required', 'date', 'date_equals:' . now()->format('Y-m-d\TH:i')],
-            'deadline' => ['required', 'date', 'after:date_of_creation'],
+            'deadline' => ['required', 'date', 'after:now'],
             'skills' => 'required',
             'role_type' => 'required',
             'listing_status' => 'required',
