@@ -57,7 +57,7 @@ class UserController extends Controller
 
         return view('users.edit', [
             'user' => $user,
-            'skills' => Skill::all()->sortBy('name', SORT_NATURAL | SORT_FLAG_CASE),
+            'skills' => Skill::all()->sortBy('fname', SORT_NATURAL | SORT_FLAG_CASE),
             
 
         ]);

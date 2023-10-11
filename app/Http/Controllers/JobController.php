@@ -86,7 +86,9 @@ class JobController extends Controller
      */
     public function show(Job $job)
     {
-        //
+        return view('jobs.show', [
+            'job' => $job,
+        ]);
     }
 
     /**
@@ -111,17 +113,30 @@ class JobController extends Controller
     public function update(Request $request, Job $job): RedirectResponse
     {
         $this->authorize('update', Job::class);
-
-        $validated = $request->validate([
-            'id' => ['required', 'integer', new UniqueId],
-            'role_name' => 'required|string',
-            'description' => 'required|string',
-            // 'date_of_creation' => ['required', 'date', 'date_equals:' . now()->format('Y-m-d\TH:i')],
-            'deadline' => ['required', 'date', 'after:date_of_creation'],
-            'skills' => 'required',
-            'role_type' => 'required',
-            'listing_status' => 'required',
-        ]);
+        if ($request->id == $job->id) {
+            $validated = $request->validate([
+                'id' => ['required', 'integer'],
+                'role_name' => 'required|string',
+                'description' => 'required|string',
+                // 'date_of_creation' => ['required', 'date', 'date_equals:' . now()->format('Y-m-d\TH:i')],
+                'deadline' => ['required', 'date', 'after:date_of_creation'],
+                'skills' => 'required',
+                'role_type' => 'required',
+                'listing_status' => 'required',
+            ]);
+        } else {
+            $validated = $request->validate([
+                'id' => ['required', 'integer', new UniqueId],
+                'role_name' => 'required|string',
+                'description' => 'required|string',
+                // 'date_of_creation' => ['required', 'date', 'date_equals:' . now()->format('Y-m-d\TH:i')],
+                'deadline' => ['required', 'date', 'after:date_of_creation'],
+                'skills' => 'required',
+                'role_type' => 'required',
+                'listing_status' => 'required',
+            ]);
+        }
+        
 
         $job->update($validated);
 
