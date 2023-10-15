@@ -21,6 +21,16 @@
                         <x-text-input id="id" name="id" type="text" class="mt-1 block w-full" value="{{ old('id') }}" />
                         <x-input-error :messages="$errors->get('id')" class="mt-2" />
                     </div>
+
+                    <div>
+                        {{-- <input type="hidden" id="updated_by" name="updated_by" type="text" class="mt-1 block w-full" value="{{ old('updated_by', Auth::user()->id) }}"> --}}
+                        <x-text-input type="hidden" id="created_by" name="created_by" class="mt-1 block w-full" value="{{ Auth::user()->id }}"/>
+                    </div>
+
+                    <div>
+                        {{-- <input type="hidden" id="updated_by" name="updated_by" type="text" class="mt-1 block w-full" value="{{ old('updated_by', Auth::user()->id) }}"> --}}
+                        <x-text-input type="hidden" id="updated_by" name="updated_by" class="mt-1 block w-full" value="{{ Auth::user()->id }}"/>
+                    </div>
                     
                     <div>
                         <x-input-label for="role_name" :value="__('Name')" />

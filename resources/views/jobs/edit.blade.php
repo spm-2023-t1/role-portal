@@ -24,6 +24,11 @@
                     </div>
                     
                     <div>
+                        {{-- <input type="hidden" id="updated_by" name="updated_by" type="text" class="mt-1 block w-full" value="{{ old('updated_by', Auth::user()->id) }}"> --}}
+                        <x-text-input type="text" id="updated_by" name="updated_by" class="mt-1 block w-full" value="{{ Auth::user()->id }}"/>
+                    </div>
+                    
+                    <div>
                         <x-input-label for="role_name" :value="__('Name')" />
                         <x-text-input id="role_name" name="role_name" type="text" class="mt-1 block w-full" value="{{ old('role_name', $job->role_name) }}" />
                         <x-input-error :messages="$errors->get('role_name')" class="mt-2" />

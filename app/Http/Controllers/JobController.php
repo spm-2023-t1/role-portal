@@ -11,6 +11,9 @@ use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\View\View;
 use App\Rules\UniqueId;
+use Illuminate\Console\View\Components\Alert;
+use Illuminate\Support\Facades\Auth;
+
 
 class JobController extends Controller
 {
@@ -49,6 +52,8 @@ class JobController extends Controller
             'id' => ['required', 'integer', new UniqueId],
             'role_name' => 'required|string',
             'description' => 'required|string',
+            'created_by' => 'required',
+            'updated_by' => 'required',
             // 'date_of_creation' => ['required', 'date', 'date_equals:' . now()->format('Y-m-d\TH:i')],
             // 'date_of_creation' => ['required', 'date', 'date_equals:' . now()->format('Y-m-d\TH:i')],
             'deadline' => ['required', 'date', 'after:now'],
@@ -77,6 +82,8 @@ class JobController extends Controller
                 }
             }
         }
+
+        session()->flash('message', 'Job successfully created.');
 
         return redirect(route('jobs.index'));
     }
@@ -118,6 +125,7 @@ class JobController extends Controller
                 'id' => ['required', 'integer'],
                 'role_name' => 'required|string',
                 'description' => 'required|string',
+                'updated_by' => 'required',
                 // 'date_of_creation' => ['required', 'date', 'date_equals:' . now()->format('Y-m-d\TH:i')],
                 'deadline' => ['required', 'date', 'after:date_of_creation'],
                 'skills' => 'required',
@@ -129,6 +137,7 @@ class JobController extends Controller
                 'id' => ['required', 'integer', new UniqueId],
                 'role_name' => 'required|string',
                 'description' => 'required|string',
+                'updated_by' => 'required',
                 // 'date_of_creation' => ['required', 'date', 'date_equals:' . now()->format('Y-m-d\TH:i')],
                 'deadline' => ['required', 'date', 'after:date_of_creation'],
                 'skills' => 'required',
@@ -152,6 +161,8 @@ class JobController extends Controller
             }
         }
 
+        session()->flash('message', 'Job successfully updated.');
+
         return redirect(route('jobs.index'));
     }
 
@@ -170,7 +181,10 @@ class JobController extends Controller
 
             return redirect(route('jobs.index'))->with('status', 'job-applied');
         }
-
+        
+        
         return redirect(route('jobs.index'));
     }
+
+
 }

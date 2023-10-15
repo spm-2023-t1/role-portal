@@ -17,6 +17,19 @@
                         <x-primary-button-link class="h-10 mt-4 sm:mt-0 sm:ml-2" :href="route('jobs.create')">{{ __('Create New Job Listing') }}</x-primary-button-link>
                     @endcan
                 </header>
+                
+                <div>
+                    @if (session()->has('message'))
+                    <div class="alert alert-warning alert-block">
+                        {{-- <button type="button" class="close" data-dismiss="alert">×</button>	 --}}
+                        <strong>
+                            {{ session('message') }}
+                        </strong>
+                    </div>
+                    @endif
+                   
+                </div>
+                
                 <div class="divide-y">
                     @foreach ($jobs as $job)
                         <div class="flex py-4">
@@ -82,6 +95,13 @@
                                         }
                                     }
                                 </script>
+
+                        
+
+                        
+                               
+
+
                                 <div class="mt-3">
                                     @if (collect(Auth::user()->applications)->contains('id', $job->id))
                                         <div class="text-green-600">Applied successfully.</div>
@@ -93,6 +113,13 @@
                                         </form>
                                     @endif
                                 </div>
+                                @can('update', $job)
+                                <div class="mt-3">
+                                    <a href="{{ route('jobs.show', $job) }}">
+                                    <x-primary-button>Show All Applicants</x-primary-button>
+                                    </a>
+                                </div>
+                                @endcan
                             </div>
                             @can('update', $job)
                                 <x-dropdown>

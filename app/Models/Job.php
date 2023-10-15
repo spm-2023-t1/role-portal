@@ -21,6 +21,8 @@ class Job extends Model
         'description',
         'role_type',
         'listing_status',
+        'created_by',
+        'updated_by',
         'date_of_creation',
         'deadline'
     ];

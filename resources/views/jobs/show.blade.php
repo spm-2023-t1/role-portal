@@ -71,7 +71,7 @@
                         <div class="divide-y">
                             @foreach($job->applicants as $applicant)
                                 <div class="py-2">
-                                    <div><span class="font-medium">Applicant {{ $loop->index + 1 }}:</span> {{ $applicant->name }}</div>
+                                    <div><span class="font-medium">Applicant {{ $loop->index + 1 }}:</span> {{ $applicant->fname }}  {{ $applicant->lname }} </div>
                                     <div><span class="font-medium">Skills:</span>
                                         @foreach ($applicant->skills as $skill)
                                             @if (collect($job->skills)->contains('id', $skill->id))
@@ -85,6 +85,10 @@
                                             @endif
                                         @endforeach
                                     </div>
+                                    <div><span class="font-medium">Department:</span> {{ $applicant->dept }} </div>
+                                    <div><span class="font-medium">Current Role:</span> {{ $applicant->role }} </div>
+                                    <div><span class="font-medium">Email:</span> {{ $applicant->email }} </div>
+                                    <div><span class="font-medium">Phone Number:</span> {{ $applicant->phone_num }} </div>
                                 </div>
                             @endforeach
                         </div>
