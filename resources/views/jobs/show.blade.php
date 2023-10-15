@@ -88,7 +88,7 @@
                                     <div><span class="font-medium">Department:</span> {{ $applicant->dept }} </div>
                                     <div><span class="font-medium">Current Role:</span> {{ $applicant->role }} </div>
                                     <div><span class="font-medium">Email:</span> {{ $applicant->email }} </div>
-                                    <div><span class="font-medium">Phone Number:</span> {{ $applicant->phone_num }} </div>
+                                    {{-- <div><span class="font-medium">Phone Number:</span> {{ $applicant->phone_num }} </div> --}}
                                 </div>
                             @endforeach
                         </div>

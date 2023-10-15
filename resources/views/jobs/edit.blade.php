@@ -24,8 +24,7 @@
                     </div>
                     
                     <div>
-                        {{-- <input type="hidden" id="updated_by" name="updated_by" type="text" class="mt-1 block w-full" value="{{ old('updated_by', Auth::user()->id) }}"> --}}
-                        <x-text-input type="text" id="updated_by" name="updated_by" class="mt-1 block w-full" value="{{ Auth::user()->id }}"/>
+                        <x-text-input type="hidden" id="updated_by" name="updated_by" class="mt-1 block w-full" value="{{ Auth::user()->id }}"/>
                     </div>
                     
                     <div>
