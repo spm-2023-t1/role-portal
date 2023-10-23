@@ -47,15 +47,11 @@ class JobController extends Controller
     public function store(Request $request): RedirectResponse
     {
         $this->authorize('create', Job::class);
-
+        
         $validated = $request->validate([
             'id' => ['required', 'integer', new UniqueId],
             'role_name' => 'required|string',
             'description' => 'required|string',
-            'created_by' => 'required',
-            'updated_by' => 'required',
-            // 'date_of_creation' => ['required', 'date', 'date_equals:' . now()->format('Y-m-d\TH:i')],
-            // 'date_of_creation' => ['required', 'date', 'date_equals:' . now()->format('Y-m-d\TH:i')],
             'deadline' => ['required', 'date', 'after:now'],
             'skills' => 'required',
             'role_type' => 'required',
@@ -65,7 +61,7 @@ class JobController extends Controller
         // ensure all Job Listings created are Open - might wanna make changes to the workflow logic
         $validated['listing_status'] = JobStatus::Open;
 
-        $job = $request->user()->jobs()->create($validated);
+        $job = Job::create($validated);
 
         foreach ($request->skills as $skill) {
             $skill = Skill::find($skill);
@@ -82,7 +78,9 @@ class JobController extends Controller
                 }
             }
         }
-
+        $job->owner()->associate($request->user());
+        $job->updater()->associate($request->user());
+        $job->save();
         session()->flash('message', 'Job successfully created.');
 
         return redirect(route('jobs.index'));
@@ -110,7 +108,6 @@ class JobController extends Controller
             'skills' => Skill::all()->sortBy('name', SORT_NATURAL|SORT_FLAG_CASE),
             'role_type' => 'required',
             'viewers' => User::all()->sortBy('fname', SORT_NATURAL|SORT_FLAG_CASE)
-            
         ]);
     }
 
@@ -120,34 +117,15 @@ class JobController extends Controller
     public function update(Request $request, Job $job): RedirectResponse
     {
         $this->authorize('update', Job::class);
-        if ($request->id == $job->id) {
-            $validated = $request->validate([
-                'id' => ['required', 'integer'],
-                'role_name' => 'required|string',
-                'description' => 'required|string',
-                'updated_by' => 'required',
-                // 'date_of_creation' => ['required', 'date', 'date_equals:' . now()->format('Y-m-d\TH:i')],
-                'deadline' => ['required', 'date', 'after:date_of_creation'],
-                'skills' => 'required',
-                'role_type' => 'required',
-                'listing_status' => 'required',
-            ]);
-        } else {
-            $validated = $request->validate([
-                'id' => ['required', 'integer', new UniqueId],
-                'role_name' => 'required|string',
-                'description' => 'required|string',
-                'updated_by' => 'required',
-                // 'date_of_creation' => ['required', 'date', 'date_equals:' . now()->format('Y-m-d\TH:i')],
-                'deadline' => ['required', 'date', 'after:date_of_creation'],
-                'skills' => 'required',
-                'role_type' => 'required',
-                'listing_status' => 'required',
-            ]);
-        }
-        
-
-        $job->update($validated);
+        $validated = $request->validate([
+            'id' => ['required', 'integer'],
+            'role_name' => 'required|string',
+            'description' => 'required|string',
+            'deadline' => ['required', 'date', 'after:date_of_creation'],
+            'skills' => 'required',
+            'role_type' => 'required',
+            'listing_status' => 'required',
+        ]);
 
         foreach ($job->skills as $skill) {
             $skill = Skill::find($skill);
@@ -160,6 +138,9 @@ class JobController extends Controller
                 $job->skills()->attach($skill);
             }
         }
+        $job->update($validated);
+        $job->updater()->associate($request->user());
+        $job->save();
 
         session()->flash('message', 'Job successfully updated.');
 

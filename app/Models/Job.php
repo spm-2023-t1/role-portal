@@ -21,9 +21,6 @@ class Job extends Model
         'description',
         'role_type',
         'listing_status',
-        'created_by',
-        'updated_by',
-        'date_of_creation',
         'deadline'
     ];
 
@@ -38,7 +35,12 @@ class Job extends Model
 
     public function owner(): BelongsTo
     {
-        return $this->belongsTo(User::class);
+        return $this->belongsTo(User::class, 'owner_id');
+    }
+
+    public function updater(): BelongsTo
+    {
+        return $this->belongsTo(User::class, 'update_user_id');
     }
 
     public function applicants(): BelongsToMany
@@ -49,10 +51,5 @@ class Job extends Model
     public function viewers(): BelongsToMany
     {
         return $this->belongsToMany(User::class, 'job_viewer')->withTimestamps();
-    }
-
-    public function user_id(): BelongsTo
-    {
-        return $this->belongsTo(User::class);
     }
 }

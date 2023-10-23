@@ -63,7 +63,12 @@ class User extends Authenticatable
 
     public function jobs(): HasMany
     {
-        return $this->hasMany(Job::class);
+        return $this->hasMany(Job::class, 'owner_id');
+    }
+
+    public function updaters(): HasMany
+    {
+        return $this->hasMany(Job::class, 'update_user_id');
     }
 
     public function applications(): BelongsToMany

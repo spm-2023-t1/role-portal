@@ -17,12 +17,9 @@ return new class extends Migration
             $table->string('description');
             $table->string('role_type');
             $table->string('listing_status');
-            // $table->datetime('date_of_creation')->timestamps();
-            $table->integer('created_by')->nullable();
-            $table->integer('updated_by')->nullable();
-            $table->timestamp('date_of_creation')->useCurrent();
             $table->datetime('deadline');
-            $table->foreignId('user_id');
+            $table->foreignId('owner_id')->nullable()->references('id')->on('users');
+            $table->foreignId('update_user_id')->nullable()->references('id')->on('users');
             $table->timestamps();
         });
     }

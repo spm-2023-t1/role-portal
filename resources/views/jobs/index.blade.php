@@ -70,12 +70,13 @@
                                             <p class="mt-2 text-gray-800">Description: {{ $job->description }}</p>
                                             <p class="mt-2 text-gray-800">Type: {{ ucfirst($job->role_type) }}</p>
                                             <p class="mt-2 text-gray-800">Status: {{ ucfirst($job->listing_status) }}</p>
-                                            <p class="mt-2 text-gray-800">Created on: {{ $job->date_of_creation }}</p>
-                                            <p class="mt-2 text-gray-800">Created by: {{ $job->user_id }}</p>
-                                            {{-- <p class="mt-2 text-gray-800">Created by: {{ User::where('user_id','=',Auth::user())->whereIn('id', $job->user_id)->get(); }}</p> --}}
-                                            {{-- <p class="mt-2 text-gray-800">Created by: {{ $job->user_id->fname }}</p> --}}
-                                            <p class="mt-2 text-gray-800">Time of last edit: {{ $job->updated_at }}</p>
+                                            <p class="mt-2 text-gray-800">Created on: {{ $job->created_at }}</p>
+                                            <p class="mt-2 text-gray-800">Created by: {{ $job->owner->fname ?? 'UNKNOWN' }}</p>
                                             <p class="mt-2 text-gray-800">Application deadline: {{ $job->deadline }}</p>
+                                            @if ($job->updated_at != $job->created_at)
+                                                <p class="mt-2 text-gray-800">Updated by: {{ $job->updater->fname }}</p>
+                                                <p class="mt-2 text-gray-800">Time of last edit: {{ $job->updated_at }}</p>
+                                            @endif
                                         </div>
                                     </div>
                                 </div>
