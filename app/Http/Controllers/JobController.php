@@ -20,13 +20,64 @@ class JobController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index(): View
+    // public function index(): View
+    // {
+    //     return view('jobs.index', [
+    //         'jobs' => Job::all()->sortBy('deadline'),
+    //         // ['user_name' => User::with('user_id')->get()]
+    //     ]); // for reference: return view('jobs.index', ['jobs' => Job::where([['listing_status', '=', JobStatus::Open],['deadline', '>', now()],])->get()->sortBy('deadline'),]);
+    // }
+
+    public function index(Request $request)
     {
-        return view('jobs.index', [
-            'jobs' => Job::all()->sortBy('deadline'),
-            // ['user_name' => User::with('user_id')->get()]
-        ]); // for reference: return view('jobs.index', ['jobs' => Job::where([['listing_status', '=', JobStatus::Open],['deadline', '>', now()],])->get()->sortBy('deadline'),]);
+        $jobs = Job::query();
+        // $skills = Skill::all()->sortBy('name', SORT_NATURAL|SORT_FLAG_CASE);
+
+        if ($request->has('search') && $request->input('search') !== '') {
+            $search = $request->input('search');
+            $jobs->where(function ($query) use ($search) {
+                $query->where('role_name', 'like', '%' . $search . '%')
+                    ->orWhere('description', 'like', '%' . $search . '%');
+            });
+            $request->session()->put('search', $search);
+        } else {
+            // Reset the search value in the session
+            $request->session()->forget('search');
+        }
+
+        if ($request->has('filter_role_type') && $request->input('filter_role_type') !== '') {
+            $filter_role_types = $request->input('filter_role_type');
+                // Example: $jobs->whereIn('category', $filters);
+            
+            $request->session()->put('filter_role_type', $filter_role_types);
+        } else {
+            // Reset the filter value in the session
+            $request->session()->forget('filter_role_type');
+        }
+
+        if ($request->has('filter_skill') && $request->input('filter_skill') !== '') {
+            $filter_skills = $request->input('filter_skill');
+            if (is_array($filter_skills) && count($filter_skills) > 0) {
+                if (is_array($filter_skills) && count($filter_skills) > 0) {
+                    $jobs->whereHas('skills', function ($query) use ($filter_skills) {
+                        $query->whereIn('skill_id', $filter_skills);
+                    }, '=', count($filter_skills));
+                }
+                }
+                
+
+            $request->session()->put('filter_skill', $filter_skills);
+        } else {
+            // Reset the filter value in the session
+            $request->session()->forget('filter_skill');
+        }
+        $jobs = $jobs->get();
+
+        return view('jobs.index', compact('jobs'), [
+            'skills' => Skill::all()->sortBy('name', SORT_NATURAL|SORT_FLAG_CASE),
+        ]);
     }
+
 
     /**
      * Show the form for creating a new resource.

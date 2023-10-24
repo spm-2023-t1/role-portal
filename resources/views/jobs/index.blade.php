@@ -16,8 +16,43 @@
                     @can('create', \App\Models\Job::class)
                         <x-primary-button-link class="h-10 mt-4 sm:mt-0 sm:ml-2" :href="route('jobs.create')">{{ __('Create New Job Listing') }}</x-primary-button-link>
                     @endcan
-                </header>
+                    <div>
+                    <form action="{{ route('jobs.index') }}" method="GET">
+                        <input type="hidden" name="search" placeholder="Search...">
+                        <button type="submit">Reset Search</button>
+                    </form>
                 
+                   
+                    <form action="{{ route('jobs.index') }}" method="GET">
+                        <input type="text" name="search" placeholder="Search..." value="{{ session('search') }}">
+                        <select name="filter_role_type[]" multiple>
+                            <option value="Permanent" {{ in_array('Permanent', session('filter_role_type', [])) ? 'selected' : '' }}>Permanent</option>
+                            <option value="Temporary" {{ in_array('Temporary', session('filter_role_type', [])) ? 'selected' : '' }}>Temporary</option>
+                            <!-- Add other filter options as needed -->
+                        </select>
+                        <select name="filter_skill[]" multiple>
+                            @foreach ($skills as $skill)
+                                <option value="{{ $skill->id }}"
+                                    {{ in_array( $skill->id, session('filter_skill', [])) ? 'selected' : '' }}
+                                    @selected(collect(old('skills'))->contains('id', $skill->id))
+                                    >{{ $skill->name }}</option>
+                                
+                                   
+                            @endforeach
+                        </select>
+                        <button type="submit">Search & Filter</button>
+                    </form>
+
+                   
+
+                </div>
+                
+                </header>
+
+                
+
+                
+
                 <div>
                     @if (session()->has('message'))
                     <div class="alert alert-warning alert-block">
