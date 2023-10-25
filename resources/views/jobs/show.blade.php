@@ -69,6 +69,7 @@
                     @if (Auth::user()->role === \App\Enums\UserRole::HumanResource)
                         <div class="text-gray-900">Applicants</div>
                         <div class="divide-y">
+                            <div>Total applicants: {{ count($job->applicants) }}</div>
                             @foreach($job->applicants as $applicant)
                                 <div class="py-2">
                                     <div><span class="font-medium">Applicant {{ $loop->index + 1 }}:</span> {{ $applicant->fname }}  {{ $applicant->lname }} </div>
