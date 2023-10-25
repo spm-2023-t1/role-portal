@@ -12,13 +12,32 @@ class SkillController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index(): View
+    public function index(Request $request)
     {
-        $this->authorize('viewAny', Skill::class);
+        // $this->authorize('viewAny', Skill::class);
 
-        return view('skills.index', [
-            'skills' => Skill::all()->sortBy('name', SORT_NATURAL|SORT_FLAG_CASE),
+        // return view('skills.index', [
+        //     'skills' => Skill::all()->sortBy('name', SORT_NATURAL|SORT_FLAG_CASE),
+        // ]);
+        $skills = Skill::query();
+        
+        if ($request->has('search') && $request->input('search') !== '') {
+            $search = $request->input('search');
+            $skills=$skills->where(function ($query) use ($search) {
+                $query->where('name', 'like', '%' . $search . '%');
+            });
+            $request->session()->put('search', $search);
+        } else {
+            // Reset the search value in the session
+            $request->session()->forget('search');
+        }
+
+        $skills = $skills->get();
+
+        return view('skills.index', compact('skills'), [
+            // 'skills' => Skill::all()->sortBy('name', SORT_NATURAL|SORT_FLAG_CASE),
         ]);
+
     }
 
     /**

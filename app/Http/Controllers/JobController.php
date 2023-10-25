@@ -35,7 +35,7 @@ class JobController extends Controller
 
         if ($request->has('search') && $request->input('search') !== '') {
             $search = $request->input('search');
-            $jobs->where(function ($query) use ($search) {
+            $jobs=$jobs->where(function ($query) use ($search) {
                 $query->where('role_name', 'like', '%' . $search . '%')
                     ->orWhere('description', 'like', '%' . $search . '%');
             });
@@ -47,6 +47,7 @@ class JobController extends Controller
 
         if ($request->has('filter_role_type') && $request->input('filter_role_type') !== '') {
             $filter_role_types = $request->input('filter_role_type');
+            $jobs=$jobs->whereIn('role_type', $filter_role_types);
                 // Example: $jobs->whereIn('category', $filters);
             
             $request->session()->put('filter_role_type', $filter_role_types);
@@ -54,12 +55,22 @@ class JobController extends Controller
             // Reset the filter value in the session
             $request->session()->forget('filter_role_type');
         }
-
+        
+        if ($request->has('filter_listing_status') && $request->input('filter_listing_status') !== '') {
+            $filter_listing_statuses = $request->input('filter_listing_status');
+            $jobs=$jobs->whereIn('listing_status', $filter_listing_statuses);
+                // Example: $jobs->whereIn('category', $filters);
+            
+            $request->session()->put('filter_listing_status', $filter_listing_statuses);
+        } else {
+            // Reset the filter value in the session
+            $request->session()->forget('filter_listing_status');
+        }
         if ($request->has('filter_skill') && $request->input('filter_skill') !== '') {
             $filter_skills = $request->input('filter_skill');
             if (is_array($filter_skills) && count($filter_skills) > 0) {
                 if (is_array($filter_skills) && count($filter_skills) > 0) {
-                    $jobs->whereHas('skills', function ($query) use ($filter_skills) {
+                    $jobs=$jobs->whereHas('skills', function ($query) use ($filter_skills) {
                         $query->whereIn('skill_id', $filter_skills);
                     }, '=', count($filter_skills));
                 }
@@ -71,6 +82,27 @@ class JobController extends Controller
             // Reset the filter value in the session
             $request->session()->forget('filter_skill');
         }
+
+        if ($request->has('start_date') || $request->has('end_date')) {
+            $startDate = $request->input('start_date');
+            $endDate = $request->input('end_date');
+        
+            if (!empty($startDate)) {
+                $jobs->where('deadline', '>=', $startDate);
+            }
+        
+            if (!empty($endDate)) {
+                $jobs->where('deadline', '<=', $endDate);
+            }
+        
+            $request->session()->put('start_date', $startDate);
+            $request->session()->put('end_date', $endDate);
+        } else {
+            // Reset the date range filter values in the session
+            $request->session()->forget(['start_date', 'end_date']);
+        }
+
+
         $jobs = $jobs->get();
 
         return view('jobs.index', compact('jobs'), [
