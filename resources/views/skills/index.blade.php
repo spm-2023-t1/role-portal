@@ -17,6 +17,34 @@
                         <x-primary-button-link class="h-10 mt-4 sm:mt-0 sm:ml-2" :href="route('skills.create')">{{ __('Create New Skill') }}</x-primary-button-link>
                     @endcan
                 </header>
+
+                <div class="row">
+                    <div class="col-md-4">
+                        <div class="col-md-8">
+                        <form action="{{ route('skills.index') }}" method="GET">
+                            <input type="hidden" name="search" placeholder="Search...">
+                            <div class="mt-3">
+                                <x-primary-button type="submit">Reset Search</x-primary-button>
+                            </div>
+                        </form>
+                        </div>
+                        <div class="col-md-8">
+                            <form action="{{ route('skills.index') }}" method="GET">
+                                <div>
+                                <x-input-label for="search" :value="__('Search')" />
+                                <input type="text" name="search" placeholder="Search..." value="{{ session('search') }}">
+                                </div>
+                                <div class="mt-3">
+                                    <x-primary-button type="submit">Search</x-primary-button>
+                                </div>
+                            </form>
+                                </div>
+
+                        </div>
+                        </div>
+
+
+
                 <div class="divide-y">
                     @foreach ($skills as $skill)
                         <div class="flex py-4">

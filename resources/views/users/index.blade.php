@@ -17,6 +17,56 @@
                         <x-primary-button-link class="h-10 mt-4 sm:mt-0 sm:ml-2" :href="route('jobs.create')">{{ __('Create New Job') }}</x-primary-button-link>
                     @endcan --}}
                 </header>
+
+                <div class="row">
+                    <div class="col-md-4">
+                        <div class="col-md-8">
+                        <form action="{{ route('users.index') }}" method="GET">
+                            <input type="hidden" name="search" placeholder="Search...">
+                            <div class="mt-3">
+                                <x-primary-button type="submit">Reset Search</x-primary-button>
+                            </div>
+                        </form>
+                        </div>
+                
+                    <div class="col-md-8">
+                        <form action="{{ route('users.index') }}" method="GET">
+                            <div>
+                            <x-input-label for="search" :value="__('Search')" />
+                            <input type="text" name="search" placeholder="Search..." value="{{ session('search') }}">
+                            </div>
+                            
+                            <div>
+                            <x-input-label for="filter_role" :value="__('Filter Role')" />
+                            <select name="filter_role[]" multiple>
+                                <option value="HR" {{ in_array('HR', session('filter_role', [])) ? 'selected' : '' }}>HR</option>
+                                <option value="Staff" {{ in_array('Staff', session('filter_role', [])) ? 'selected' : '' }}>Staff</option>
+                                <!-- Add other filter options as needed -->
+                            </select>
+                            </div>
+
+                        </div>
+
+                            
+                            <x-input-label for="filter_skill" :value="__('Filter Skills')" />
+                            <select name="filter_skill[]" multiple>
+                                @foreach ($skills as $skill)
+                                <option value="{{ $skill->id }}"
+                                    {{ in_array( $skill->id, session('filter_skill', [])) ? 'selected' : '' }}
+                                    @selected(collect(old('skills'))->contains('id', $skill->id))
+                                    >{{ $skill->name }}</option>
+                                @endforeach
+                            </select>
+
+                            <div class="mt-3">
+                                <x-primary-button type="submit">Search & Filter</x-primary-button>
+                            </div> 
+                        </form>
+                    </div>
+                </div>
+
+
+
                 <div class="divide-y">
                     @foreach ($users as $user)
                         <div class="flex py-4">
