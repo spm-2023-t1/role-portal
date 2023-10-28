@@ -15,12 +15,16 @@ class UserController extends Controller
      */
     public function index(Request $request)
     {
+        $this->authorize('viewAny', User::class);
         $users = User::query();
+        
 
         if ($request->has('search') && $request->input('search') !== '') {
             $search = $request->input('search');
             $users=$users->where(function ($query) use ($search) {
                 $query->where('fname', 'like', '%' . $search . '%')
+                    ->orWhere('email', 'like', '%' . $search . '%')
+                    ->orWhere('dept', 'like', '%' . $search . '%')
                     ->orWhere('lname', 'like', '%' . $search . '%');
             });
             $request->session()->put('search', $search);

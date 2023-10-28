@@ -64,7 +64,7 @@
                                     @selected(collect(old('skills'))->contains('id', $skill->id))
                                     >{{ $skill->name }}</option>
                                 @endforeach
-                            </select>
+                            </select>   
                 
                             <x-input-label for="start_date" :value="__('Deadline Start Date')" />
                             <x-text-input id="start_date" name="start_date" type="datetime-local" class="mt-1 block w-full" value="{{ session('start_date') }}" />

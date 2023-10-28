@@ -40,6 +40,7 @@
                             <x-input-label for="filter_role" :value="__('Filter Role')" />
                             <select name="filter_role[]" multiple>
                                 <option value="HR" {{ in_array('HR', session('filter_role', [])) ? 'selected' : '' }}>HR</option>
+                                <option value="Manager" {{ in_array('Manager', session('filter_role', [])) ? 'selected' : '' }}>Manager</option>
                                 <option value="Staff" {{ in_array('Staff', session('filter_role', [])) ? 'selected' : '' }}>Staff</option>
                                 <!-- Add other filter options as needed -->
                             </select>
@@ -74,9 +75,10 @@
                                 <svg class="w-5" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 24 24"><path d="M20 6h-4V4c0-1.11-.89-2-2-2h-4c-1.11 0-2 .89-2 2v2H4c-1.11 0-1.99.89-1.99 2L2 19c0 1.11.89 2 2 2h16c1.11 0 2-.89 2-2V8c0-1.11-.89-2-2-2zm-6 0h-4V4h4v2z" fill="currentColor"></path></svg>
                             </div>
                             <div class="flex-1 ml-4">
-                                <div class="text-xl text-gray-900">{{ $user->name }}</div>
+                                <div class="text-xl text-gray-900">{{ $user->fname }} {{ $user->lname }}</div>
                                 <div class="mt-1 text-gray-800">Email: {{ $user->email }}</div>
-                                <div class="mt-3 text-gray-800">Role: {{ $user->role }}</div>
+                                <div class="mt-1 text-gray-800">Role: {{ $user->role }}</div>
+                                <div class="mt-1 text-gray-800">Skills:</div>
                                 
                                 <div class="mt-1 flex">
                                     @foreach($user->skills as $skill)

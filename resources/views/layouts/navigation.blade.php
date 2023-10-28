@@ -35,11 +35,11 @@
                     <x-nav-link :href="route('profile.index')" :active="request()->routeIs('profile.index')">
                         {{ __('profile') }}
                     </x-nav-link> --}}
-
+                    @can('viewAny', \App\Models\User::class)
                     <x-nav-link :href="route('users.index')" :active="request()->routeIs('users.index')">
                         {{ __('Users') }}
                     </x-nav-link>
-
+                    @endcan
 
                 </div>
             </div>
