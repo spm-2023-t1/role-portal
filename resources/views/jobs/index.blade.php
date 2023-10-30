@@ -19,24 +19,29 @@
                     @endcan
                 </header>
                 
-                <div class="row">
-                    <div class="col-md-4">
-                        <div class="col-md-8">
+                <div class="col">
+                <div class="col">
+                
+                    
+                    <div class="form-container">
                         <form action="{{ route('jobs.index') }}" method="GET">
                             <input type="hidden" name="search" placeholder="Search...">
                             <div class="mt-3">
                                 <x-primary-button type="submit">Reset Search</x-primary-button>
                             </div>
                         </form>
-                        </div>
+                    </div>
                 
-                    <div class="col-md-8">
+                    
                         <form action="{{ route('jobs.index') }}" method="GET">
-                            <div>
+                            <div class="form-container">
+                                <div>
                             <x-input-label for="search" :value="__('Search')" />
                             <input type="text" name="search" placeholder="Search..." value="{{ session('search') }}">
-                            </div>
+                        </div>
+                    </div>
                             
+                        <div class="form-container">
                             <div>
                             <x-input-label for="filter_listing_type" :value="__('Filter Role Type')" />
                             <select name="filter_role_type[]" multiple>
@@ -44,18 +49,10 @@
                                 <option value="Temporary" {{ in_array('Temporary', session('filter_role_type', [])) ? 'selected' : '' }}>Temporary</option>
                                 <!-- Add other filter options as needed -->
                             </select>
-                            </div>
-
                         </div>
 
-                            <x-input-label for="filter_listing_status" :value="__('Filter Job Status')" />
-                            <select name="filter_listing_status[]" multiple>
-                                <option value="open" {{ in_array('Open', session('filter_listing_status', [])) ? 'selected' : '' }}>Open</option>
-                                <option value="private" {{ in_array('Private', session('filter_listing_status', [])) ? 'selected' : '' }}>Private</option>
-                                <option value="closed" {{ in_array('Closed', session('filter_listing_status', [])) ? 'selected' : '' }}>Closed</option>
-                                <!-- Add other filter options as needed -->
-                            </select>
-
+                        
+                    <div>
                             <x-input-label for="filter_skill" :value="__('Filter Skills')" />
                             <select name="filter_skill[]" multiple>
                                 @foreach ($skills as $skill)
@@ -65,7 +62,19 @@
                                     >{{ $skill->name }}</option>
                                 @endforeach
                             </select>   
-                
+                        </div>
+                    
+                    <div>
+                        <x-input-label for="filter_listing_status" :value="__('Filter Job Status')" />
+                        <select name="filter_listing_status[]" multiple>
+                            <option value="open" {{ in_array('Open', session('filter_listing_status', [])) ? 'selected' : '' }}>Open</option>
+                            <option value="private" {{ in_array('Private', session('filter_listing_status', [])) ? 'selected' : '' }}>Private</option>
+                            <option value="closed" {{ in_array('Closed', session('filter_listing_status', [])) ? 'selected' : '' }}>Closed</option>
+                            <!-- Add other filter options as needed -->
+                        </select>
+                    </div>
+                </div>
+
                             <x-input-label for="start_date" :value="__('Deadline Start Date')" />
                             <x-text-input id="start_date" name="start_date" type="datetime-local" class="mt-1 block w-full" value="{{ session('start_date') }}" />
                             <x-input-label for="end_date" :value="__('Deadline End Date')" />
@@ -75,8 +84,10 @@
                                 <x-primary-button type="submit">Search & Filter</x-primary-button>
                             </div>
                         </form>
-                    </div>
+                    
                 </div>
+                </div>
+                
                 
 
                 
@@ -104,8 +115,9 @@
                             <div class="flex-1 ml-4">
                                 <div class="text-xl text-gray-900">{{ $job->role_name }}</div>
                                 <div class="mt-1 text-gray-800">{{ $job->description }}</div>
-                                <div class="mt-3 text-gray-800">Application deadline: {{ $job->deadline }}</div>
-                                <div class="mt-3 text-gray-600">Skills required:</div>
+                                <div class="mt-1 text-gray-800">Total applicants: {{ count($job->applicants) }}</div>
+                                <div class="mt-1 text-gray-800">Application deadline: {{ $job->deadline }}</div>
+                                <div class="mt-1 text-gray-600">Skills required:</div>
                                 <div class="mt-1 flex">
                                     @foreach($job->skills as $skill)
                                         @if(collect(Auth::user()->skills)->contains('id', $skill->id))
@@ -142,6 +154,7 @@
                                                 <p class="mt-2 text-gray-800">Updated by: {{ $job->updater->fname }}</p>
                                                 <p class="mt-2 text-gray-800">Time of last edit: {{ $job->updated_at }}</p>
                                             @endif
+                                            <p class="mt-2 text-gray-800">Total applicants: {{ count($job->applicants) }}</p>
                                         </div>
                                     </div>
                                 </div>
