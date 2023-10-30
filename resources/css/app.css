@@ -1,3 +1,10 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+.form-container {
+    display: flex;
+    margin-right: 10px;
+    justify-content:start;
+}
+

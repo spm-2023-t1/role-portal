@@ -21,21 +21,26 @@
                 <div class="row">
                     <div class="col-md-4">
                         <div class="col-md-8">
+                            <div class="form-container">
                         <form action="{{ route('users.index') }}" method="GET">
                             <input type="hidden" name="search" placeholder="Search...">
                             <div class="mt-3">
                                 <x-primary-button type="submit">Reset Search</x-primary-button>
                             </div>
                         </form>
+                    </div>
                         </div>
                 
                     <div class="col-md-8">
                         <form action="{{ route('users.index') }}" method="GET">
+                            <div class="form-container">
                             <div>
                             <x-input-label for="search" :value="__('Search')" />
                             <input type="text" name="search" placeholder="Search..." value="{{ session('search') }}">
                             </div>
+                        </div>
                             
+                        <div class="form-container">
                             <div>
                             <x-input-label for="filter_role" :value="__('Filter Role')" />
                             <select name="filter_role[]" multiple>
@@ -46,9 +51,9 @@
                             </select>
                             </div>
 
-                        </div>
+                        
 
-                            
+                        <div>
                             <x-input-label for="filter_skill" :value="__('Filter Skills')" />
                             <select name="filter_skill[]" multiple>
                                 @foreach ($skills as $skill)
@@ -58,7 +63,8 @@
                                     >{{ $skill->name }}</option>
                                 @endforeach
                             </select>
-
+                        </div>
+                    </div>
                             <div class="mt-3">
                                 <x-primary-button type="submit">Search & Filter</x-primary-button>
                             </div> 
@@ -76,8 +82,11 @@
                             </div>
                             <div class="flex-1 ml-4">
                                 <div class="text-xl text-gray-900">{{ $user->fname }} {{ $user->lname }}</div>
+                                <div class="mt-1 text-gray-800">Department: {{ $user->dept }}</div>
                                 <div class="mt-1 text-gray-800">Email: {{ $user->email }}</div>
                                 <div class="mt-1 text-gray-800">Role: {{ $user->role }}</div>
+                                <div class="mt-1 text-gray-800">Phone: {{ $user->phone_num }}</div>
+                                <div class="mt-1 text-gray-800">Business Address: {{ $user->biz_address }}</div>
                                 <div class="mt-1 text-gray-800">Skills:</div>
                                 
                                 <div class="mt-1 flex">
