@@ -8,7 +8,6 @@ use Tests\TestCase;
 use App\Models\User;
 use App\Models\Skill;
 use App\Models\Job;
-use App\Enums\JobStatus;
 use App\Enums\UserRole;
 use Illuminate\Http\Response;
 use Illuminate\Support\Facades\Hash;
@@ -17,7 +16,7 @@ class Sprint1Test extends TestCase
 {
     use RefreshDatabase;
 
-    public function test_3_1_hr_staff_create_role_listing(): void
+    public function test_sprint_1_1_hr_staff_create_role_listing(): void
     {
         $this->actingAs(User::factory()->create([
             'fname' => 'John',
@@ -54,7 +53,7 @@ class Sprint1Test extends TestCase
         $this->assertEquals($skills, $job->skills->pluck('id')->toArray());
     }
 
-    public function test_3_2_hr_staff_create_role_listing_without_name_and_description(): void
+    public function test_sprint_1_2_hr_staff_create_role_listing_without_name_and_description(): void
     {
         $this->actingAs(User::factory()->create([
             'fname' => 'John',
@@ -87,7 +86,7 @@ class Sprint1Test extends TestCase
         // $response->assertRedirect('route('jobs.create')');
     }
 
-    public function test_3_3_hr_staff_create_role_listing_with_used_id(): void
+    public function test_sprint_1_3_hr_staff_create_role_listing_with_used_id(): void
     {
         $this->actingAs(User::factory()->create([
             'fname' => 'John',
@@ -124,7 +123,7 @@ class Sprint1Test extends TestCase
         ]);
     }
 
-    public function test_3_4_hr_staff_create_private_role_listing_for_specific_staff(): void
+    public function test_sprint_1_4_hr_staff_create_private_role_listing_for_specific_staff(): void
     {
         $user = User::factory()->create([
             'fname' => 'Leroy',
@@ -165,7 +164,7 @@ class Sprint1Test extends TestCase
         ]);
     }
 
-    public function test_3_5_hr_staff_create_role_listing_with_past_deadline(): void
+    public function test_sprint_1_5_hr_staff_create_role_listing_with_past_deadline(): void
     {
         $this->actingAs(User::factory()->create([
             'fname' => 'John',
@@ -195,7 +194,7 @@ class Sprint1Test extends TestCase
         $this->assertDatabaseMissing('jobs', array_diff_key($data, array_flip(["skills"])));
     }
 
-    public function test_3_6_hr_staff_create_role_listing_without_name(): void
+    public function test_sprint_1_6_hr_staff_create_role_listing_without_name(): void
     {
         $this->actingAs(User::factory()->create([
             'fname' => 'John',
@@ -225,7 +224,7 @@ class Sprint1Test extends TestCase
         $this->assertDatabaseMissing('jobs', array_diff_key($data, array_flip(["skills"])));
     }
 
-    public function test_3_7_hr_staff_create_role_listing_without_deadline(): void
+    public function test_sprint_1_7_hr_staff_create_role_listing_without_deadline(): void
     {
         $this->actingAs(User::factory()->create([
             'fname' => 'John',
@@ -255,7 +254,7 @@ class Sprint1Test extends TestCase
         $this->assertDatabaseMissing('jobs', array_diff_key($data, array_flip(["skills"])));
     }
 
-    public function test_3_8_hr_staff_create_role_listing_without_description(): void
+    public function test_sprint_1_8_hr_staff_create_role_listing_without_description(): void
     {
         $this->actingAs(User::factory()->create([
             'fname' => 'John',
@@ -287,7 +286,7 @@ class Sprint1Test extends TestCase
         // $response->assertRedirect('route('jobs.create')');
     }
 
-    public function test_3_9_hr_staff_create_role_listing_with_default_form_values(): void
+    public function test_sprint_1_9_hr_staff_create_role_listing_with_default_form_values(): void
     {
         $this->actingAs(User::factory()->create([
             'fname' => 'John',
