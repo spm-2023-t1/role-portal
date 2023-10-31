@@ -6,4 +6,5 @@ enum UserRole: string
 {
     case Staff = 'staff';
     case HumanResource = 'hr';
+    case Manager = 'manager';
 }

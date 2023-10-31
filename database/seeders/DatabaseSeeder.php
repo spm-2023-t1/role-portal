@@ -37,6 +37,17 @@ class DatabaseSeeder extends Seeder
             'role' => UserRole::HumanResource,
         ]);
 
+        User::factory()->create([
+            'fname' => 'John',
+            'lname' => 'Doe',
+            'dept' => 'Manager',
+            'email' => 'manager@example.com',
+            'phone_num' => '99463910',
+            'biz_address' => 'this_is_just_some_dummy_data',
+            'password' => Hash::make('password'),
+            'role' => UserRole::Manager,
+        ]);
+
         $this->call(SkillSeeder::class);
         $this->call(UserSkillSeeder::class);
 

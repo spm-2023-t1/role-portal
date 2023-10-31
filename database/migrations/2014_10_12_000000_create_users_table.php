@@ -21,7 +21,7 @@ return new class extends Migration
             $table->string('phone_num');
             $table->string('biz_address');
             $table->string('password');
-            $table->enum('role', ['staff', 'hr']);
+            $table->enum('role', ['staff', 'hr', 'manager']);
             $table->rememberToken();
             $table->timestamps();
         });
