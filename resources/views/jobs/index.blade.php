@@ -192,6 +192,15 @@
                                         </form>
                                     @endif
                                 </div>
+
+                                @can('update', $job)
+                                <div class="mt-3">
+                                    <a href="{{ route('jobs.apply', $job) }}">
+                                    <x-primary-button>Apply</x-primary-button>
+                                    </a>
+                                </div>
+                                @endcan
+                                
                                 @can('update', $job)
                                 <div class="mt-3">
                                     <a href="{{ route('jobs.show', $job) }}">
@@ -199,23 +208,23 @@
                                     </a>
                                 </div>
                                 @endcan
+                                @can('update', $job)
+                                <div class="mt-3">
+                                <form method="POST" action="{{ route('jobs.destroy', $job) }}" onsubmit="return confirm('Are you sure you want to delete this job?')">
+                                    @csrf
+                                    @method('DELETE')
+                                    <x-primary-button type="submit" class="btn btn-danger">Delete</x-primary-button>
+                                </form>
+                            </div>
+                                @endcan
                             </div>
                             @can('update', $job)
-                                <x-dropdown>
-                                    <x-slot name="trigger">
-                                        <button>
-                                            <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 text-gray-400" viewBox="0 0 20 20" fill="currentColor">
-                                                <path d="M6 10a2 2 0 11-4 0 2 2 0 014 0zM12 10a2 2 0 11-4 0 2 2 0 014 0zM16 12a2 2 0 100-4 2 2 0 000 4z" />
-                                            </svg>
-                                        </button>
-                                    </x-slot>
-                                    <x-slot name="content">
-                                        <x-dropdown-link :href="route('jobs.edit', $job)">
-                                            {{ __('Edit') }}
-                                        </x-dropdown-link>
-                                    </x-slot>
-                                </x-dropdown>
-                            @endcan
+                                <div class="mt-3">
+                                    <a href="{{ route('jobs.edit', $job) }}">
+                                    <x-primary-button>Edit</x-primary-button>
+                                    </a>
+                                </div>
+                                @endcan
                         </div>
                     @endforeach
                 </div>

@@ -15,6 +15,7 @@ return new class extends Migration
             $table->id();
             $table->foreignId('job_id');
             $table->foreignId('user_id');
+            $table->string('remarks')->nullable();
             $table->timestamps();
         });
     }

@@ -100,7 +100,7 @@ class JobController extends Controller
         } else {
             // Reset the date range filter values in the session
             $request->session()->forget(['start_date', 'end_date']);
-        }
+        }   
 
 
         $jobs = $jobs->get();
@@ -234,9 +234,10 @@ class JobController extends Controller
      * Remove the specified resource from storage.
      */
     public function destroy(Job $job)
-    {
-        //
-    }
+{
+    $job->delete();
+    return redirect()->route('jobs.index')->with('success', 'Job deleted successfully.');
+}
 
     public function apply(Request $request, Job $job): RedirectResponse
     {

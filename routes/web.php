@@ -34,8 +34,11 @@ Route::middleware(['auth', 'verified'])->group(function () {
 });
 
 Route::resource('jobs', JobController::class)
-    ->only(['index', 'create', 'store', 'edit', 'update', 'show'])
+    ->only(['index', 'create', 'store', 'edit', 'update', 'show', 'destroy'])
     ->middleware(['auth', 'verified']);
+
+
+
 
 Route::resource('skills', SkillController::class)
     ->only(['index', 'create', 'store', 'edit', 'update'])
