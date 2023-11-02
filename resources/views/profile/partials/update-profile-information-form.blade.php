@@ -70,7 +70,15 @@
             <x-text-input id="biz_address" name="biz_address" type="text" class="mt-1 block w-full" value="{{ old('biz_address', $user->biz_address) }}" />
             <x-input-error :messages="$errors->get('biz_address')" class="mt-2" />
         </div>
-
+        <div>
+        <x-input-label for="current_role" :value="__('Current Role')" />
+                            <select name="current_role" id="current_role">
+                                @foreach ($jobs as $job)
+                                    <option value="{{ $job->id }}" @selected(collect(old('role_name'))->contains('id', $job->id))>{{ $job->role_name }}</option>
+                                @endforeach
+                            </select>
+                            <x-input-error :messages="$errors->get('current_role')" class="mt-2" />
+        </div>
         <div class="flex items-center gap-4">
             <x-primary-button>{{ __('Save') }}</x-primary-button>
 
