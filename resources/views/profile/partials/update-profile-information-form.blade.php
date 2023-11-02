@@ -74,7 +74,7 @@
         <x-input-label for="current_role" :value="__('Current Role')" />
                             <select name="current_role" id="current_role">
                                 @foreach ($jobs as $job)
-                                    <option value="{{ $job->id }}" @selected(collect(old('role_name'))->contains('id', $job->id))>{{ $job->role_name }}</option>
+                                    <option value="{{ $job->id }}" >{{ $job->role_name }}</option>
                                 @endforeach
                             </select>
                             <x-input-error :messages="$errors->get('current_role')" class="mt-2" />
