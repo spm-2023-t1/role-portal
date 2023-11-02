@@ -12,10 +12,15 @@ class SkillPolicy
     /**
      * Determine whether the user can view any models.
      */
+    // public function viewAny(User $user): bool
+    // {
+    //     return $user->role === UserRole::HumanResource;
+    // }
+
     public function viewAny(User $user): bool
-    {
-        return $user->role === UserRole::HumanResource;
-    }
+{
+    return in_array($user->role, [UserRole::HumanResource, UserRole::Manager]);
+}
 
     /**
      * Determine whether the user can view the model.

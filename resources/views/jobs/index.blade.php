@@ -180,7 +180,7 @@
                         
                                
 
-
+                                @if($job->listing_status == 'open')
                                 <div class="mt-3">
                                     @if (collect(Auth::user()->applications)->contains('id', $job->id))
                                         <div class="text-green-600">Applied successfully.</div>
@@ -192,14 +192,7 @@
                                         </form>
                                     @endif
                                 </div>
-
-                                @can('update', $job)
-                                <div class="mt-3">
-                                    <a href="{{ route('jobs.apply', $job) }}">
-                                    <x-primary-button>Apply</x-primary-button>
-                                    </a>
-                                </div>
-                                @endcan
+                                @endif
                                 
                                 @can('update', $job)
                                 <div class="mt-3">

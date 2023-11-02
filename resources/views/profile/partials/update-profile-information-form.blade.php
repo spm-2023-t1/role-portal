@@ -59,6 +59,18 @@
             @endif
         </div>
 
+        <div>
+            <x-input-label for="dept" :value="__('Department')" />
+            <x-text-input id="dept" name="dept" type="text" class="mt-1 block w-full" value="{{ old('dept', $user->dept) }}" />
+            <x-input-error :messages="$errors->get('dept')" class="mt-2" />
+        </div>
+
+        <div>
+            <x-input-label for="biz_address" :value="__('Business Address')" />
+            <x-text-input id="biz_address" name="biz_address" type="text" class="mt-1 block w-full" value="{{ old('biz_address', $user->biz_address) }}" />
+            <x-input-error :messages="$errors->get('biz_address')" class="mt-2" />
+        </div>
+
         <div class="flex items-center gap-4">
             <x-primary-button>{{ __('Save') }}</x-primary-button>
 
