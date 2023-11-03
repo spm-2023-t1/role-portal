@@ -102,7 +102,7 @@
                                 
                                 <div class="mt-1 flex">
                                     @foreach($user->skills as $skill)
-                                        @if(collect(Auth::user()->skills)->contains('id', $skill->id))
+                                        <!-- @if(collect(Auth::user()->skills)->contains('id', $skill->id))
                                             <div class="bg-green-300 rounded mx-1 px-1">
                                                 {{ $skill->name }}
                                             </div>
@@ -110,7 +110,8 @@
                                             <div class="bg-red-300 rounded mx-1 px-1">
                                                 {{ $skill->name }}
                                             </div>
-                                        @endif
+                                        @endif -->
+                                        <div class="bg-gray-300 rounded mx-1 px-1">{{$skill->name}}</div>
                                     @endforeach
                                 </div>
                             </div>
