@@ -2,6 +2,7 @@
 
 namespace App\Console;
 
+use App\Models\Job;
 use Illuminate\Console\Scheduling\Schedule;
 use Illuminate\Foundation\Console\Kernel as ConsoleKernel;
 
@@ -13,6 +14,16 @@ class Kernel extends ConsoleKernel
     protected function schedule(Schedule $schedule): void
     {
         // $schedule->command('inspire')->hourly();
+        $schedule->call(function () {
+            $jobs = Job::where('deadline', '<=', \Carbon\Carbon::now())->get();
+
+            foreach($jobs as $job)
+            {
+                //Update each application as you want to
+                $job->listing_status = 'closed';
+                $job->save();
+            }
+        })->everyMinute();
     }
 
     /**
@@ -23,5 +34,5 @@ class Kernel extends ConsoleKernel
         $this->load(__DIR__.'/Commands');
 
         require base_path('routes/console.php');
-    }
+    }   
 }

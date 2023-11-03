@@ -17,6 +17,7 @@ use Illuminate\Support\Facades\Auth;
 
 class JobController extends Controller
 {
+    // protected $signature = 'listings:update-status';
     /**
      * Display a listing of the resource.
      */
@@ -224,7 +225,7 @@ class JobController extends Controller
         $job->update($validated);
         $job->updater()->associate($request->user());
         $job->save();
-
+        
         session()->flash('message', 'Job successfully updated.');
 
         return redirect(route('jobs.index'));
@@ -251,5 +252,17 @@ class JobController extends Controller
         return redirect(route('jobs.index'));
     }
 
+    public function handle()
+    {
+        $listings = Job::where('listing_status', 'open')
+            ->whereDate('deadline', '<', now())
+            ->get();
+
+        foreach ($listings as $listing) {
+            $listing->update(['listing_status' => 'closed']);
+        }
+
+        $this->info('Listing statuses updated successfully.');
+    }
 
 }
