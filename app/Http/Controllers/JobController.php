@@ -205,7 +205,7 @@ class JobController extends Controller
             'id' => ['required', 'integer'],
             'role_name' => 'required|string',
             'description' => 'required|string',
-            'deadline' => ['required', 'date', 'after:date_of_creation'],
+            'deadline' => ['required', 'date', 'after:now'],
             'skills' => 'required',
             'role_type' => 'required',
             'listing_status' => 'required',
