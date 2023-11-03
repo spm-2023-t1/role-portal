@@ -21,7 +21,7 @@ class ProfileUpdateRequest extends FormRequest
             'email' => ['email', 'max:255', Rule::unique(User::class)->ignore($this->user()->id)],
             'dept' => ['string', 'max:255'],
             'biz_address' => ['string', 'max:255'],
-            'current_roles' => ['string', 'max:255'],
+            'current_role' => ['string', 'max:255'],
         ];
     }
 }
