@@ -103,191 +103,197 @@
                     @endif
                    
                 </div>
-                
-                <div class="divide-y">
-                    @foreach ($jobs as $job)
-                        <div class="flex py-4">
-                            <div class="h-12 w-12 p-2 rounded-md border bg-gray-50 flex align-middle justify-center">
-                                <svg class="w-5" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 24 24"><path d="M20 6h-4V4c0-1.11-.89-2-2-2h-4c-1.11 0-2 .89-2 2v2H4c-1.11 0-1.99.89-1.99 2L2 19c0 1.11.89 2 2 2h16c1.11 0 2-.89 2-2V8c0-1.11-.89-2-2-2zm-6 0h-4V4h4v2z" fill="currentColor"></path></svg>
-                            </div>
-                            <div class="flex-1 ml-4">
-                                <div class="text-xl text-gray-900">{{ $job->role_name }}</div>
-                                <div class="mt-1 text-gray-800">{{ $job->description }}</div>
-                                <div class="mt-1 text-gray-800">Total applicants: {{ count($job->applicants) }}</div>
-                                <div class="mt-1 text-gray-800">Application deadline: {{ $job->deadline }}</div>
-                                <div class="mt-1 text-gray-800">Job Status: {{ $job->listing_status }}</div>
-                                <div class="mt-1 text-gray-600">Skills required:</div>
-                                <div class="mt-1 flex">
-                                    @foreach($job->skills as $skill)
-                                        @if(collect(Auth::user()->skills)->contains('id', $skill->id))
-                                            <div class="bg-green-300 rounded mx-1 px-1">
-                                                {{ $skill->name }}
-                                            </div>
-                                        @else
-                                            <div class="bg-red-300 rounded mx-1 px-1">
-                                                {{ $skill->name }}
-                                            </div>
-                                        @endif
-                                    @endforeach
+
+                <div>
+                    @if ($jobs->isEmpty())
+                    <p class="text-red-500 mt-3">No job listings found.</p>
+                    @else
+                    <div class="divide-y">
+                        @foreach ($jobs as $job)
+                            <div class="flex py-4">
+                                <div class="h-12 w-12 p-2 rounded-md border bg-gray-50 flex align-middle justify-center">
+                                    <svg class="w-5" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 24 24"><path d="M20 6h-4V4c0-1.11-.89-2-2-2h-4c-1.11 0-2 .89-2 2v2H4c-1.11 0-1.99.89-1.99 2L2 19c0 1.11.89 2 2 2h16c1.11 0 2-.89 2-2V8c0-1.11-.89-2-2-2zm-6 0h-4V4h4v2z" fill="currentColor"></path></svg>
                                 </div>
-                                <div class="mt-3">
-                                    <x-primary-button onclick="openJobDetailsModal({{ $job->id }})">Show All Details</x-primary-button>
-                                </div>
-                                <div id="job-details-modal-{{ $job->id }}" class="fixed inset-0 z-10 hidden overflow-y-auto">
-                                    <div class="flex items-center justify-center min-h-screen p-4">
-                                        <!-- Modal background -->
-                                        <div class="fixed inset-0 bg-black opacity-50"></div>
-                                        <!-- Modal content -->
-                                        <div class="bg-white p-8 rounded-lg shadow-lg relative">
-                                            <button class="absolute top-0 right-0 p-4" onclick="closeJobDetailsModal({{ $job->id }})">Close</button>
-                                            <h2 class="text-lg font-medium text-gray-900">{{ $job->role_name }}</h2>
-                                            <p class="mt-2 text-gray-800">ID: {{ $job->id }}</p>
-                                            <p class="mt-2 text-gray-800">Name: {{ $job->role_name }}</p>
-                                            <p class="mt-2 text-gray-800">Description: {{ $job->description }}</p>
-                                            <p class="mt-2 text-gray-800">Type: {{ ucfirst($job->role_type) }}</p>
-                                            <p class="mt-2 text-gray-800">Status: {{ ucfirst($job->listing_status) }}</p>
-                                            <p class="mt-2 text-gray-800">Created on: {{ $job->created_at }}</p>
-                                            <p class="mt-2 text-gray-800">Created by: {{ $job->owner->fname ?? 'UNKNOWN' }}</p>
-                                            <p class="mt-2 text-gray-800">Application deadline: {{ $job->deadline }}</p>
-                                            @if ($job->updated_at != $job->created_at)
-                                                <p class="mt-2 text-gray-800">Updated by: {{ $job->updater->fname }}</p>
-                                                <p class="mt-2 text-gray-800">Time of last edit: {{ $job->updated_at }}</p>
+                                <div class="flex-1 ml-4">
+                                    <div class="text-xl text-gray-900">{{ $job->role_name }}</div>
+                                    <div class="mt-1 text-gray-800">{{ $job->description }}</div>
+                                    <div class="mt-1 text-gray-800">Total applicants: {{ count($job->applicants) }}</div>
+                                    <div class="mt-1 text-gray-800">Application deadline: {{ $job->deadline }}</div>
+                                    <div class="mt-1 text-gray-800">Job Status: {{ $job->listing_status }}</div>
+                                    <div class="mt-1 text-gray-600">Skills required:</div>
+                                    <div class="mt-1 flex">
+                                        @foreach($job->skills as $skill)
+                                            @if(collect(Auth::user()->skills)->contains('id', $skill->id))
+                                                <div class="bg-green-300 rounded mx-1 px-1">
+                                                    {{ $skill->name }}
+                                                </div>
+                                            @else
+                                                <div class="bg-red-300 rounded mx-1 px-1">
+                                                    {{ $skill->name }}
+                                                </div>
                                             @endif
-                                            <p class="mt-2 text-gray-800">Total applicants: {{ count($job->applicants) }}</p>
-                                        </div>
+                                        @endforeach
                                     </div>
-                                </div>
-                                <script>
-                                    // JavaScript function to open the modal
-                                    function openJobDetailsModal(jobId) {
-                                        const modalElement = document.getElementById(`job-details-modal-${jobId}`);
-                                        if (modalElement) {
-                                            modalElement.classList.remove('hidden');
-                                        }
-                                    }
-                                    // JavaScript function to close the modal
-                                    function closeJobDetailsModal(jobId) {
-                                        const modalElement = document.getElementById(`job-details-modal-${jobId}`);
-                                        if (modalElement) {
-                                            modalElement.classList.add('hidden');
-                                        }
-                                    }
-                                </script>
-
-                                @if($job->listing_status == 'open')
-                                <div class="mt-3">
-                                    @if (collect(Auth::user()->applications)->contains('id', $job->id))
-                                        <div class="text-green-600">Applied successfully.</div>
-                                    @else
-                                        <!-- <form method="post" action="{{ route('jobs.apply', $job) }}">
-                                            @csrf
-                                            @method('patch') -->
-                                            <!-- <x-primary-button onclick="event.preventDefault(); this.closest('form').submit();">{{ __('Apply for this job') }}</x-primary-button> -->
-                                            <!-- Button to Trigger Application Modal -->
-                                            <div class="mt-3">
-                                                <x-primary-button onclick="openApplicationModal({{ $job->id }})">
-                                                    Apply for this job
-                                                </x-primary-button>
+                                    <div class="mt-3">
+                                        <x-primary-button onclick="openJobDetailsModal({{ $job->id }})">Show All Details</x-primary-button>
+                                    </div>
+                                    <div id="job-details-modal-{{ $job->id }}" class="fixed inset-0 z-10 hidden overflow-y-auto">
+                                        <div class="flex items-center justify-center min-h-screen p-4">
+                                            <!-- Modal background -->
+                                            <div class="fixed inset-0 bg-black opacity-50"></div>
+                                            <!-- Modal content -->
+                                            <div class="bg-white p-8 rounded-lg shadow-lg relative">
+                                                <button class="absolute top-0 right-0 p-4" onclick="closeJobDetailsModal({{ $job->id }})">Close</button>
+                                                <h2 class="text-lg font-medium text-gray-900">{{ $job->role_name }}</h2>
+                                                <p class="mt-2 text-gray-800">ID: {{ $job->id }}</p>
+                                                <p class="mt-2 text-gray-800">Name: {{ $job->role_name }}</p>
+                                                <p class="mt-2 text-gray-800">Description: {{ $job->description }}</p>
+                                                <p class="mt-2 text-gray-800">Type: {{ ucfirst($job->role_type) }}</p>
+                                                <p class="mt-2 text-gray-800">Status: {{ ucfirst($job->listing_status) }}</p>
+                                                <p class="mt-2 text-gray-800">Created on: {{ $job->created_at }}</p>
+                                                <p class="mt-2 text-gray-800">Created by: {{ $job->owner->fname ?? 'UNKNOWN' }}</p>
+                                                <p class="mt-2 text-gray-800">Application deadline: {{ $job->deadline }}</p>
+                                                @if ($job->updated_at != $job->created_at)
+                                                    <p class="mt-2 text-gray-800">Updated by: {{ $job->updater->fname }}</p>
+                                                    <p class="mt-2 text-gray-800">Time of last edit: {{ $job->updated_at }}</p>
+                                                @endif
+                                                <p class="mt-2 text-gray-800">Total applicants: {{ count($job->applicants) }}</p>
                                             </div>
-                                        <!-- </form> -->
-                                    @endif
-                                </div>
-                                @endif
-
-                                <!-- Application Modal -->
-                                <div id="job-application-modal-{{ $job->id }}" class="fixed inset-0 z-10 hidden overflow-y-auto">
-                                    <div class="flex items-center justify-center min-h-screen p-4">
-                                        <!-- Modal background -->
-                                        <div class="fixed inset-0 bg-black opacity-50"></div>
-                                        <!-- Modal content -->
-                                        <div class="bg-white p-8 rounded-lg shadow-lg relative max-w-screen-lg w-full">
-                                            <button class="absolute top-0 right-0 p-4" onclick="closeApplicationModal({{ $job->id }})">Close</button>
-                                            <form action="{{ route('jobs.apply', ['job' => $job->id]) }}" method="POST">
-                                            @csrf
-                                            <!-- @method('patch') -->
-                                            <input type="hidden" name="_method" value="PATCH"> <!-- this line is to ensure form sends a PATCH request -->
-                                            <div>
-                                                    <h2 class="text-lg font-medium text-gray-900">
-                                                        {{ __('Application Form') }}
-                                                    </h2>
-                                                </div>
-                                                <div>
-                                                    First Name: {{ Auth::user()->fname}}
-                                                </div>
-                                                <div>
-                                                    Last Name: {{ Auth::user()->lname}}
-                                                </div>
-                                                <div>
-                                                    Department: {{ Auth::user()->dept}}
-                                                </div>
-                                                <div>
-                                                    Email: {{ Auth::user()->email}}
-                                                </div>
-                                                <div>
-                                                    Phone Number: {{ Auth::user()->phone_num}}
-                                                </div>
-                                                <div class="mt-3">
-                                                    <x-input-label for="start_date" :value="__('Start Date')" />
-                                                    <x-text-input id="start_date" name="start_date" type="date" class="mt-1 block w-full" value="{{ old('start_date', now()->format('Y-m-d')) }}" />
-                                                    <x-input-error :messages="$errors->get('start_date')" class="mt-2" />
-                                                </div>
-                                                
-                                                <div class="mt-3">
-                                                    <x-input-label for="additional_remarks" :value="__('Additional Remarks')" />
-                                                    <x-text-input id="additional_remarks" name="additional_remarks" type="text" class="mt-1 block w-full" value="{{ old('additional_remarks') }}" />
-                                                    <x-input-error :messages="$errors->get('additional_remarks')" class="mt-2" />
-                                                </div>
-                                                <!-- <x-primary-button class="mt-3" onclick="event.preventDefault(); this.closest('form').submit();">{{ __('Submit Application Form') }}</x-primary-button> -->
-                                                <x-primary-button class="mt-3" type="submit">{{ __('Submit Application Form') }}</x-primary-button>
-                                            </form>
                                         </div>
                                     </div>
-                                </div>
+                                    <script>
+                                        // JavaScript function to open the modal
+                                        function openJobDetailsModal(jobId) {
+                                            const modalElement = document.getElementById(`job-details-modal-${jobId}`);
+                                            if (modalElement) {
+                                                modalElement.classList.remove('hidden');
+                                            }
+                                        }
+                                        // JavaScript function to close the modal
+                                        function closeJobDetailsModal(jobId) {
+                                            const modalElement = document.getElementById(`job-details-modal-${jobId}`);
+                                            if (modalElement) {
+                                                modalElement.classList.add('hidden');
+                                            }
+                                        }
+                                    </script>
 
-                                <script>
-                                    // JavaScript function to open the modal
-                                    function openApplicationModal(jobId) {
-                                        const modalElement = document.getElementById(`job-application-modal-${jobId}`);
-                                        if (modalElement) {
-                                            modalElement.classList.remove('hidden');
+                                    @if($job->listing_status == 'open')
+                                    <div class="mt-3">
+                                        @if (collect(Auth::user()->applications)->contains('id', $job->id))
+                                            <div class="text-green-600">Applied successfully.</div>
+                                        @else
+                                            <!-- <form method="post" action="{{ route('jobs.apply', $job) }}">
+                                                @csrf
+                                                @method('patch') -->
+                                                <!-- <x-primary-button onclick="event.preventDefault(); this.closest('form').submit();">{{ __('Apply for this job') }}</x-primary-button> -->
+                                                <!-- Button to Trigger Application Modal -->
+                                                <div class="mt-3">
+                                                    <x-primary-button onclick="openApplicationModal({{ $job->id }})">
+                                                        Apply for this job
+                                                    </x-primary-button>
+                                                </div>
+                                            <!-- </form> -->
+                                        @endif
+                                    </div>
+                                    @endif
+
+                                    <!-- Application Modal -->
+                                    <div id="job-application-modal-{{ $job->id }}" class="fixed inset-0 z-10 hidden overflow-y-auto">
+                                        <div class="flex items-center justify-center min-h-screen p-4">
+                                            <!-- Modal background -->
+                                            <div class="fixed inset-0 bg-black opacity-50"></div>
+                                            <!-- Modal content -->
+                                            <div class="bg-white p-8 rounded-lg shadow-lg relative max-w-screen-lg w-full">
+                                                <button class="absolute top-0 right-0 p-4" onclick="closeApplicationModal({{ $job->id }})">Close</button>
+                                                <form action="{{ route('jobs.apply', ['job' => $job->id]) }}" method="POST">
+                                                @csrf
+                                                <!-- @method('patch') -->
+                                                <input type="hidden" name="_method" value="PATCH"> <!-- this line is to ensure form sends a PATCH request -->
+                                                <div>
+                                                        <h2 class="text-lg font-medium text-gray-900">
+                                                            {{ __('Application Form') }}
+                                                        </h2>
+                                                    </div>
+                                                    <div>
+                                                        First Name: {{ Auth::user()->fname}}
+                                                    </div>
+                                                    <div>
+                                                        Last Name: {{ Auth::user()->lname}}
+                                                    </div>
+                                                    <div>
+                                                        Department: {{ Auth::user()->dept}}
+                                                    </div>
+                                                    <div>
+                                                        Email: {{ Auth::user()->email}}
+                                                    </div>
+                                                    <div>
+                                                        Phone Number: {{ Auth::user()->phone_num}}
+                                                    </div>
+                                                    <div class="mt-3">
+                                                        <x-input-label for="start_date" :value="__('Start Date')" />
+                                                        <x-text-input id="start_date" name="start_date" type="date" class="mt-1 block w-full" value="{{ old('start_date', now()->format('Y-m-d')) }}" />
+                                                        <x-input-error :messages="$errors->get('start_date')" class="mt-2" />
+                                                    </div>
+                                                    
+                                                    <div class="mt-3">
+                                                        <x-input-label for="additional_remarks" :value="__('Additional Remarks')" />
+                                                        <x-text-input id="additional_remarks" name="additional_remarks" type="text" class="mt-1 block w-full" value="{{ old('additional_remarks') }}" />
+                                                        <x-input-error :messages="$errors->get('additional_remarks')" class="mt-2" />
+                                                    </div>
+                                                    <!-- <x-primary-button class="mt-3" onclick="event.preventDefault(); this.closest('form').submit();">{{ __('Submit Application Form') }}</x-primary-button> -->
+                                                    <x-primary-button class="mt-3" type="submit">{{ __('Submit Application Form') }}</x-primary-button>
+                                                </form>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <script>
+                                        // JavaScript function to open the modal
+                                        function openApplicationModal(jobId) {
+                                            const modalElement = document.getElementById(`job-application-modal-${jobId}`);
+                                            if (modalElement) {
+                                                modalElement.classList.remove('hidden');
+                                            }
                                         }
-                                    }
-                                    // JavaScript function to close the modal
-                                    function closeApplicationModal(jobId) {
-                                        const modalElement = document.getElementById(`job-application-modal-${jobId}`);
-                                        if (modalElement) {
-                                            modalElement.classList.add('hidden');
+                                        // JavaScript function to close the modal
+                                        function closeApplicationModal(jobId) {
+                                            const modalElement = document.getElementById(`job-application-modal-${jobId}`);
+                                            if (modalElement) {
+                                                modalElement.classList.add('hidden');
+                                            }
                                         }
-                                    }
-                                </script>
-                                
-                                @can('viewApplication', $job)
-                                <div class="mt-3">
-                                    <a href="{{ route('jobs.show', $job) }}">
-                                    <x-primary-button>Show All Applicants</x-primary-button>
-                                    </a>
+                                    </script>
+                                    
+                                    @can('viewApplication', $job)
+                                    <div class="mt-3">
+                                        <a href="{{ route('jobs.show', $job) }}">
+                                        <x-primary-button>Show All Applicants</x-primary-button>
+                                        </a>
+                                    </div>
+                                    @endcan
+                                    @can('update', $job)
+                                    <div class="mt-3">
+                                    <form method="POST" action="{{ route('jobs.destroy', $job) }}" onsubmit="return confirm('Are you sure you want to delete this job?')">
+                                        @csrf
+                                        @method('DELETE')
+                                        <x-primary-button type="submit" class="btn btn-danger">Delete</x-primary-button>
+                                    </form>
                                 </div>
-                                @endcan
+                                    @endcan
+                                </div>
                                 @can('update', $job)
-                                <div class="mt-3">
-                                <form method="POST" action="{{ route('jobs.destroy', $job) }}" onsubmit="return confirm('Are you sure you want to delete this job?')">
-                                    @csrf
-                                    @method('DELETE')
-                                    <x-primary-button type="submit" class="btn btn-danger">Delete</x-primary-button>
-                                </form>
+                                    <div class="mt-3">
+                                        <a href="{{ route('jobs.edit', $job) }}">
+                                        <x-primary-button>Edit</x-primary-button>
+                                        </a>
+                                    </div>
+                                    @endcan
                             </div>
-                                @endcan
-                            </div>
-                            @can('update', $job)
-                                <div class="mt-3">
-                                    <a href="{{ route('jobs.edit', $job) }}">
-                                    <x-primary-button>Edit</x-primary-button>
-                                    </a>
-                                </div>
-                                @endcan
-                        </div>
-                    @endforeach
-                </div>
+                        @endforeach
+                    </div>
+                    @endif
+                    </div>
             </section>
         </div>
     </div>
