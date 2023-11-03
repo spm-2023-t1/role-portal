@@ -41,11 +41,11 @@ Route::resource('jobs', JobController::class)
 
 
 Route::resource('skills', SkillController::class)
-    ->only(['index', 'create', 'store', 'edit', 'update'])
+    ->only(['index', 'create', 'store', 'edit', 'update', 'destroy'])
     ->middleware(['auth', 'verified']);
 
 Route::resource('users', UserController::class)
-    ->only(['index', 'create', 'store', 'edit', 'update'])
+    ->only(['index', 'create', 'store', 'edit', 'update', 'destroy'])
     ->middleware(['auth', 'verified']);
 
 require __DIR__.'/auth.php';

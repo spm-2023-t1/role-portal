@@ -51,7 +51,8 @@
                             </select>
                             </div>
 
-                        
+                            &nbsp;
+                            &nbsp;
 
                         <div>
                             <x-input-label for="filter_skill" :value="__('Filter Skills')" />
@@ -108,6 +109,14 @@
                                     <a href="{{ route('users.edit', $user) }}">
                                     <x-primary-button>Edit</x-primary-button>
                                     </a>
+                                    <div> 
+                                        &nbsp;
+                                    </div>
+                                    <form method="POST" action="{{ route('users.destroy', $user) }}" onsubmit="return confirm('Are you sure you want to delete this user?')">
+                                        @csrf
+                                        @method('DELETE')
+                                        <x-primary-button type="submit" class="btn btn-danger">Delete</x-primary-button>
+                                    </form>
                                 </div>
                                 @endcan
                         </div>

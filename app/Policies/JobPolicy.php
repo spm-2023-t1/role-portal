@@ -24,7 +24,11 @@ class JobPolicy
     {
         //
     }
-
+    
+    public function viewApplication(User $user): bool
+    {
+        return in_array($user->role, [UserRole::HumanResource, UserRole::Manager]);
+    }
     /**
      * Determine whether the user can create models.
      */

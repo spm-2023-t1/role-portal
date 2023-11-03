@@ -50,6 +50,8 @@
                                 <!-- Add other filter options as needed -->
                             </select>
                         </div>
+                        &nbsp;
+                        &nbsp;
 
                         
                     <div>
@@ -63,6 +65,8 @@
                                 @endforeach
                             </select>   
                         </div>
+                        &nbsp;
+                        &nbsp;
                     
                     <div>
                         <x-input-label for="filter_listing_status" :value="__('Filter Job Status')" />
@@ -195,7 +199,7 @@
                                 </div>
                                 @endif
                                 
-                                @can('update', $job)
+                                @can('viewApplication', $job)
                                 <div class="mt-3">
                                     <a href="{{ route('jobs.show', $job) }}">
                                     <x-primary-button>Show All Applicants</x-primary-button>

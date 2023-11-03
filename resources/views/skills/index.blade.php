@@ -57,6 +57,16 @@
                             </div>
                             @can('update', $skill)
                                 <div class="mt-3">
+                                <form method="POST" action="{{ route('skills.destroy', $skill) }}" onsubmit="return confirm('Are you sure you want to delete this skill?')">
+                                    @csrf
+                                    @method('DELETE')
+                                    <x-primary-button type="submit" class="btn btn-danger">Delete</x-primary-button>
+                                </form>
+                            </div>
+                                @endcan
+                                &nbsp;
+                            @can('update', $skill)
+                                <div class="mt-3">
                                     <a href="{{ route('skills.edit', $skill) }}">
                                     <x-primary-button>Edit</x-primary-button>
                                     </a>

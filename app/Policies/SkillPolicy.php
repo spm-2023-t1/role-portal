@@ -43,7 +43,7 @@ class SkillPolicy
      */
     public function update(User $user, Skill $skill): bool
     {
-        return $user->role === UserRole::HumanResource;
+        return in_array($user->role, [UserRole::HumanResource, UserRole::Manager]);
     }
 
     /**
