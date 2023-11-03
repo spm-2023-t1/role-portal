@@ -72,6 +72,8 @@
                             <x-input-error :messages="$errors->get('listing_status')" class="mt-2" />
                         </div>
 
+                        <!-- <div>{{ $job->viewers }}</div> -->
+
                         <br x-show="status=='private'">    
 
                         <div x-show="status=='private'">
@@ -79,7 +81,8 @@
                             <select name="staff_visibility[]" id="staff_visibility" multiple>
                                 @foreach ($viewers as $s)
                                     <!-- <option value="{{ $s->id }}" @selected(collect(old('staff_visibility'))->contains('id', $s->id))>{{ $s->fname." ".$s->lname }}</option> -->
-                                    <option value="{{ $s->id }}" @foreach ($viewers as $st) @if($s->id == $st->id) selected @endif @endforeach>
+                                    <!-- <option value="{{ $s->id }}" @foreach ($job->viewers as $st) @if($s->id === $st->id) selected @endif @endforeach> -->
+                                    <option value="{{ $s->id }}" @foreach($job->viewers as $st) @if($st->id == $s->id) selected @endif @endforeach>
                                         {{ $s->fname." ".$s->lname }}
                                     </option>
                                 @endforeach

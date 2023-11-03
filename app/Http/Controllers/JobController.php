@@ -33,6 +33,9 @@ class JobController extends Controller
     {
         $jobs = Job::query();
         // $skills = Skill::all()->sortBy('name', SORT_NATURAL|SORT_FLAG_CASE);
+        
+        // to sort jobs by deadline - desc
+        $jobs = $jobs->orderBy('deadline', 'desc');
 
         if ($request->has('search') && $request->input('search') !== '') {
             $search = $request->input('search');
