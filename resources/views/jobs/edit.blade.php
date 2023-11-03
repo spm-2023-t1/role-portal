@@ -51,33 +51,37 @@
                         <x-input-label for="role_type" :value="__('Type')" />
                         <select name="role_type" id="role_type">
                             
-                            <option value="permanent">Permanent</option>
-                            <option value="temporary">Temporary</option>
+                            <option value="permanent" @if($job->role_type === "permanent") selected @endif>Permanent</option>
+                            <option value="temporary" @if($job->role_type === "temporary") selected @endif>Temporary</option>
                             
                         </select>
                         <x-input-error :messages="$errors->get('role_type')" class="mt-2" />
                     </div>
 
-                    <div x-data="{ status: '' }">
+                    <!-- <div x-data="{ status: '' }"> -->
+                    <div x-data="{ status: '{{ $job->listing_status ?: '' }}' }">
                         <div>
                             <x-input-label for="listing_status" :value="__('Status')" />
                             <select name="listing_status" id="listing_status" x-model="status">
                                 
-                                <option value="open">Open</option>
-                                <option value="closed">Closed</option>
-                                <option value="private">Private</option>
+                                <option value="open" @if($job->listing_status === "open") selected @endif>Open</option>
+                                <option value="closed" @if($job->listing_status === "closed") selected @endif>Closed</option>
+                                <option value="private" @if($job->listing_status === "private") selected @endif>Private</option>
                                 
                             </select>
                             <x-input-error :messages="$errors->get('listing_status')" class="mt-2" />
                         </div>
 
-                        <br x-show="status=='private'">
+                        <br x-show="status=='private'">    
 
                         <div x-show="status=='private'">
                             <x-input-label for="staff_visibility" :value="__('Select Recipients')" />
                             <select name="staff_visibility[]" id="staff_visibility" multiple>
                                 @foreach ($viewers as $s)
-                                    <option value="{{ $s->id }}" @selected(collect(old('staff_visibility'))->contains('id', $s->id))>{{ $s->fname." ".$s->lname }}</option>
+                                    <!-- <option value="{{ $s->id }}" @selected(collect(old('staff_visibility'))->contains('id', $s->id))>{{ $s->fname." ".$s->lname }}</option> -->
+                                    <option value="{{ $s->id }}" @foreach ($viewers as $st) @if($s->id == $st->id) selected @endif @endforeach>
+                                        {{ $s->fname." ".$s->lname }}
+                                    </option>
                                 @endforeach
                             </select>
                             <x-input-error :messages="$errors->get('staff_visibility')" class="mt-2" />

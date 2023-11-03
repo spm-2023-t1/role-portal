@@ -43,7 +43,6 @@
                         <x-input-error :messages="$errors->get('email')" class="mt-2" />
                     </div>
 
-
                     <div>
                         <x-input-label for="skills" :value="__('User Skills')" />
                         <select name="skills[]" id="skills" multiple>
