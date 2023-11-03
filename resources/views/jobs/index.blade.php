@@ -1,16 +1,17 @@
 <x-app-layout>
     <x-slot name="header">
-        <h2 class="font-semibold text-xl text-gray-800 leading-tight">
+        <!-- <h2 class="font-semibold text-xl text-gray-800 leading-tight">
             {{ __('Job Listings Dashboard') }}
-        </h2>
+        </h2> -->
     </x-slot>
     <div class="max-w-7xl mx-auto sm:px-6 lg:px-8 space-y-6 my-4">
         <div class="p-4 sm:p-8 bg-white border sm:rounded-lg">
             <section>
                 <header class="flex justify-between flex-col sm:flex-row border-b pb-4">
-                    <div>
+                    <div class="flex items-center">
+                    <!-- <x-primary-button class="mr-2" title="Go back" onclick="goBack()">&lt;</x-primary-button> -->
                         <h2 class="text-lg font-medium text-gray-900">
-                            {{ __('Job Listings') }}
+                            {{ __('View All Job Listings') }}
                         </h2>
                     </div>
                 
@@ -18,6 +19,12 @@
                     <x-primary-button-link class="h-10 mt-4 sm:mt-0 sm:ml-2" :href="route('jobs.create')">{{ __('Create New Job Listing') }}</x-primary-button-link>
                     @endcan
                 </header>
+                <!-- Javascript code for back button -->
+                <!-- <script>
+                    function goBack() {
+                        window.history.back();
+                    }
+                </script> -->
                 
                 <div class="col">
                 <div class="col">
@@ -106,7 +113,7 @@
 
                 <div>
                     @if ($jobs->isEmpty())
-                    <p class="text-red-500 mt-3">No job listings found.</p>
+                    <p class="text-red-600 mt-3">No job listings found.</p>
                     @else
                     <div class="divide-y">
                         @foreach ($jobs as $job)
@@ -180,38 +187,38 @@
 
                                     @if($job->listing_status == 'open')
                                     <div class="mt-3">
-                                        @if (collect(Auth::user()->applications)->contains('id', $job->id))
+                                        @if(collect(Auth::user()->applications)->contains('id', $job->id))
                                             <div class="text-green-600">Applied successfully.</div>
                                         @else
-                                            <!-- <form method="post" action="{{ route('jobs.apply', $job) }}">
+                                            <form method="post" action="{{ route('jobs.apply', $job) }}">
                                                 @csrf
-                                                @method('patch') -->
-                                                <!-- <x-primary-button onclick="event.preventDefault(); this.closest('form').submit();">{{ __('Apply for this job') }}</x-primary-button> -->
+                                                @method('patch')
+                                                <x-primary-button onclick="event.preventDefault(); this.closest('form').submit();">{{ __('Apply for this job') }}</x-primary-button>
                                                 <!-- Button to Trigger Application Modal -->
-                                                <div class="mt-3">
+                                                <!-- <div class="mt-3">
                                                     <x-primary-button onclick="openApplicationModal({{ $job->id }})">
                                                         Apply for this job
                                                     </x-primary-button>
-                                                </div>
-                                            <!-- </form> -->
+                                                </div> -->
+                                            </form>
                                         @endif
                                     </div>
                                     @endif
 
                                     <!-- Application Modal -->
-                                    <div id="job-application-modal-{{ $job->id }}" class="fixed inset-0 z-10 hidden overflow-y-auto">
-                                        <div class="flex items-center justify-center min-h-screen p-4">
+                                    <!-- <div id="job-application-modal-{{ $job->id }}" class="fixed inset-0 z-10 hidden overflow-y-auto"> -->
+                                        <!-- <div class="flex items-center justify-center min-h-screen p-4"> -->
                                             <!-- Modal background -->
-                                            <div class="fixed inset-0 bg-black opacity-50"></div>
+                                            <!-- <div class="fixed inset-0 bg-black opacity-50"></div> -->
                                             <!-- Modal content -->
-                                            <div class="bg-white p-8 rounded-lg shadow-lg relative max-w-screen-lg w-full">
+                                            <!-- <div class="bg-white p-8 rounded-lg shadow-lg relative max-w-screen-lg w-full">
                                                 <button class="absolute top-0 right-0 p-4" onclick="closeApplicationModal({{ $job->id }})">Close</button>
                                                 <form action="{{ route('jobs.apply', ['job' => $job->id]) }}" method="POST">
-                                                @csrf
+                                                @csrf -->
                                                 <!-- @method('patch') -->
-                                                <input type="hidden" name="_method" value="PATCH"> <!-- this line is to ensure form sends a PATCH request -->
-                                                <div>
-                                                        <h2 class="text-lg font-medium text-gray-900">
+                                                <!-- <input type="hidden" name="_method" value="PATCH"> this line is to ensure form sends a PATCH request -->
+                                                <!-- <div> -->
+                                                        <!-- <h2 class="text-lg font-medium text-gray-900">
                                                             {{ __('Application Form') }}
                                                         </h2>
                                                     </div>
@@ -240,15 +247,15 @@
                                                         <x-input-label for="additional_remarks" :value="__('Additional Remarks')" />
                                                         <x-text-input id="additional_remarks" name="additional_remarks" type="text" class="mt-1 block w-full" value="{{ old('additional_remarks') }}" />
                                                         <x-input-error :messages="$errors->get('additional_remarks')" class="mt-2" />
-                                                    </div>
+                                                    </div> -->
                                                     <!-- <x-primary-button class="mt-3" onclick="event.preventDefault(); this.closest('form').submit();">{{ __('Submit Application Form') }}</x-primary-button> -->
-                                                    <x-primary-button class="mt-3" type="submit">{{ __('Submit Application Form') }}</x-primary-button>
-                                                </form>
-                                            </div>
-                                        </div>
-                                    </div>
+                                                    <!-- <x-primary-button class="mt-3" type="submit">{{ __('Submit Application Form') }}</x-primary-button> -->
+                                                <!-- </form> -->
+                                            <!-- </div> -->
+                                        <!-- </div> -->
+                                    <!-- </div> -->
 
-                                    <script>
+                                    <!-- <script>
                                         // JavaScript function to open the modal
                                         function openApplicationModal(jobId) {
                                             const modalElement = document.getElementById(`job-application-modal-${jobId}`);
@@ -263,7 +270,7 @@
                                                 modalElement.classList.add('hidden');
                                             }
                                         }
-                                    </script>
+                                    </script> -->
                                     
                                     @can('viewApplication', $job)
                                     <div class="mt-3">

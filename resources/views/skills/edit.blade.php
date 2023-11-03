@@ -8,12 +8,20 @@
         <div class="p-4 sm:p-8 bg-white border sm:rounded-lg">
             <section>
                 <header class="flex justify-between flex-col sm:flex-row border-b pb-4">
-                    <div>
-                        <h2 class="text-lg font-medium text-gray-900">
-                            {{ __('Update Skill') }}
+                    <div class="flex items-center"> 
+                    <x-primary-button class="mr-2" title="Go back" onclick="goBack()">&lt;</x-primary-button>    
+                    <h2 class="text-lg font-medium text-gray-900">
+                            <!-- {{ __('Update Skill') }} -->
+                            Update <strong>{{$skill->name}}</strong> Skill
                         </h2>
                     </div>
                 </header>
+                <!-- Javascript code for back button -->
+                <script>
+                    function goBack() {
+                        window.history.back();
+                    }
+                </script>
                 <form method="post" action="{{ route('skills.update', $skill) }}" class="mt-6 space-y-6">
                     @csrf
                     @method('patch')

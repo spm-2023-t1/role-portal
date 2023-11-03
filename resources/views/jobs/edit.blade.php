@@ -1,19 +1,27 @@
 <x-app-layout>
     <x-slot name="header">
-        <h2 class="font-semibold text-xl text-gray-800 leading-tight">
+        <!-- <h2 class="font-semibold text-xl text-gray-800 leading-tight">
             {{ __('Job Listings') }}
-        </h2>
+        </h2> -->
     </x-slot>
     <div class="max-w-7xl mx-auto sm:px-6 lg:px-8 space-y-6 my-4">
         <div class="p-4 sm:p-8 bg-white border sm:rounded-lg">
             <section>
                 <header class="flex justify-between flex-col sm:flex-row border-b pb-4">
-                    <div>
+                    <div class="flex items-center">
+                    <x-primary-button class="mr-2" title="Go back" onclick="goBack()">&lt;</x-primary-button>
                         <h2 class="text-lg font-medium text-gray-900">
-                            {{ __('Update Job Listing') }}
+                            <!-- {{ __('Update Job Listing') }} -->
+                            Edit <strong>{{ $job->role_name }}</strong> Role Listing
                         </h2>
                     </div>
                 </header>
+                <!-- Javascript code for back button -->
+                <script>
+                    function goBack() {
+                        window.history.back();
+                    }
+                </script>
                 <form method="post" action="{{ route('jobs.update', $job) }}" class="mt-6 space-y-6">
                     @csrf
                     @method('patch')
