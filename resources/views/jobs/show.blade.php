@@ -94,7 +94,7 @@
                     @endcan -->
                 </div>
                 <div class="mt-3">
-                    @if (Auth::user()->role === \App\Enums\UserRole::HumanResource)
+                    @if (Auth::user()->role === \App\Enums\UserRole::HumanResource || \App\Enums\UserRole::Manager)
                         <!-- <div class="text-gray-900">Applicants</div> -->
                         <div class="divide-y">
                             <div class="text-lg text-black-900">Total applicants: {{ count($job->applicants) }}</div>
