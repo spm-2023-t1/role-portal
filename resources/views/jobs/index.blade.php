@@ -119,7 +119,7 @@
                                     <div class="mt-1 text-gray-800">{{ $job->description }}</div>
                                     <div class="mt-1 text-gray-800">Total applicants: {{ count($job->applicants) }}</div>
                                     <div class="mt-1 text-gray-800">Application deadline: {{ $job->deadline }}</div>
-                                    <div class="mt-1 text-gray-800">Job Status: {{ $job->listing_status }}</div>
+                                    <div class="mt-1 text-gray-800">Job Status: {{ ucfirst($job->listing_status) }}</div>
                                     <div class="mt-1 text-gray-600">Skills required:</div>
                                     <div class="mt-1 flex">
                                         @foreach($job->skills as $skill)
