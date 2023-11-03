@@ -52,4 +52,8 @@ class Job extends Model
     {
         return $this->belongsToMany(User::class, 'job_viewer')->withTimestamps();
     }
+
+    // public function roleApplications(): HasMany{
+    //     return $this->hasMany(Application::class, 'job_id');
+    // }
 }

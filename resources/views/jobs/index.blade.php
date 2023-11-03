@@ -91,12 +91,6 @@
                     
                 </div>
                 </div>
-                
-                
-
-                
-
-                
 
                 <div>
                     @if (session()->has('message'))
@@ -180,24 +174,92 @@
                                     }
                                 </script>
 
-                        
-
-                        
-                               
-
                                 @if($job->listing_status == 'open')
                                 <div class="mt-3">
                                     @if (collect(Auth::user()->applications)->contains('id', $job->id))
                                         <div class="text-green-600">Applied successfully.</div>
                                     @else
-                                        <form method="post" action="{{ route('jobs.apply', $job) }}">
+                                        <!-- <form method="post" action="{{ route('jobs.apply', $job) }}">
                                             @csrf
-                                            @method('patch')
-                                            <x-primary-button onclick="event.preventDefault(); this.closest('form').submit();">{{ __('Apply for this job') }}</x-primary-button>
-                                        </form>
+                                            @method('patch') -->
+                                            <!-- <x-primary-button onclick="event.preventDefault(); this.closest('form').submit();">{{ __('Apply for this job') }}</x-primary-button> -->
+                                            <!-- Button to Trigger Application Modal -->
+                                            <div class="mt-3">
+                                                <x-primary-button onclick="openApplicationModal({{ $job->id }})">
+                                                    Apply for this job
+                                                </x-primary-button>
+                                            </div>
+                                        <!-- </form> -->
                                     @endif
                                 </div>
                                 @endif
+
+                                <!-- Application Modal -->
+                                <div id="job-application-modal-{{ $job->id }}" class="fixed inset-0 z-10 hidden overflow-y-auto">
+                                    <div class="flex items-center justify-center min-h-screen p-4">
+                                        <!-- Modal background -->
+                                        <div class="fixed inset-0 bg-black opacity-50"></div>
+                                        <!-- Modal content -->
+                                        <div class="bg-white p-8 rounded-lg shadow-lg relative max-w-screen-lg w-full">
+                                            <button class="absolute top-0 right-0 p-4" onclick="closeApplicationModal({{ $job->id }})">Close</button>
+                                            <form action="{{ route('jobs.apply', ['job' => $job->id]) }}" method="POST">
+                                            @csrf
+                                            <!-- @method('patch') -->
+                                            <input type="hidden" name="_method" value="PATCH"> <!-- this line is to ensure form sends a PATCH request -->
+                                            <div>
+                                                    <h2 class="text-lg font-medium text-gray-900">
+                                                        {{ __('Application Form') }}
+                                                    </h2>
+                                                </div>
+                                                <div>
+                                                    First Name: {{ Auth::user()->fname}}
+                                                </div>
+                                                <div>
+                                                    Last Name: {{ Auth::user()->lname}}
+                                                </div>
+                                                <div>
+                                                    Department: {{ Auth::user()->dept}}
+                                                </div>
+                                                <div>
+                                                    Email: {{ Auth::user()->email}}
+                                                </div>
+                                                <div>
+                                                    Phone Number: {{ Auth::user()->phone_num}}
+                                                </div>
+                                                <div class="mt-3">
+                                                    <x-input-label for="start_date" :value="__('Start Date')" />
+                                                    <x-text-input id="start_date" name="start_date" type="date" class="mt-1 block w-full" value="{{ old('start_date', now()->format('Y-m-d')) }}" />
+                                                    <x-input-error :messages="$errors->get('start_date')" class="mt-2" />
+                                                </div>
+                                                
+                                                <div class="mt-3">
+                                                    <x-input-label for="additional_remarks" :value="__('Additional Remarks')" />
+                                                    <x-text-input id="additional_remarks" name="additional_remarks" type="text" class="mt-1 block w-full" value="{{ old('additional_remarks') }}" />
+                                                    <x-input-error :messages="$errors->get('additional_remarks')" class="mt-2" />
+                                                </div>
+                                                <!-- <x-primary-button class="mt-3" onclick="event.preventDefault(); this.closest('form').submit();">{{ __('Submit Application Form') }}</x-primary-button> -->
+                                                <x-primary-button class="mt-3" type="submit">{{ __('Submit Application Form') }}</x-primary-button>
+                                            </form>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <script>
+                                    // JavaScript function to open the modal
+                                    function openApplicationModal(jobId) {
+                                        const modalElement = document.getElementById(`job-application-modal-${jobId}`);
+                                        if (modalElement) {
+                                            modalElement.classList.remove('hidden');
+                                        }
+                                    }
+                                    // JavaScript function to close the modal
+                                    function closeApplicationModal(jobId) {
+                                        const modalElement = document.getElementById(`job-application-modal-${jobId}`);
+                                        if (modalElement) {
+                                            modalElement.classList.add('hidden');
+                                        }
+                                    }
+                                </script>
                                 
                                 @can('viewApplication', $job)
                                 <div class="mt-3">

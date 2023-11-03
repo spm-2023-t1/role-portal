@@ -1,3 +1,7 @@
+@php
+    use App\Enums\UserRole;
+@endphp
+
 <x-app-layout>
     <x-slot name="header">
         <h2 class="font-semibold text-xl text-gray-800 leading-tight">
@@ -41,15 +45,17 @@
                         </div>
                             
                         <div class="form-container">
-                            <div>
-                            <x-input-label for="filter_role" :value="__('Filter Role')" />
-                            <select name="filter_role[]" multiple>
-                                <option value="HR" {{ in_array('HR', session('filter_role', [])) ? 'selected' : '' }}>HR</option>
-                                <option value="Manager" {{ in_array('Manager', session('filter_role', [])) ? 'selected' : '' }}>Manager</option>
-                                <option value="Staff" {{ in_array('Staff', session('filter_role', [])) ? 'selected' : '' }}>Staff</option>
-                                <!-- Add other filter options as needed -->
-                            </select>
-                            </div>
+                            @if(Auth::user()->role === UserRole::HumanResource)
+                                <div>
+                                <x-input-label for="filter_role" :value="__('Filter Role')" />
+                                <select name="filter_role[]" multiple>
+                                    <option value="HR" {{ in_array('HR', session('filter_role', [])) ? 'selected' : '' }}>HR</option>
+                                    <option value="Manager" {{ in_array('Manager', session('filter_role', [])) ? 'selected' : '' }}>Manager</option>
+                                    <option value="Staff" {{ in_array('Staff', session('filter_role', [])) ? 'selected' : '' }}>Staff</option>
+                                    <!-- Add other filter options as needed -->
+                                </select>
+                                </div>
+                            @endif
 
                             &nbsp;
                             &nbsp;
@@ -83,11 +89,14 @@
                             </div>
                             <div class="flex-1 ml-4">
                                 <div class="text-xl text-gray-900">{{ $user->fname }} {{ $user->lname }}</div>
+                                <!-- Only HR can see all the extra information as per US8 -->
+                                @if(Auth::user()->role === UserRole::HumanResource)
                                 <div class="mt-1 text-gray-800">Department: {{ $user->dept }}</div>
-                                <div class="mt-1 text-gray-800">Email: {{ $user->email }}</div>
                                 <div class="mt-1 text-gray-800">Role: {{ $user->role }}</div>
-                                <div class="mt-1 text-gray-800">Phone: {{ $user->phone_num }}</div>
                                 <div class="mt-1 text-gray-800">Business Address: {{ $user->biz_address }}</div>
+                                <div class="mt-1 text-gray-800">Phone: {{ $user->phone_num }}</div>
+                                @endif
+                                <div class="mt-1 text-gray-800">Email: {{ $user->email }}</div>
                                 <div class="mt-1 text-gray-800">Skills:</div>
                                 
                                 <div class="mt-1 flex">

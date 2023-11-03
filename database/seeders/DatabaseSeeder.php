@@ -50,6 +50,5 @@ class DatabaseSeeder extends Seeder
 
         $this->call(SkillSeeder::class);
         $this->call(UserSkillSeeder::class);
-
     }
 }

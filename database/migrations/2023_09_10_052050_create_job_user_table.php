@@ -15,7 +15,9 @@ return new class extends Migration
             $table->id();
             $table->foreignId('job_id');
             $table->foreignId('user_id');
-            $table->string('remarks')->nullable();
+            $table->date('start_date');
+            $table->string('remarks', 500)->nullable();
+            $table->enum('role_app_status', ['applied', 'withdrawn']);
             $table->timestamps();
         });
     }

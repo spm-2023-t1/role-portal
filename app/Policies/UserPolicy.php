@@ -15,7 +15,8 @@ class UserPolicy
 
      public function viewAny(User $user): bool
      {
-         return $user->role === UserRole::HumanResource;
+        //  included managers as well - so they can search for potential candidates
+         return in_array($user->role, [UserRole::HumanResource, UserRole::Manager]);
      }
 
      public function update(User $user): bool

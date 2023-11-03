@@ -250,6 +250,15 @@ class JobController extends Controller
         
         
         return redirect(route('jobs.index'));
+
+        // if(!$job->applicants->contains($request->user()) && !(new Carbon($job->deadline))->isPast()) {
+        //     dd($request);
+        //     $job->applicants()->attach($request->user());
+            
+        //     return redirect(route('jobs.index'))->with('status', 'job-applied');
+        // }
+
+        // return redirect(route('jobs.index'));
     }
 
     public function handle()
