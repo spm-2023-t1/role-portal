@@ -56,7 +56,7 @@
                                 <div class="text-xl text-gray-900">{{ $skill->name }}</div>
                                 <div class="mt-3 text-gray-800">Created: {{ $skill->created_at }}</div>
                             </div>
-                            @can('update', $skill)
+                            @can('delete', $skill)
                                 <div class="mt-3">
                                 <form method="POST" action="{{ route('skills.destroy', $skill) }}" onsubmit="return confirm('Are you sure you want to delete this skill?')">
                                     @csrf
