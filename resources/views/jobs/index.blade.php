@@ -125,6 +125,11 @@
                     @else
                     <div class="divide-y">
                         @foreach ($jobs as $job)
+                        <!-- <div> {{ $job->viewers }}</div>
+                            @if(count($job->viewers) > 0)
+                            @foreach($job->viewers as $v) {{ $v->id }}
+                            @endforeach
+                            @endif -->
                             <div class="flex py-4">
                                 <div class="h-12 w-12 p-2 rounded-md border bg-gray-50 flex align-middle justify-center">
                                     <svg class="w-5" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 24 24"><path d="M20 6h-4V4c0-1.11-.89-2-2-2h-4c-1.11 0-2 .89-2 2v2H4c-1.11 0-1.99.89-1.99 2L2 19c0 1.11.89 2 2 2h16c1.11 0 2-.89 2-2V8c0-1.11-.89-2-2-2zm-6 0h-4V4h4v2z" fill="currentColor"></path></svg>
@@ -198,35 +203,35 @@
                                         @if(collect(Auth::user()->applications)->contains('id', $job->id))
                                             <div class="text-green-600">Applied successfully.</div>
                                         @else
-                                            <form method="post" action="{{ route('jobs.apply', $job) }}">
-                                                @csrf
-                                                @method('patch')
-                                                <x-primary-button onclick="event.preventDefault(); this.closest('form').submit();">{{ __('Apply for this job') }}</x-primary-button>
+                                            <!-- <form method="post" action="{{ route('jobs.apply', $job) }}"> -->
+                                                <!-- @csrf
+                                                @method('patch') -->
+                                                <!-- <x-primary-button onclick="event.preventDefault(); this.closest('form').submit();">{{ __('Apply for this job') }}</x-primary-button> -->
                                                 <!-- Button to Trigger Application Modal -->
-                                                <!-- <div class="mt-3">
+                                                <div class="mt-3">
                                                     <x-primary-button onclick="openApplicationModal({{ $job->id }})">
                                                         Apply for this job
                                                     </x-primary-button>
-                                                </div> -->
-                                            </form>
+                                                </div>
+                                            <!-- </form> -->
                                         @endif
                                     </div>
                                     @endif
 
                                     <!-- Application Modal -->
-                                    <!-- <div id="job-application-modal-{{ $job->id }}" class="fixed inset-0 z-10 hidden overflow-y-auto"> -->
-                                        <!-- <div class="flex items-center justify-center min-h-screen p-4"> -->
+                                    <div id="job-application-modal-{{ $job->id }}" class="fixed inset-0 z-10 hidden overflow-y-auto">
+                                        <div class="flex items-center justify-center min-h-screen p-4">
                                             <!-- Modal background -->
-                                            <!-- <div class="fixed inset-0 bg-black opacity-50"></div> -->
+                                            <div class="fixed inset-0 bg-black opacity-50"></div>
                                             <!-- Modal content -->
-                                            <!-- <div class="bg-white p-8 rounded-lg shadow-lg relative max-w-screen-lg w-full">
+                                            <div class="bg-white p-8 rounded-lg shadow-lg relative max-w-screen-lg w-full">
                                                 <button class="absolute top-0 right-0 p-4" onclick="closeApplicationModal({{ $job->id }})">Close</button>
                                                 <form action="{{ route('jobs.apply', ['job' => $job->id]) }}" method="POST">
-                                                @csrf -->
-                                                <!-- @method('patch') -->
-                                                <!-- <input type="hidden" name="_method" value="PATCH"> this line is to ensure form sends a PATCH request -->
-                                                <!-- <div> -->
-                                                        <!-- <h2 class="text-lg font-medium text-gray-900">
+                                                @csrf
+                                                @method('patch')
+                                                <input type="hidden" name="_method" value="PATCH"> <!-- this line is to ensure form sends a PATCH request -->
+                                                <div>
+                                                        <h2 class="text-lg font-medium text-gray-900">
                                                             {{ __('Application Form') }}
                                                         </h2>
                                                     </div>
@@ -255,17 +260,18 @@
                                                         <x-input-label for="additional_remarks" :value="__('Additional Remarks')" />
                                                         <x-text-input id="additional_remarks" name="additional_remarks" type="text" class="mt-1 block w-full" value="{{ old('additional_remarks') }}" />
                                                         <x-input-error :messages="$errors->get('additional_remarks')" class="mt-2" />
-                                                    </div> -->
+                                                    </div>
                                                     <!-- <x-primary-button class="mt-3" onclick="event.preventDefault(); this.closest('form').submit();">{{ __('Submit Application Form') }}</x-primary-button> -->
-                                                    <!-- <x-primary-button class="mt-3" type="submit">{{ __('Submit Application Form') }}</x-primary-button> -->
-                                                <!-- </form> -->
-                                            <!-- </div> -->
-                                        <!-- </div> -->
-                                    <!-- </div> -->
+                                                    <x-primary-button class="mt-3" type="submit">{{ __('Submit Application Form') }}</x-primary-button>
+                                                </form>
+                                            </div>
+                                        </div>
+                                    </div>
 
-                                    <!-- <script>
+                                    <script>
                                         // JavaScript function to open the modal
                                         function openApplicationModal(jobId) {
+                                            console.log("test");
                                             const modalElement = document.getElementById(`job-application-modal-${jobId}`);
                                             if (modalElement) {
                                                 modalElement.classList.remove('hidden');
@@ -278,7 +284,7 @@
                                                 modalElement.classList.add('hidden');
                                             }
                                         }
-                                    </script> -->
+                                    </script>
                                     
                                     @can('viewApplication', $job)
                                     <div class="mt-3">

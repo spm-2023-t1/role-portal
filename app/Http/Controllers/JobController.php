@@ -233,6 +233,23 @@ class JobController extends Controller
                 $job->skills()->attach($skill);
             }
         }
+
+        if($job->viewers){
+            foreach ($job->viewers as $v) {
+                $v = User::find($v);
+                $job->viewers()->detach($v);
+            }
+        }
+
+        if ($request->staff_visibility) {
+            foreach ($request->staff_visibility as $viewer) {
+                $viewer = User::find($viewer);
+                if ($viewer != null) {
+                    $job->viewers()->attach($viewer);
+                }
+            }
+        }
+
         $job->update($validated);
         $job->updater()->associate($request->user());
         $job->save();
