@@ -146,7 +146,7 @@ class JobController extends Controller
         ]); // for reference: 'deadline' => ['required', 'date', 'after_or_equal:' . now()->format('Y-m-d')],
 
         // ensure all Job Listings created are Open - might wanna make changes to the workflow logic
-        $validated['listing_status'] = JobStatus::Open;
+        // $validated['listing_status'] = JobStatus::Open || JobStatus::Private;
 
         $job = Job::create($validated);
 

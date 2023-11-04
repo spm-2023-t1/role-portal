@@ -24,6 +24,11 @@ class JobPolicy
     {
         //
     }
+
+    // public function viewPrivate(Job $job): bool
+    // {
+    //     return in_array($job->viewers);
+    // }
     
     public function viewApplication(User $user): bool
     {
