@@ -25,77 +25,82 @@
                         window.history.back();
                     }
                 </script> -->
-                
+
+                <div class="rounded-lg bg-gray-200 p-4 mb-4">
                 <div class="col">
                 <div class="col">
-                
-                    
-                    <div class="form-container">
-                        <form action="{{ route('jobs.index') }}" method="GET">
-                            <input type="hidden" name="search" placeholder="Search...">
-                            <div class="mt-3">
-                                <x-primary-button type="submit">Reset Search</x-primary-button>
-                            </div>
-                        </form>
+                    <div class="text-md text-gray-900">
+                        Filter Options:
                     </div>
-                
-                    
                         <form action="{{ route('jobs.index') }}" method="GET">
-                            <div class="form-container">
+                            <div class="form-container mt-3">
                                 <div>
-                            <x-input-label for="search" :value="__('Search')" />
-                            <input type="text" name="search" placeholder="Search..." value="{{ session('search') }}">
-                        </div>
-                    </div>
+                                    <x-input-label for="search" :value="__('Search Role Listing')" />
+                                    <input type="text" name="search" placeholder="Search..." value="{{ session('search') }}">
+                                </div>
+                            </div>
                             
-                        <div class="form-container">
-                            <div>
-                            <x-input-label for="filter_listing_type" :value="__('Filter Role Type')" />
-                            <select name="filter_role_type[]" multiple>
-                                <option value="Permanent" {{ in_array('Permanent', session('filter_role_type', [])) ? 'selected' : '' }}>Permanent</option>
-                                <option value="Temporary" {{ in_array('Temporary', session('filter_role_type', [])) ? 'selected' : '' }}>Temporary</option>
-                                <!-- Add other filter options as needed -->
-                            </select>
-                        </div>
-                        &nbsp;
-                        &nbsp;
+                            <div class="form-container mt-3 flex">
+                                <div class="w-full">
+                                <x-input-label for="filter_listing_type" :value="__('Filter Role Type')" />
+                                <select name="filter_role_type[]" multiple>
+                                    <option value="Permanent" {{ in_array('Permanent', session('filter_role_type', [])) ? 'selected' : '' }}>Permanent</option>
+                                    <option value="Temporary" {{ in_array('Temporary', session('filter_role_type', [])) ? 'selected' : '' }}>Temporary</option>
+                                </select>
+                            </div>
+                            &nbsp;
+                            &nbsp;
 
                         
-                    <div>
-                            <x-input-label for="filter_skill" :value="__('Filter Skills')" />
-                            <select name="filter_skill[]" multiple>
-                                @foreach ($skills as $skill)
-                                <option value="{{ $skill->id }}"
-                                    {{ in_array( $skill->id, session('filter_skill', [])) ? 'selected' : '' }}
-                                    @selected(collect(old('skills'))->contains('id', $skill->id))
-                                    >{{ $skill->name }}</option>
-                                @endforeach
-                            </select>   
-                        </div>
-                        &nbsp;
-                        &nbsp;
+                            <div class="w-full">
+                                <x-input-label for="filter_skill" :value="__('Filter Skills')" />
+                                <select name="filter_skill[]" multiple>
+                                    @foreach ($skills as $skill)
+                                    <option value="{{ $skill->id }}"
+                                        {{ in_array( $skill->id, session('filter_skill', [])) ? 'selected' : '' }}
+                                        @selected(collect(old('skills'))->contains('id', $skill->id))
+                                        >{{ $skill->name }}</option>
+                                    @endforeach
+                                </select>   
+                            </div>
+                            &nbsp;
+                            &nbsp;
                     
-                    <div>
-                        <x-input-label for="filter_listing_status" :value="__('Filter Job Status')" />
-                        <select name="filter_listing_status[]" multiple>
-                            <option value="open" {{ in_array('Open', session('filter_listing_status', [])) ? 'selected' : '' }}>Open</option>
-                            <option value="private" {{ in_array('Private', session('filter_listing_status', [])) ? 'selected' : '' }}>Private</option>
-                            <option value="closed" {{ in_array('Closed', session('filter_listing_status', [])) ? 'selected' : '' }}>Closed</option>
-                            <!-- Add other filter options as needed -->
-                        </select>
-                    </div>
+                            <div class="w-full">
+                                <x-input-label for="filter_listing_status" :value="__('Filter Job Status')" />
+                                <select name="filter_listing_status[]" multiple>
+                                    <option value="open" {{ in_array('Open', session('filter_listing_status', [])) ? 'selected' : '' }}>Open</option>
+                                    <option value="private" {{ in_array('Private', session('filter_listing_status', [])) ? 'selected' : '' }}>Private</option>
+                                    <option value="closed" {{ in_array('Closed', session('filter_listing_status', [])) ? 'selected' : '' }}>Closed</option>
+                                </select>
+                            </div>
                 </div>
+                            <div class="flex">
+                                <div class=" flex-1 mt-3">
+                                <x-input-label for="start_date" :value="__('Deadline Start Date')" />
+                                <x-text-input id="start_date" name="start_date" type="datetime-local" class="mt-1 block w-full" value="{{ session('start_date') }}" />
+                                </div>
+                                <div class="flex-1 mt-3">
+                                <x-input-label for="end_date" :value="__('Deadline End Date')" />
+                                <x-text-input id="end_date" name="end_date" type="datetime-local" class="mt-1 block w-full" value="{{ session('end_date') }}" />
+                                </div>
+                            </div>
 
-                            <x-input-label for="start_date" :value="__('Deadline Start Date')" />
-                            <x-text-input id="start_date" name="start_date" type="datetime-local" class="mt-1 block w-full" value="{{ session('start_date') }}" />
-                            <x-input-label for="end_date" :value="__('Deadline End Date')" />
-                            <x-text-input id="end_date" name="end_date" type="datetime-local" class="mt-1 block w-full" value="{{ session('end_date') }}" />
-                
                             <div class="mt-3">
                                 <x-primary-button type="submit">Search & Filter</x-primary-button>
                             </div>
                         </form>
+
+                        <div class="form-container">
+                            <form action="{{ route('jobs.index') }}" method="GET">
+                                <input type="hidden" name="search" placeholder="Search...">
+                                <div class="mt-3">
+                                    <x-primary-button type="submit">Reset Search</x-primary-button>
+                                </div>
+                            </form>
+                        </div>
                     
+                </div>
                 </div>
                 </div>
 
