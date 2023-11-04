@@ -81,6 +81,9 @@
 
 
 
+                @if($users->isEmpty())
+                <p class="text-red-600 mt-3">No staff found.</p>
+                @else
                 <div class="divide-y">
                     @foreach ($users as $user)
                         <div class="flex py-4">
@@ -133,6 +136,7 @@
                         </div>
                     @endforeach
                 </div>
+                @endif
             </section>
         </div>
     </div>

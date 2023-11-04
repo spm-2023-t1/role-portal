@@ -25,10 +25,10 @@ class JobPolicy
         //
     }
 
-    // public function viewPrivate(Job $job): bool
-    // {
-    //     return in_array($job->viewers);
-    // }
+    public function viewPrivate(Job $job, User $user): bool
+    {
+        return $job->viewers->contains($user);
+    }
     
     public function viewApplication(User $user): bool
     {
