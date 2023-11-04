@@ -19,6 +19,7 @@ return new class extends Migration
             $table->string('listing_status');
             $table->datetime('deadline');
             $table->foreignId('owner_id')->nullable()->references('id')->on('users');
+            $table->foreignId('source_manager')->nullable();
             $table->foreignId('update_user_id')->nullable()->references('id')->on('users');
             $table->timestamps();
         });

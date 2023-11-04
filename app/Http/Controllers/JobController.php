@@ -122,9 +122,15 @@ class JobController extends Controller
     {
         $this->authorize('create', Job::class);
 
+    
+
         return view('jobs.create', [
+            'job' => Job::all(),
             'skills' => Skill::all()->sortBy('name', SORT_NATURAL|SORT_FLAG_CASE),
-            'viewers' => User::all()->sortBy('fname', SORT_NATURAL|SORT_FLAG_CASE)
+            'viewers' => User::all()->sortBy('fname', SORT_NATURAL|SORT_FLAG_CASE),
+            'users' => User::all()->sortBy('fname', SORT_NATURAL|SORT_FLAG_CASE),
+            'managers' => User::where('role', 'manager')->get(),
+            'hrs' => User::where('role', 'hr')->get(),
         ]);
     }
 
@@ -143,6 +149,7 @@ class JobController extends Controller
             'skills' => 'required',
             'role_type' => 'required',
             'listing_status' => 'required',
+            'source_manager' => 'required',
         ]); // for reference: 'deadline' => ['required', 'date', 'after_or_equal:' . now()->format('Y-m-d')],
 
         // ensure all Job Listings created are Open - might wanna make changes to the workflow logic
@@ -194,7 +201,8 @@ class JobController extends Controller
             'job' => $job,
             'skills' => Skill::all()->sortBy('name', SORT_NATURAL|SORT_FLAG_CASE),
             'role_type' => 'required',
-            'viewers' => User::all()->sortBy('fname', SORT_NATURAL|SORT_FLAG_CASE)
+            'viewers' => User::all()->sortBy('fname', SORT_NATURAL|SORT_FLAG_CASE),
+            'users' => User::all()->sortBy('fname', SORT_NATURAL|SORT_FLAG_CASE)
         ]);
     }
 

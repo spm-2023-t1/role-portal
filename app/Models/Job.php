@@ -21,7 +21,8 @@ class Job extends Model
         'description',
         'role_type',
         'listing_status',
-        'deadline'
+        'deadline',
+        'source_manager'
     ];
 
     protected $casts = [
@@ -52,7 +53,11 @@ class Job extends Model
     {
         return $this->belongsToMany(User::class, 'job_viewer')->withTimestamps();
     }
-
+    
+    public function source_manager(): BelongsTo
+    {
+        return $this->belongsTo(User::class)->withTimestamps();
+    }
     // public function roleApplications(): HasMany{
     //     return $this->hasMany(Application::class, 'job_id');
     // }

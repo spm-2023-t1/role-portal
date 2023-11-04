@@ -28,6 +28,7 @@
                         <x-text-input id="id" name="id" type="text" class="mt-1 block w-full" value="{{ old('id') }}" />
                         <x-input-error :messages="$errors->get('id')" class="mt-2" />
                     </div>
+
                     
                     <div>
                         <x-input-label for="role_name" :value="__('Name')" />
@@ -76,8 +77,20 @@
                             </select>
                             <x-input-error :messages="$errors->get('staff_visibility')" class="mt-2" />
                         </div>
-                    </div>
-
+                        <div>
+                        <x-input-label for="source_manager" :value="__('Source Manager')" />
+                        <select name="source_manager" id="source_manager">
+                            @foreach ($managers as $manager)
+                            <option value="{{ $manager->id }}" @selected(collect(old('source_manager'))->contains('id', $manager->id))>{{ $manager->fname." ".$manager->lname }}</option>
+                            @endforeach
+                            {{-- @foreach ($hrs as $hr)
+                                <option value="{{ $hr->id }}" @selected(collect(old('reporting_officer'))->contains('id', $hr->id))>{{ $hr->fname." ".$hr->lname }}</option>
+                                @endforeach --}}
+                            </select>
+                            <x-input-error :messages="$errors->get('source_manager')" class="mt-2" />
+                                
+                            </div>
+                            </div>
                     <div>
                         <x-input-label for="skills" :value="__('Required Skills')" />
                         <select name="skills[]" id="skills" multiple>

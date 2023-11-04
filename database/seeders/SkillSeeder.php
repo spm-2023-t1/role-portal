@@ -53,5 +53,11 @@ class SkillSeeder extends Seeder
         Skill::factory()->create([
             'name' => 'Javascript'
         ]);
+        Skill::factory()->create([
+            'name' => 'Photoshop'
+        ]);
+        Skill::factory()->create([
+            'name' => 'SQL'
+        ]);
     }
 }
