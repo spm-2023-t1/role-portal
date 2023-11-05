@@ -15,10 +15,7 @@ class SkillController extends Controller
     public function index(Request $request)
     {
         $this->authorize('viewAny', Skill::class);
-
-        // return view('skills.index', [
-        //     'skills' => Skill::all()->sortBy('name', SORT_NATURAL|SORT_FLAG_CASE),
-        // ]);
+        
         $skills = Skill::query();
         
         if ($request->has('search') && $request->input('search') !== '') {

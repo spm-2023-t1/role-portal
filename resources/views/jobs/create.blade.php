@@ -1,8 +1,6 @@
 <x-app-layout>
     <x-slot name="header">
-        <!-- <h2 class="font-semibold text-xl text-gray-800 leading-tight">
-            {{ __('Job Listings') }}
-        </h2> -->
+       
     </x-slot>
     <div class="max-w-7xl mx-auto sm:px-6 lg:px-8 space-y-6 my-4">
         <div class="p-4 sm:p-8 bg-white border sm:rounded-lg">
@@ -83,9 +81,7 @@
                             @foreach ($managers as $manager)
                             <option value="{{ $manager->id }}" @selected(collect(old('source_manager'))->contains('id', $manager->id))>{{ $manager->fname." ".$manager->lname }}</option>
                             @endforeach
-                            {{-- @foreach ($hrs as $hr)
-                                <option value="{{ $hr->id }}" @selected(collect(old('reporting_officer'))->contains('id', $hr->id))>{{ $hr->fname." ".$hr->lname }}</option>
-                                @endforeach --}}
+                        
                             </select>
                             <x-input-error :messages="$errors->get('source_manager')" class="mt-2" />
                                 
@@ -100,13 +96,7 @@
                         </select>
                         <x-input-error :messages="$errors->get('skills')" class="mt-2" />
                     </div>
-
-                    {{-- <div>
-                        <x-input-label for="date_of_creation" :value="__('Created on')" />
-                        <x-text-input id="date_of_creation" name="date_of_creation" type="datetime-local" class="mt-1 block w-full" value="{{ old('date_of_creation', now()->format('Y-m-d\TH:i')) }}" />
-                        <x-input-error :messages="$errors->get('date_of_creation')" class="mt-2" />
-                    </div> --}}
-
+                    
                     <div>
                         <x-input-label for="deadline" :value="__('Application Deadline')" />
                         <x-text-input id="deadline" name="deadline" type="datetime-local" class="mt-1 block w-full" value="{{ old('deadline') }}" />

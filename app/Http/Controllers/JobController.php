@@ -17,22 +17,10 @@ use Illuminate\Support\Facades\Auth;
 
 class JobController extends Controller
 {
-    // protected $signature = 'listings:update-status';
-    /**
-     * Display a listing of the resource.
-     */
-    // public function index(): View
-    // {
-    //     return view('jobs.index', [
-    //         'jobs' => Job::all()->sortBy('deadline'),
-    //         // ['user_name' => User::with('user_id')->get()]
-    //     ]); // for reference: return view('jobs.index', ['jobs' => Job::where([['listing_status', '=', JobStatus::Open],['deadline', '>', now()],])->get()->sortBy('deadline'),]);
-    // }
 
     public function index(Request $request)
     {
         $jobs = Job::query();
-        // $skills = Skill::all()->sortBy('name', SORT_NATURAL|SORT_FLAG_CASE);
         
         // to sort jobs by deadline - desc
         $jobs = $jobs->orderBy('deadline', 'desc');
@@ -52,8 +40,7 @@ class JobController extends Controller
         if ($request->has('filter_role_type') && $request->input('filter_role_type') !== '') {
             $filter_role_types = $request->input('filter_role_type');
             $jobs=$jobs->whereIn('role_type', $filter_role_types);
-                // Example: $jobs->whereIn('category', $filters);
-            
+                
             $request->session()->put('filter_role_type', $filter_role_types);
         } else {
             // Reset the filter value in the session
@@ -63,8 +50,7 @@ class JobController extends Controller
         if ($request->has('filter_listing_status') && $request->input('filter_listing_status') !== '') {
             $filter_listing_statuses = $request->input('filter_listing_status');
             $jobs=$jobs->whereIn('listing_status', $filter_listing_statuses);
-                // Example: $jobs->whereIn('category', $filters);
-            
+                
             $request->session()->put('filter_listing_status', $filter_listing_statuses);
         } else {
             // Reset the filter value in the session

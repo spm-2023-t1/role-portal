@@ -11,7 +11,7 @@
                     <div class="flex items-center"> 
                     <x-primary-button class="mr-2" title="Go back" onclick="goBack()">&lt;</x-primary-button>    
                     <h2 class="text-lg font-medium text-gray-900">
-                            <!-- {{ __('Update Skill') }} -->
+                           
                             Update <strong>{{$skill->name}}</strong> Skill
                         </h2>
                     </div>
