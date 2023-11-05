@@ -23,8 +23,12 @@
                 </header>
 
                 <div class="row">
+                    <div class="rounded-lg bg-gray-200 p-4 mb-4">
                     <div class="col-md-4">
                         <div class="col-md-8">
+                            <div class="text-md text-gray-900">
+                                Filter Options:
+                            </div>
                             <div class="form-container">
                         <form action="{{ route('users.index') }}" method="GET">
                             <input type="hidden" name="search" placeholder="Search...">
@@ -77,6 +81,7 @@
                             </div> 
                         </form>
                     </div>
+                </div>
                 </div>
 
 

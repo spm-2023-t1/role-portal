@@ -137,6 +137,7 @@
                                     <div class="mt-1 text-gray-800">{{ $job->description }}</div>
                                     <div class="mt-1 text-gray-800">Total applicants: {{ count($job->applicants) }}</div>
                                     <div class="mt-1 text-gray-800">Application deadline: {{ $job->deadline }}</div>
+                                    <div class="mt-1 text-gray-800">Source Manager: {{ $job->source_manager }}</div>
                                     <div class="mt-1 text-gray-800">Job Status: {{ ucfirst($job->listing_status) }}</div>
                                     <div class="mt-1 text-gray-600">Skills required:</div>
                                     <div class="mt-1 flex">
@@ -284,13 +285,25 @@
                                         }
                                     </script>
                                     
-                                    @can('viewApplication', $job)
+                                    @can('viewApplicationHR', $job)
                                     <div class="mt-3">
                                         <a href="{{ route('jobs.show', $job) }}">
                                         <x-primary-button>Show All Applicants</x-primary-button>
                                         </a>
                                     </div>
                                     @endcan
+                                    
+                                    @can('viewApplicationManager', $job)
+                                    @if (Auth::user()->id === $job->source_manager)
+                                        
+                                    <div class="mt-3">
+                                        <a href="{{ route('jobs.show', $job) }}">
+                                        <x-primary-button>Show All Applicants</x-primary-button>
+                                        </a>
+                                    </div>
+                                    @endif
+                                    @endcan
+
                                     @can('update', $job)
                                     <div class="mt-3">
                                     <form method="POST" action="{{ route('jobs.destroy', $job) }}" onsubmit="return confirm('Are you sure you want to delete this job?')">

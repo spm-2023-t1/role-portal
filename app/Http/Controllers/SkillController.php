@@ -59,6 +59,9 @@ class SkillController extends Controller
 
         $validated = $request->validate([
             'name' => 'required|string',
+            'created_by' => 'required',
+            'updated_by' => 'required',
+
         ]);
 
         Skill::create($validated);
@@ -95,6 +98,7 @@ class SkillController extends Controller
 
         $validated = $request->validate([
             'name' => 'required|string',
+            'updated_by' => 'required',
         ]);
 
         $skill->update($validated);

@@ -15,49 +15,73 @@ class SkillSeeder extends Seeder
     {
         // decided to create 10 legit skills so it looks better for the demo - original code: `Skill::factory()->count(10)->create();`
         Skill::factory()->create([
-            'name' => 'Python'
+            'name' => 'Python',
+            'created_by' => '7',
+            'updated_by' => '7'
         ]);
 
         Skill::factory()->create([
-            'name' => 'PHP'
+            'name' => 'PHP',
+            'created_by' => '7',
+            'updated_by' => '7'
         ]);
 
         Skill::factory()->create([
-            'name' => 'Laravel'
+            'name' => 'Laravel',
+            'created_by' => '7',
+            'updated_by' => '7'
         ]);
 
         Skill::factory()->create([
-            'name' => 'HTML5'
+            'name' => 'HTML5',
+            'created_by' => '7',
+            'updated_by' => '7'
         ]);
 
         Skill::factory()->create([
-            'name' => 'CSS3'
+            'name' => 'CSS3',
+            'created_by' => '7',
+            'updated_by' => '7'
         ]);
 
         Skill::factory()->create([
-            'name' => 'User Interview Facilitation'
+            'name' => 'User Interview Facilitation',
+            'created_by' => '7',
+            'updated_by' => '7'
         ]);
 
         Skill::factory()->create([
-            'name' => 'Web Design'
+            'name' => 'Web Design',
+            'created_by' => '7',
+            'updated_by' => '7'
         ]);
 
         Skill::factory()->create([
-            'name' => 'Artificial Intelligence'
+            'name' => 'Artificial Intelligence',
+            'created_by' => '7',
+            'updated_by' => '7'
         ]);
 
         Skill::factory()->create([
-            'name' => 'Machine Learning'
+            'name' => 'Machine Learning',
+            'created_by' => '7',
+            'updated_by' => '7'
         ]);
 
         Skill::factory()->create([
-            'name' => 'Javascript'
+            'name' => 'Javascript',
+            'created_by' => '7',
+            'updated_by' => '7'
         ]);
         Skill::factory()->create([
-            'name' => 'Photoshop'
+            'name' => 'Photoshop',
+            'created_by' => '7',
+            'updated_by' => '7'
         ]);
         Skill::factory()->create([
-            'name' => 'SQL'
+            'name' => 'SQL',
+            'created_by' => '7',
+            'updated_by' => '7'
         ]);
     }
 }

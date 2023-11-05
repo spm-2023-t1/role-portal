@@ -18,9 +18,13 @@
                     @endcan
                 </header>
 
+                <div class="rounded-lg bg-gray-200 p-4 mb-4">
                 <div class="row">
                     <div class="col-md-4">
                         <div class="col-md-8">
+                            <div class="text-md text-gray-900">
+                                Filter Options:
+                            </div>
                         <form action="{{ route('skills.index') }}" method="GET">
                             <input type="hidden" name="search" placeholder="Search...">
                             <div class="mt-3">
@@ -42,6 +46,7 @@
 
                         </div>
                         </div>
+                        </div>
 
 
 
@@ -57,7 +62,10 @@
                                     </div>
                                     <div class="flex-1 ml-4">
                                         <div class="text-xl text-gray-900">{{ $skill->name }}</div>
-                                        <div class="mt-3 text-gray-800">Created: {{ $skill->created_at }}</div>
+                                        <div class="mt-3 text-gray-800">Created At: {{ $skill->created_at }}</div>
+                                        <div class="mt-0 text-gray-800">Created By: {{ $skill->created_by }}</div>
+                                        <div class="mt-0 text-gray-800">Updated By: {{ $skill->updated_by }}</div>
+
                                     </div>
                                     @can('delete', $skill)
                                         <div class="mt-3">

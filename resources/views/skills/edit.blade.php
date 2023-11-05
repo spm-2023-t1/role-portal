@@ -30,7 +30,9 @@
                         <x-text-input id="name" name="name" type="text" class="mt-1 block w-full" value="{{ old('name', $skill->name) }}" />
                         <x-input-error :messages="$errors->get('name')" class="mt-2" />
                     </div>
-
+                    <div>   
+                        <x-text-input type="hidden" id="updated_by" name="updated_by" class="mt-1 block w-full" value="{{ Auth::user()->id }}"/>
+                    </div>
                     <div class="flex items-center gap-4">
                         <x-primary-button>{{ __('Save') }}</x-primary-button>
                     </div>

@@ -12,6 +12,8 @@ class Skill extends Model
 
     protected $fillable = [
         'name',
+        'created_by',
+        'updated_by'
     ];
 
     public function jobs(): BelongsToMany
