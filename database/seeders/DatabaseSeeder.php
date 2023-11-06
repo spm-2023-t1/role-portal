@@ -23,7 +23,9 @@ class DatabaseSeeder extends Seeder
             'phone_num' => '93481923',
             'biz_address' => '63 East Coast Road #05-01',
             'password' => Hash::make('password'),
-            'role' => UserRole::Inactive,
+            'role' => UserRole::Staff,
+            'current_role' => 8,
+            'reporting_officer' => 12,
         ]);
 
         User::factory()->create([
@@ -34,7 +36,7 @@ class DatabaseSeeder extends Seeder
             'phone_num' => '95114536',
             'biz_address' => '134 Smith St #03-61',
             'password' => Hash::make('password'),
-            'role' => UserRole::Inactive,
+            'role' => UserRole::Manager,
         ]);
 
         User::factory()->create([
@@ -47,6 +49,7 @@ class DatabaseSeeder extends Seeder
             'password' => Hash::make('password'),
             'role' => UserRole::Staff,
             'current_role' => 10,
+            'reporting_officer' => 11,
         ]);
         
         User::factory()->create([
@@ -59,6 +62,7 @@ class DatabaseSeeder extends Seeder
             'password' => Hash::make('password'),
             'role' => UserRole::Staff,
             'current_role' => 3,
+            'reporting_officer' => 12,
         ]);
 
         User::factory()->create([
@@ -71,6 +75,7 @@ class DatabaseSeeder extends Seeder
             'password' => Hash::make('password'),
             'role' => UserRole::Staff,
             'current_role' => 1,
+            'reporting_officer' => 2,
         ]);
         
         User::factory()->create([
@@ -83,6 +88,7 @@ class DatabaseSeeder extends Seeder
             'password' => Hash::make('password'),
             'role' => UserRole::Staff,
             'current_role' => 4,
+            'reporting_officer' => 12,
         ]);
 
 
@@ -96,6 +102,7 @@ class DatabaseSeeder extends Seeder
             'password' => Hash::make('password'),
             'role' => UserRole::Staff,
             'current_role' => 7,
+            'reporting_officer' => 10,
         ]);
 
         User::factory()->create([
@@ -124,7 +131,7 @@ class DatabaseSeeder extends Seeder
             'fname' => 'John',
             'lname' => 'Doe',
             'dept' => 'Manager',
-            'email' => 'DJohn@manager.com',
+            'email' => 'djohn@manager.com',
             'phone_num' => '99483910',
             'biz_address' => '5 Purvis St #01-01',
             'password' => Hash::make('password'),
@@ -162,6 +169,28 @@ class DatabaseSeeder extends Seeder
             'biz_address' => '62 Toh Guan Road 01-00',
             'password' => Hash::make('password'),
             'role' => UserRole::Manager,
+        ]);
+
+        User::factory()->create([
+            'fname' => 'Adam',
+            'lname' => 'Bekhta',
+            'dept' => 'IT',
+            'email' => 'badam@staff.com',
+            'phone_num' => '93762837',
+            'biz_address' => '1 Cecil Street #05-003',
+            'password' => Hash::make('password'),
+            'role' => UserRole::Inactive,
+        ]);
+
+        User::factory()->create([
+            'fname' => 'Jared',
+            'lname' => 'Louis',
+            'dept' => 'IT',
+            'email' => 'ljared@staff.com',
+            'phone_num' => '94825436',
+            'biz_address' => 'Clementi 65A West Road',
+            'password' => Hash::make('password'),
+            'role' => UserRole::Inactive,
         ]);
 
         $this->call(JobSeeder::class);

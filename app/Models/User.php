@@ -29,6 +29,7 @@ class User extends Authenticatable
         'phone_num',
         'biz_address',
         'current_role',
+        'reporting_officer',
         // 'sys_role',
         'password'
     ];
