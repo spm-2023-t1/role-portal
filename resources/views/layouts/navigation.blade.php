@@ -16,9 +16,11 @@
                         {{ __('Home Page') }}
                     </x-nav-link>
 
+                    @can('notInactive', \App\Models\User::class)
                     <x-nav-link :href="route('jobs.index')" :active="request()->routeIs('jobs.index')">
                         {{ __('Jobs') }}
                     </x-nav-link>
+                    @endcan
 
                     @can('viewAny', \App\Models\Skill::class)
                         <x-nav-link :href="route('skills.index')" :active="request()->routeIs('skills.index')">
@@ -61,9 +63,11 @@
                     </x-slot>
 
                     <x-slot name="content">
+                        @can('notInactive', \App\Models\User::class)
                         <x-dropdown-link :href="route('profile.edit')">
                             {{ __('Profile') }}
                         </x-dropdown-link>
+                        @endcan
 
                         <!-- Authentication -->
                         <form method="POST" action="{{ route('logout') }}">
