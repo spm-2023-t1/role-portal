@@ -22,6 +22,7 @@ class JobSeeder extends Seeder
             'owner_id' => '7',
             'update_user_id' => '7',
             'deadline' => '2024-02-22 15:00:00',
+            'source_manager' => '12',
             'created_at' => '2023-11-04 15:19:52',
             'updated_at' => '2023-11-04 15:19:52',
         ]);
@@ -34,6 +35,7 @@ class JobSeeder extends Seeder
             'owner_id' => '7',
             'update_user_id' => '7',
             'deadline' => '2024-01-29 15:00:00',
+            'source_manager' => '12',
             'created_at' => '2023-10-23 09:21:23',
             'updated_at' => '2023-10-23 17:30:03',
         ]);
@@ -46,6 +48,7 @@ class JobSeeder extends Seeder
             'owner_id' => '7',
             'update_user_id' => '7',
             'deadline' => '2024-01-17 15:00:00',
+            'source_manager' => '12',
             'created_at' => '2023-09-21 12:43:25',
             'updated_at' => '2023-09-21 12:43:25',
         ]);
@@ -58,6 +61,7 @@ class JobSeeder extends Seeder
             'owner_id' => '7',
             'update_user_id' => '7',
             'deadline' => '2024-01-21 15:00:00',
+            'source_manager' => '12',
             'created_at' => '2023-08-25 16:42:11',
             'updated_at' => '2023-08-25 16:42:11',
         ]);
@@ -70,6 +74,7 @@ class JobSeeder extends Seeder
             'owner_id' => '7',
             'update_user_id' => '7',
             'deadline' => '2024-03-14 15:00:00',
+            'source_manager' => '12',
             'created_at' => '2023-07-25 08:32:25',
             'updated_at' => '2023-07-25 08:32:25',
         ]);
@@ -82,6 +87,7 @@ class JobSeeder extends Seeder
             'owner_id' => '7',
             'update_user_id' => '7',
             'deadline' => '2024-01-21 15:00:00',
+            'source_manager' => '12',
             'created_at' => '2023-08-25 16:42:11',
             'updated_at' => '2023-08-25 16:42:11',
         ]);
@@ -94,6 +100,7 @@ class JobSeeder extends Seeder
             'owner_id' => '7',
             'update_user_id' => '7',
             'deadline' => '2024-02-19 15:00:00',
+            'source_manager' => '12',
             'created_at' => '2023-10-24 12:24:01',
             'updated_at' => '2023-10-24 12:24:01',
         ]);
@@ -106,6 +113,7 @@ class JobSeeder extends Seeder
             'owner_id' => '7',
             'update_user_id' => '7',
             'deadline' => '2024-02-11 15:00:00',
+            'source_manager' => '12',
             'created_at' => '2023-10-19 08:51:37',
             'updated_at' => '2023-10-19 16:20:49',
         ]);
@@ -118,6 +126,7 @@ class JobSeeder extends Seeder
             'owner_id' => '7',
             'update_user_id' => '7',
             'deadline' => '2024-01-15 15:00:00',
+            'source_manager' => '12',
             'created_at' => '2023-11-01 09:45:13',
             'updated_at' => '2023-11-01 09:45:13',
         ]);
@@ -130,6 +139,7 @@ class JobSeeder extends Seeder
             'owner_id' => '7',
             'update_user_id' => '7',
             'deadline' => '2024-02-10 15:00:00',
+            'source_manager' => '12',
             'created_at' => '2023-11-02 12:41:30',
             'updated_at' => '2023-11-02 12:41:30',
         ]);

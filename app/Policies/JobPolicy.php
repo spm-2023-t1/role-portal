@@ -30,9 +30,13 @@ class JobPolicy
         return $job->viewers->contains($user);
     }
     
-    public function viewApplication(User $user): bool
+    public function viewApplicationHR(User $user): bool
     {
-        return in_array($user->role, [UserRole::HumanResource, UserRole::Manager]);
+        return in_array($user->role, [UserRole::HumanResource]);
+    }
+    public function viewApplicationManager(User $user): bool
+    {
+        return in_array($user->role, [UserRole::Manager]);
     }
     /**
      * Determine whether the user can create models.

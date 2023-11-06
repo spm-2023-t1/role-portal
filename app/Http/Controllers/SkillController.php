@@ -15,10 +15,7 @@ class SkillController extends Controller
     public function index(Request $request)
     {
         $this->authorize('viewAny', Skill::class);
-
-        // return view('skills.index', [
-        //     'skills' => Skill::all()->sortBy('name', SORT_NATURAL|SORT_FLAG_CASE),
-        // ]);
+        
         $skills = Skill::query();
         
         if ($request->has('search') && $request->input('search') !== '') {
@@ -59,6 +56,9 @@ class SkillController extends Controller
 
         $validated = $request->validate([
             'name' => 'required|string',
+            'created_by' => 'required',
+            'updated_by' => 'required',
+
         ]);
 
         Skill::create($validated);
@@ -95,6 +95,7 @@ class SkillController extends Controller
 
         $validated = $request->validate([
             'name' => 'required|string',
+            'updated_by' => 'required',
         ]);
 
         $skill->update($validated);

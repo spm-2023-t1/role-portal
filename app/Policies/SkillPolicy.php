@@ -9,13 +9,6 @@ use Illuminate\Auth\Access\Response;
 
 class SkillPolicy
 {
-    /**
-     * Determine whether the user can view any models.
-     */
-    // public function viewAny(User $user): bool
-    // {
-    //     return $user->role === UserRole::HumanResource;
-    // }
 
     public function viewAny(User $user): bool
 {

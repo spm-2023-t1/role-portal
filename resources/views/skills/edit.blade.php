@@ -11,7 +11,7 @@
                     <div class="flex items-center"> 
                     <x-primary-button class="mr-2" title="Go back" onclick="goBack()">&lt;</x-primary-button>    
                     <h2 class="text-lg font-medium text-gray-900">
-                            <!-- {{ __('Update Skill') }} -->
+                           
                             Update <strong>{{$skill->name}}</strong> Skill
                         </h2>
                     </div>
@@ -30,7 +30,9 @@
                         <x-text-input id="name" name="name" type="text" class="mt-1 block w-full" value="{{ old('name', $skill->name) }}" />
                         <x-input-error :messages="$errors->get('name')" class="mt-2" />
                     </div>
-
+                    <div>   
+                        <x-text-input type="hidden" id="updated_by" name="updated_by" class="mt-1 block w-full" value="{{ Auth::user()->id }}"/>
+                    </div>
                     <div class="flex items-center gap-4">
                         <x-primary-button>{{ __('Save') }}</x-primary-button>
                     </div>

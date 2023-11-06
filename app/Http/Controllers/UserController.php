@@ -36,7 +36,6 @@ class UserController extends Controller
         if ($request->has('filter_role') && $request->input('filter_role') !== '') {
             $filter_roles = $request->input('filter_role');
             $roles=$users->whereIn('role', $filter_roles);
-                // Example: $jobs->whereIn('category', $filters);
             
             $request->session()->put('filter_role', $filter_roles);
         } else {
@@ -68,10 +67,6 @@ class UserController extends Controller
             'users' => User::all()->sortBy('fname', SORT_NATURAL|SORT_FLAG_CASE),
             'skills' => Skill::all()->sortBy('name', SORT_NATURAL|SORT_FLAG_CASE),
         ]);
-
-        // return view('jobs.index', [
-        //     'users' => User::all()->sortBy('fname', SORT_NATURAL|SORT_FLAG_CASE),
-        // ]);
     }
 
     /**

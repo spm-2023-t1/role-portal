@@ -4,9 +4,7 @@
 
 <x-app-layout>
     <x-slot name="header">
-        <!-- <h2 class="font-semibold text-xl text-gray-800 leading-tight">
-            {{ __('Job Listings Dashboard') }}
-        </h2> -->
+       
     </x-slot>
     <div class="max-w-7xl mx-auto sm:px-6 lg:px-8 space-y-6 my-4">
         <div class="p-4 sm:p-8 bg-white border sm:rounded-lg">
@@ -44,41 +42,39 @@
                                 </div>
                             </div>
                             
-                            <div class="form-container mt-3 flex">
+                            <div class="form-container mt-3 flex-start">
+                                <div class="w-full" style="width: 15%; margin-right: 10px;">
+                                    <x-input-label for="filter_listing_type" :value="__('Filter Role Type')" />
+                                    <select name="filter_role_type[]" multiple>
+                                        <option value="Permanent" {{ in_array('Permanent', session('filter_role_type', [])) ? 'selected' : '' }}>Permanent</option>
+                                        <option value="Temporary" {{ in_array('Temporary', session('filter_role_type', [])) ? 'selected' : '' }}>Temporary</option>
+                                    </select>
+                                </div>
+                                <div class="w-full" style="width: 30%; margin-right: 10px;">
+                                    <x-input-label for="filter_skill" :value="__('Filter Skills')" />
+                                    <select name="filter_skill[]" multiple>
+                                        @foreach ($skills as $skill)
+                                        <option value="{{ $skill->id }}"
+                                            {{ in_array($skill->id, session('filter_skill', [])) ? 'selected' : '' }}
+                                            @selected(collect(old('skills'))->contains('id', $skill->id))
+                                            >{{ $skill->name }}</option>
+                                        @endforeach
+                                    </select>
+                                </div>
                                 <div class="w-full">
-                                <x-input-label for="filter_listing_type" :value="__('Filter Role Type')" />
-                                <select name="filter_role_type[]" multiple>
-                                    <option value="Permanent" {{ in_array('Permanent', session('filter_role_type', [])) ? 'selected' : '' }}>Permanent</option>
-                                    <option value="Temporary" {{ in_array('Temporary', session('filter_role_type', [])) ? 'selected' : '' }}>Temporary</option>
-                                </select>
+                                    <x-input-label for="filter_listing_status" :value="__('Filter Job Status')" />
+                                    <select name="filter_listing_status[]" multiple>
+                                        <option value="open" {{ in_array('Open', session('filter_listing_status', [])) ? 'selected' : '' }}>Open</option>
+                                        <option value="private" {{ in_array('Private', session('filter_listing_status', [])) ? 'selected' : '' }}>Private</option>
+                                        <option value="closed" {{ in_array('Closed', session('filter_listing_status', [])) ? 'selected' : '' }}>Closed</option>
+                                    </select>
+                                </div>
                             </div>
-                            &nbsp;
-                            &nbsp;
-
-                        
-                            <div class="w-full">
-                                <x-input-label for="filter_skill" :value="__('Filter Skills')" />
-                                <select name="filter_skill[]" multiple>
-                                    @foreach ($skills as $skill)
-                                    <option value="{{ $skill->id }}"
-                                        {{ in_array( $skill->id, session('filter_skill', [])) ? 'selected' : '' }}
-                                        @selected(collect(old('skills'))->contains('id', $skill->id))
-                                        >{{ $skill->name }}</option>
-                                    @endforeach
-                                </select>   
-                            </div>
-                            &nbsp;
-                            &nbsp;
-                    
-                            <div class="w-full">
-                                <x-input-label for="filter_listing_status" :value="__('Filter Job Status')" />
-                                <select name="filter_listing_status[]" multiple>
-                                    <option value="open" {{ in_array('Open', session('filter_listing_status', [])) ? 'selected' : '' }}>Open</option>
-                                    <option value="private" {{ in_array('Private', session('filter_listing_status', [])) ? 'selected' : '' }}>Private</option>
-                                    <option value="closed" {{ in_array('Closed', session('filter_listing_status', [])) ? 'selected' : '' }}>Closed</option>
-                                </select>
-                            </div>
-                </div>
+                           
+                            
+                            
+                            
+                            
                             <div class="flex">
                                 <div class=" flex-1 mt-3">
                                 <x-input-label for="start_date" :value="__('Deadline Start Date')" />
@@ -139,6 +135,7 @@
                                     <div class="mt-1 text-gray-800">{{ $job->description }}</div>
                                     <div class="mt-1 text-gray-800">Total applicants: {{ count($job->applicants) }}</div>
                                     <div class="mt-1 text-gray-800">Application deadline: {{ $job->deadline }}</div>
+                                    <div class="mt-1 text-gray-800">Source Manager: {{ $job->source_manager }}</div>
                                     <div class="mt-1 text-gray-800">Job Status: {{ ucfirst($job->listing_status) }}</div>
                                     <div class="mt-1 text-gray-600">Skills required:</div>
                                     <div class="mt-1 flex">
@@ -286,13 +283,25 @@
                                         }
                                     </script>
                                     
-                                    @can('viewApplication', $job)
+                                    @can('viewApplicationHR', $job)
                                     <div class="mt-3">
                                         <a href="{{ route('jobs.show', $job) }}">
                                         <x-primary-button>Show All Applicants</x-primary-button>
                                         </a>
                                     </div>
                                     @endcan
+                                    
+                                    @can('viewApplicationManager', $job)
+                                    @if (Auth::user()->id === $job->source_manager)
+                                        
+                                    <div class="mt-3">
+                                        <a href="{{ route('jobs.show', $job) }}">
+                                        <x-primary-button>Show All Applicants</x-primary-button>
+                                        </a>
+                                    </div>
+                                    @endif
+                                    @endcan
+
                                     @can('update', $job)
                                     <div class="mt-3">
                                     <form method="POST" action="{{ route('jobs.destroy', $job) }}" onsubmit="return confirm('Are you sure you want to delete this job?')">

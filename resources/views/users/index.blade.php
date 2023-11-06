@@ -4,9 +4,7 @@
 
 <x-app-layout>
     <x-slot name="header">
-        <!-- <h2 class="font-semibold text-xl text-gray-800 leading-tight">
-            {{ __('Staff') }}
-        </h2> -->
+        
     </x-slot>
     <div class="max-w-7xl mx-auto sm:px-6 lg:px-8 space-y-6 my-4">
         <div class="p-4 sm:p-8 bg-white border sm:rounded-lg">
@@ -23,8 +21,12 @@
                 </header>
 
                 <div class="row">
+                    <div class="rounded-lg bg-gray-200 p-4 mb-4">
                     <div class="col-md-4">
                         <div class="col-md-8">
+                            <div class="text-md text-gray-900">
+                                Filter Options:
+                            </div>
                             <div class="form-container">
                         <form action="{{ route('users.index') }}" method="GET">
                             <input type="hidden" name="search" placeholder="Search...">
@@ -77,6 +79,7 @@
                             </div> 
                         </form>
                     </div>
+                </div>
                 </div>
 
 
