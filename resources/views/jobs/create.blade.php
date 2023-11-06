@@ -56,7 +56,7 @@
                     <div x-data="{ status: '' }">
                         <div>
                             <x-input-label for="listing_status" :value="__('Status')" />
-                            <select name="listing_status" id="listing_status" x-model="status">
+                            <select name="listing_status" id="listing_status" x-model="status" value="{{ old('listing_status') }}">
                                 
                                 <option value="open">Open</option>
                                 <option value="closed">Closed</option>

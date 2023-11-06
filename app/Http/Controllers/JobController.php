@@ -13,6 +13,8 @@ use Illuminate\View\View;
 use App\Rules\UniqueId;
 use Illuminate\Console\View\Components\Alert;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Validation\Rule;
+use Illuminate\Support\Facades\Validator;
 
 
 class JobController extends Controller
@@ -150,6 +152,8 @@ class JobController extends Controller
             'role_type' => 'required',
             'listing_status' => 'required',
             'source_manager' => 'required',
+            'staff_visibility' => 'required_if:listing_status,private'
+            // 'staff_visibility' => Rule::requiredIf($request->listing_status == JobStatus::Private)
         ]); // for reference: 'deadline' => ['required', 'date', 'after_or_equal:' . now()->format('Y-m-d')],
 
         // ensure all Job Listings created are Open - might wanna make changes to the workflow logic
