@@ -22,6 +22,7 @@ return new class extends Migration
             $table->string('biz_address');
             $table->string('password');
             $table->string('current_role')->nullable();
+            $table->string('reporting_officer')->nullable();
             $table->enum('role', ['staff', 'hr', 'manager', 'inactive']);
             $table->rememberToken();
             $table->timestamps();

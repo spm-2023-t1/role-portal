@@ -46,6 +46,7 @@ class DatabaseSeeder extends Seeder
             'biz_address' => '3 Temasek Boulevard, #01-035/03',
             'password' => Hash::make('password'),
             'role' => UserRole::Staff,
+            'current_role' => 10,
         ]);
         
         User::factory()->create([
@@ -57,6 +58,7 @@ class DatabaseSeeder extends Seeder
             'biz_address' => '352 Ang Mo Kio St 32 #13-125',
             'password' => Hash::make('password'),
             'role' => UserRole::Staff,
+            'current_role' => 3,
         ]);
 
         User::factory()->create([
@@ -68,6 +70,7 @@ class DatabaseSeeder extends Seeder
             'biz_address' => '154 West Coast Road #02-03',
             'password' => Hash::make('password'),
             'role' => UserRole::Staff,
+            'current_role' => 1,
         ]);
         
         User::factory()->create([
@@ -79,6 +82,7 @@ class DatabaseSeeder extends Seeder
             'biz_address' => '101 Cecil Street #10-083',
             'password' => Hash::make('password'),
             'role' => UserRole::Staff,
+            'current_role' => 4,
         ]);
 
 
@@ -91,6 +95,7 @@ class DatabaseSeeder extends Seeder
             'biz_address' => 'Frankel Estate 685A East Coast Road',
             'password' => Hash::make('password'),
             'role' => UserRole::Staff,
+            'current_role' => 7,
         ]);
 
         User::factory()->create([
