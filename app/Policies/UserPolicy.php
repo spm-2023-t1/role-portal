@@ -13,16 +13,21 @@ class UserPolicy
      * Create a new policy instance.
      */
 
-     public function viewAny(User $user): bool
-     {
-        //  included managers as well - so they can search for potential candidates
-         return in_array($user->role, [UserRole::HumanResource, UserRole::Manager]);
-     }
+    public function viewAny(User $user): bool
+    {
+    //  included managers as well - so they can search for potential candidates
+        return in_array($user->role, [UserRole::HumanResource, UserRole::Manager]);
+    }
 
-     public function update(User $user): bool
-     {
-         return $user->role === UserRole::HumanResource;
-     }
+    public function update(User $user): bool
+    {
+        return $user->role === UserRole::HumanResource;
+    }
+
+    public function deleteAccount(User $user): bool
+    {
+        return in_array($user->role, []);
+    }
 
     public function __construct()
     {
