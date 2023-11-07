@@ -103,6 +103,7 @@ class UserController extends Controller
         return view('users.edit', [
             'user' => $user,
             'skills' => Skill::all()->sortBy('fname', SORT_NATURAL | SORT_FLAG_CASE),
+            'managers' => User::where('role', 'manager')->get(),
 
         ]);
     }
@@ -120,6 +121,7 @@ class UserController extends Controller
             'lname' => 'required|string',
             'email' => 'required|string',
             'skills' => 'required',
+            'reporting_officer' => 'string',
             
 
         ]);

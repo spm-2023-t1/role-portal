@@ -16,26 +16,33 @@
                 </div>
 
                 <div class="flex-1 ml-4">
-                       <div class="mt-3 text-gray-800">Update Your Profile ->
-                    
+                    @can('inactive', \App\Models\User::class)
+                       <div class="mt-3 text-gray-800">Account is Inactive.
                                 
+                               
+                                </div>
+                                @endcan
+                    @can('notInactive', \App\Models\User::class)
+                       <div class="mt-3 text-gray-800">Update Your Profile ->      
                                     <a href="{{ route('profile.edit') }}">
                                     <x-primary-button>Profile</x-primary-button>
                                     </a>
                                 
                                
-                            </div>
-                    
-
-                            <div class="mt-3 text-gray-800">View Job Listings ->
+                                </div>
+                                @endcan
                     
                                 
+                                @can('notInactive', \App\Models\User::class)
+                            <div class="mt-3 text-gray-800">View Job Listings ->
+                    
                                     <a href="{{ route('jobs.index') }}">
                                     <x-primary-button>Jobs</x-primary-button>
                                     </a>
-                                
-                               
-                            </div>
+                                    
+                                    
+                                </div>
+                                @endcan
                             
                             @can('viewAny', \App\Models\Skill::class)
                    

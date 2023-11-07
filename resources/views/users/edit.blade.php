@@ -40,7 +40,17 @@
                         <x-text-input id="email" name="email" type="text" class="mt-1 block w-full" value="{{ old('email', $user->email) }}" />
                         <x-input-error :messages="$errors->get('email')" class="mt-2" />
                     </div>
-
+                    <div>
+                        <x-input-label for="reporting_officer" :value="__('Reporting Officer')" />
+                        <select name="reporting_officer" id="reporting_officer">
+                            @foreach ($managers as $manager)
+                            <option value="{{ $manager->id }}" @selected(collect(old('reporting_officer'))->contains('id', $manager->id))>{{ $manager->fname." ".$manager->lname }}</option>
+                            @endforeach
+                        
+                            </select>
+                            <x-input-error :messages="$errors->get('reporting_officer')" class="mt-2" />
+                                
+                            </div>
                     <div>
                         <x-input-label for="skills" :value="__('User Skills')" />
                         <select name="skills[]" id="skills" multiple>

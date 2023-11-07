@@ -33,4 +33,14 @@ class UserPolicy
     {
         //
     }
+    
+    public function notInactive(User $user)
+    {
+        return in_array($user->role, [UserRole::HumanResource, UserRole::Manager, UserRole::Staff]);
+    }
+    public function inactive(User $user)
+    {
+        return in_array($user->role, [UserRole::Inactive]);
+    }
+    
 }
