@@ -28,19 +28,13 @@
                                 Filter Options:
                             </div>
                             <div class="form-container">
-                        <form action="{{ route('users.index') }}" method="GET">
-                            <input type="hidden" name="search" placeholder="Search...">
-                            <div class="mt-3">
-                                <x-primary-button type="submit">Reset Search</x-primary-button>
-                            </div>
-                        </form>
                     </div>
                         </div>
                 
                     <div class="col-md-8">
                         <form action="{{ route('users.index') }}" method="GET">
                             <div class="form-container">
-                            <div>
+                            <div class="mt-3">
                             <x-input-label for="search" :value="__('Search')" />
                             <input type="text" name="search" placeholder="Search..." value="{{ session('search') }}">
                             </div>
@@ -77,6 +71,12 @@
                             <div class="mt-3">
                                 <x-primary-button type="submit">Search & Filter</x-primary-button>
                             </div> 
+                        </form>
+                        <form action="{{ route('users.index') }}" method="GET">
+                            <input type="hidden" name="search" placeholder="Search...">
+                            <div class="mt-3">
+                                <x-primary-button type="submit">Reset Search</x-primary-button>
+                            </div>
                         </form>
                     </div>
                 </div>

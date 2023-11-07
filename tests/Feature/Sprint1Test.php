@@ -19,6 +19,7 @@ class Sprint1Test extends TestCase
     public function test_sprint1_us3_t1_hr_staff_can_create_role_listing(): void
     {
         $this->actingAs(User::factory()->create([
+            'id' => 1,
             'fname' => 'John',
             'lname' => 'Doe',
             'dept' => 'IT',
@@ -37,7 +38,9 @@ class Sprint1Test extends TestCase
             'skills' => $skills,
             'role_type' => 'Permanent',
             'listing_status' => 'Open',
-            'source_manager' => 1,
+            'source_manager_id' => 1,
+            'role_listing_open' => now()->addDays(7)->format('Y-m-d'),
+            'is_released' => 'true',
         ];
         $response = $this->post(route('jobs.store'), $data);
         $response->assertStatus(Response::HTTP_FOUND);
@@ -57,6 +60,7 @@ class Sprint1Test extends TestCase
     public function test_sprint1_us3_t2_hr_staff_cannot_create_role_listing_without_name_and_description(): void
     {
         $this->actingAs(User::factory()->create([
+            'id' => 1,
             'fname' => 'John',
             'lname' => 'Doe',
             'dept' => 'IT',
@@ -90,6 +94,7 @@ class Sprint1Test extends TestCase
     public function test_sprint1_us3_t3_hr_staff_cannot_create_role_listing_with_used_id(): void
     {
         $this->actingAs(User::factory()->create([
+            'id' => 1,
             'fname' => 'John',
             'lname' => 'Doe',
             'dept' => 'IT',
@@ -106,6 +111,9 @@ class Sprint1Test extends TestCase
             'deadline' => now()->addDays(7)->format('Y-m-d'),
             'role_type' => 'Permanent',
             'listing_status' => 'Open',
+            'source_manager_id' => 1,
+            'role_listing_open' => now()->addDays(7)->format('Y-m-d'),
+            'is_released' => 'true',
         ]);
         $skills = Skill::factory()->count(3)->create()->pluck('id')->toArray();
         $data = [
@@ -116,6 +124,9 @@ class Sprint1Test extends TestCase
             'skills' => $skills,
             'role_type' => 'Permanent',
             'listing_status' => 'Open',
+            'source_manager_id' => 1,
+            'role_listing_open' => now()->addDays(7)->format('Y-m-d'),
+            'is_released' => 'true',
         ];
         $response = $this->post(route('jobs.store'), $data);
         $response->assertStatus(Response::HTTP_FOUND);
@@ -126,6 +137,17 @@ class Sprint1Test extends TestCase
 
     public function test_sprint1_us3_t4_hr_staff_can_create_private_role_listing_for_specific_staff(): void
     {
+        $this->actingAs(User::factory()->create([
+            'id' => 1,
+            'fname' => 'John',
+            'lname' => 'Doe',
+            'dept' => 'IT',
+            'email' => 'hr@example.com',
+            'phone_num' => '97889182',
+            'biz_address' => 'this_is_just_some_dummy_data',
+            'password' => Hash::make('password'),
+            'role' => UserRole::HumanResource,
+        ]));
         $user = User::factory()->create([
             'fname' => 'Leroy',
             'lname' => 'Jenkins',
@@ -136,16 +158,6 @@ class Sprint1Test extends TestCase
             'password' => Hash::make('password'),
             'role' => UserRole::Staff,
         ]);
-        $this->actingAs(User::factory()->create([
-            'fname' => 'John',
-            'lname' => 'Doe',
-            'dept' => 'IT',
-            'email' => 'hr@example.com',
-            'phone_num' => '97889182',
-            'biz_address' => 'this_is_just_some_dummy_data',
-            'password' => Hash::make('password'),
-            'role' => UserRole::HumanResource,
-        ]));
         $skills = Skill::factory()->count(3)->create()->pluck('id')->toArray();
         $data = [
             'id' => 1,
@@ -156,7 +168,9 @@ class Sprint1Test extends TestCase
             'role_type' => 'Permanent',
             'listing_status' => 'Open',
             'staff_visibility' => User::where(['fname' => 'Leroy', 'lname' => 'Jenkins'])->pluck('id')->toArray(),
-            'source_manager' => 1,
+            'source_manager_id' => 1,
+            'role_listing_open' => now()->addDays(7)->format('Y-m-d'),
+            'is_released' => 'true',
         ];
         $response = $this->post(route('jobs.store'), $data);
         $response->assertStatus(Response::HTTP_FOUND);
@@ -169,6 +183,7 @@ class Sprint1Test extends TestCase
     public function test_sprint1_us3_t5_hr_staff_cannot_create_role_listing_with_past_deadline(): void
     {
         $this->actingAs(User::factory()->create([
+            'id' => 1,
             'fname' => 'John',
             'lname' => 'Doe',
             'dept' => 'IT',
@@ -187,11 +202,14 @@ class Sprint1Test extends TestCase
             'skills' => $skills,
             'role_type' => 'Permanent',
             'listing_status' => 'Open',
+            'source_manager_id' => 1,
+            'role_listing_open' => now()->addDays(7)->format('Y-m-d'),
+            'is_released' => 'true',
         ];
         $response = $this->post(route('jobs.store'), $data);
         $response->assertStatus(Response::HTTP_FOUND);
         $response->assertSessionHasErrors([
-            'deadline' => 'The deadline field must be a date after now.',
+            'deadline' => 'The deadline field must be a date after or equal to role listing open.',
         ]);
         $this->assertDatabaseMissing('jobs', array_diff_key($data, array_flip(["skills"])));
     }
@@ -199,6 +217,7 @@ class Sprint1Test extends TestCase
     public function test_sprint1_us3_t6_hr_staff_cannot_create_role_listing_without_name(): void
     {
         $this->actingAs(User::factory()->create([
+            'id' => 1,
             'fname' => 'John',
             'lname' => 'Doe',
             'dept' => 'IT',
@@ -229,6 +248,7 @@ class Sprint1Test extends TestCase
     public function test_sprint1_us3_t7_hr_staff_cannot_create_role_listing_without_deadline(): void
     {
         $this->actingAs(User::factory()->create([
+            'id' => 1,
             'fname' => 'John',
             'lname' => 'Doe',
             'dept' => 'IT',
@@ -259,6 +279,7 @@ class Sprint1Test extends TestCase
     public function test_sprint1_us3_t8_hr_staff_cannot_create_role_listing_without_description(): void
     {
         $this->actingAs(User::factory()->create([
+            'id' => 1,
             'fname' => 'John',
             'lname' => 'Doe',
             'dept' => 'IT',
@@ -291,6 +312,7 @@ class Sprint1Test extends TestCase
     public function test_sprint1_us3_t9_hr_staff_cannot_create_role_listing_with_default_form_values(): void
     {
         $this->actingAs(User::factory()->create([
+            'id' => 1,
             'fname' => 'John',
             'lname' => 'Doe',
             'dept' => 'IT',
@@ -325,6 +347,7 @@ class Sprint1Test extends TestCase
     public function test_sprint1_us5_t10_hr_staff_can_update_role_listing(): void
     {
         $this->actingAs(User::factory()->create([
+            'id' => 1,
             'fname' => 'John',
             'lname' => 'Doe',
             'dept' => 'IT',
@@ -342,7 +365,9 @@ class Sprint1Test extends TestCase
             'deadline' => now()->addDays(7)->format('Y-m-d'),
             'role_type' => 'Permanent',
             'listing_status' => 'Open',
-            'source_manager' => 1,
+            'source_manager_id' => 1,
+            'role_listing_open' => now()->addDays(7)->format('Y-m-d'),
+            'is_released' => 'true',
         ]);
         $updatedJob = [
             'id' => 1,
@@ -352,6 +377,9 @@ class Sprint1Test extends TestCase
             'skills' => $skills,
             'role_type' => 'Permanent',
             'listing_status' => 'Open',
+            'source_manager_id' => 1,
+            'role_listing_open' => now()->addDays(7)->format('Y-m-d'),
+            'is_released' => 'true',
         ];
         $response = $this->patch(route('jobs.update', ['job' => 1]), $updatedJob);
         $response->assertStatus(Response::HTTP_FOUND);
@@ -369,6 +397,7 @@ class Sprint1Test extends TestCase
     public function test_sprint1_us5_t11_hr_staff_cannot_update_role_listing_without_name(): void
     {
         $this->actingAs(User::factory()->create([
+            'id' => 1,
             'fname' => 'John',
             'lname' => 'Doe',
             'dept' => 'IT',
@@ -386,7 +415,9 @@ class Sprint1Test extends TestCase
             'deadline' => now()->addDays(7)->format('Y-m-d'),
             'role_type' => 'Permanent',
             'listing_status' => 'Open',
-            'source_manager' => 1,
+            'source_manager_id' => 1,
+            'role_listing_open' => now()->addDays(7)->format('Y-m-d'),
+            'is_released' => 'true',
         ]);
         $data = [
             'id' => 1,
@@ -406,6 +437,7 @@ class Sprint1Test extends TestCase
     public function test_sprint1_us5_t12_hr_staff_cannot_update_role_listing_with_past_deadline(): void
     {
         $this->actingAs(User::factory()->create([
+            'id' => 1,
             'fname' => 'John',
             'lname' => 'Doe',
             'dept' => 'IT',
@@ -423,7 +455,9 @@ class Sprint1Test extends TestCase
             'deadline' => now()->addDays(7)->format('Y-m-d'),
             'role_type' => 'Permanent',
             'listing_status' => 'Open',
-            'source_manager' => 1,
+            'source_manager_id' => 1,
+            'role_listing_open' => now()->addDays(7)->format('Y-m-d'),
+            'is_released' => 'true',
         ]);
         $data = [
             'id' => 1,
@@ -433,17 +467,21 @@ class Sprint1Test extends TestCase
             'skills' => $skills,
             'role_type' => 'Permanent',
             'listing_status' => 'Open',
+            'source_manager_id' => 1,
+            'role_listing_open' => now()->addDays(7)->format('Y-m-d'),
+            'is_released' => 'true',
         ];
         $response = $this->patch(route('jobs.update', ['job' => 1]), $data);
         $response->assertStatus(Response::HTTP_FOUND);
         $response->assertSessionHasErrors([
-            'deadline' => 'The deadline field must be a date after now.',
+            'deadline' => 'The deadline field must be a date after or equal to role listing open.',
         ]);
     }
 
     public function test_sprint1_us5_t13_hr_staff_cannot_update_role_listing_with_invalid_name(): void
     {
         $this->actingAs(User::factory()->create([
+            'id' => 1,
             'fname' => 'John',
             'lname' => 'Doe',
             'dept' => 'IT',
@@ -461,7 +499,9 @@ class Sprint1Test extends TestCase
             'deadline' => now()->addDays(7)->format('Y-m-d'),
             'role_type' => 'Permanent',
             'listing_status' => 'Open',
-            'source_manager' => 1,
+            'source_manager_id' => 1,
+            'role_listing_open' => now()->addDays(7)->format('Y-m-d'),
+            'is_released' => 'true',
         ]);
         $data = [
             'id' => 1,
@@ -471,6 +511,9 @@ class Sprint1Test extends TestCase
             'skills' => $skills,
             'role_type' => 'Permanent',
             'listing_status' => 'Open',
+            'source_manager_id' => 1,
+            'role_listing_open' => now()->addDays(7)->format('Y-m-d'),
+            'is_released' => 'true',
         ];
         $response = $this->patch(route('jobs.update', ['job' => 1]), $data);
         $response->assertStatus(Response::HTTP_FOUND);
@@ -482,6 +525,7 @@ class Sprint1Test extends TestCase
     public function test_sprint1_us5_t14_hr_staff_cannot_update_role_listing_with_used_id(): void
     {
         $this->actingAs(User::factory()->create([
+            'id' => 1,
             'fname' => 'John',
             'lname' => 'Doe',
             'dept' => 'IT',
@@ -499,7 +543,9 @@ class Sprint1Test extends TestCase
             'deadline' => now()->addDays(7)->format('Y-m-d'),
             'role_type' => 'Permanent',
             'listing_status' => 'Open',
-            'source_manager' => 1,
+            'source_manager_id' => 1,
+            'role_listing_open' => now()->addDays(7)->format('Y-m-d'),
+            'is_released' => 'true',
         ]);
         $job = Job::factory()->create([
             'id' => 2,
@@ -508,7 +554,9 @@ class Sprint1Test extends TestCase
             'deadline' => now()->addDays(7)->format('Y-m-d'),
             'role_type' => 'Permanent',
             'listing_status' => 'Open',
-            'source_manager' => 1,
+            'source_manager_id' => 1,
+            'role_listing_open' => now()->addDays(7)->format('Y-m-d'),
+            'is_released' => 'true',
         ]);
         $updatedJob = [
             'id' => 1,
@@ -518,6 +566,9 @@ class Sprint1Test extends TestCase
             'skills' => $skills,
             'role_type' => 'Permanent',
             'listing_status' => 'Open',
+            'source_manager_id' => 1,
+            'role_listing_open' => now()->addDays(7)->format('Y-m-d'),
+            'is_released' => 'true',
         ];
         $response = $this->patch(route('jobs.update', ['job' => 2]), $updatedJob);
         $response->assertStatus(Response::HTTP_FOUND);
@@ -537,6 +588,7 @@ class Sprint1Test extends TestCase
     public function test_sprint1_us5_t15_hr_staff_can_update_role_listing_with_other_hrs(): void
     {
         $hrOne = User::factory()->create([
+            'id' => 1,
             'fname' => 'John',
             'lname' => 'Doe',
             'dept' => 'IT',
@@ -547,6 +599,7 @@ class Sprint1Test extends TestCase
             'role' => UserRole::HumanResource,
         ]);
         $hrTwo = User::factory()->create([
+            'id' => 2,
             'fname' => 'Jane',
             'lname' => 'Bond',
             'dept' => 'HR',
@@ -565,7 +618,9 @@ class Sprint1Test extends TestCase
             'deadline' => now()->addDays(7)->format('Y-m-d'),
             'role_type' => 'Permanent',
             'listing_status' => 'Open',
-            'source_manager' => 1,
+            'source_manager_id' => 1,
+            'role_listing_open' => now()->addDays(7)->format('Y-m-d'),
+            'is_released' => 'true',
         ]);
         $updatedJob = [
             'id' => 1,
@@ -576,6 +631,9 @@ class Sprint1Test extends TestCase
             'role_type' => 'Permanent',
             'listing_status' => 'Private',
             'staff_visibility' => [$hrOne, $hrTwo],
+            'source_manager_id' => 1,
+            'role_listing_open' => now()->addDays(7)->format('Y-m-d'),
+            'is_released' => 'true',
         ];
         $response = $this->patch(route('jobs.update', ['job' => 1]), $updatedJob);
         $response->assertStatus(Response::HTTP_FOUND);
@@ -589,20 +647,4 @@ class Sprint1Test extends TestCase
             'user_id' => $hrTwo->id,
         ]);
     }
-
-    public function test_sprint1_us23_t16_hr_staff_can_view_staff_profile(): void
-    {
-        // $this->actingAs(User::factory()->create([
-        //     'fname' => 'John',
-        //     'lname' => 'Doe',
-        //     'dept' => 'IT',
-        //     'email' => 'hr@example.com',
-        //     'phone_num' => '97889182',
-        //     'biz_address' => 'this_is_just_some_dummy_data',
-        //     'password' => Hash::make('password'),
-        //     'role' => UserRole::HumanResource,
-        // ]));
-        // $this->assertTrue(false);
-    }
-
 }

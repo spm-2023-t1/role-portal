@@ -22,7 +22,11 @@ class Job extends Model
         'role_type',
         'listing_status',
         'deadline',
-        'source_manager'
+        'role_listing_open',
+        'source_manager_id',
+        'owner_id',
+        'update_user_id',
+        'is_released'
     ];
 
     protected $casts = [
@@ -46,7 +50,9 @@ class Job extends Model
 
     public function applicants(): BelongsToMany
     {
-        return $this->belongsToMany(User::class)->withTimestamps();
+        return $this->belongsToMany(User::class, 'job_user')
+            ->withTimestamps()
+            ->withPivot(['start_date', 'remarks', 'role_app_status']);
     }
 
     public function viewers(): BelongsToMany
@@ -56,7 +62,8 @@ class Job extends Model
     
     public function source_manager(): BelongsTo
     {
-        return $this->belongsTo(User::class)->withTimestamps();
+        // return $this->belongsTo(User::class)->withTimestamps();
+        return $this->belongsTo(User::class, 'source_manager_id');
     }
     // public function roleApplications(): HasMany{
     //     return $this->hasMany(Application::class, 'job_id');

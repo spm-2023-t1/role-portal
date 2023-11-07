@@ -6,6 +6,7 @@ use App\Enums\JobStatus;
 use App\Models\Job;
 use App\Models\User;
 use App\Models\Skill;
+use App\Rules\AfterOrEqualCreatedDate;
 use Carbon\Carbon;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
@@ -99,6 +100,7 @@ class JobController extends Controller
 
         return view('jobs.index', compact('jobs'), [
             'skills' => Skill::all()->sortBy('name', SORT_NATURAL|SORT_FLAG_CASE),
+            'staff' => User::all()
         ]);
     }
 
@@ -133,17 +135,23 @@ class JobController extends Controller
             'id' => ['required', 'integer', new UniqueId],
             'role_name' => 'required|string',
             'description' => 'required|string',
-            'deadline' => ['required', 'date', 'after:now'],
+            'role_listing_open' => ['required', 'date', 'after_or_equal:now'],
+            'deadline' => ['required', 'date', 'after_or_equal:role_listing_open'],
             'skills' => 'required',
             'role_type' => 'required',
-            'listing_status' => 'required',
-            'source_manager' => 'required',
-            'staff_visibility' => 'required_if:listing_status,private'
-            // 'staff_visibility' => Rule::requiredIf($request->listing_status == JobStatus::Private)
-        ]); // for reference: 'deadline' => ['required', 'date', 'after_or_equal:' . now()->format('Y-m-d')],
-
-        // ensure all Job Listings created are Open - might wanna make changes to the workflow logic
-        // $validated['listing_status'] = JobStatus::Open;
+            // 'listing_status' => 'required',
+            'listing_status' => [
+                'required',
+                // Rule::requiredIf(function () use ($request){
+                //     $roleListingOpen = new \DateTime($request->input('role_listing_open'));
+                //     return $roleListingOpen > now();
+                // }),
+                // Rule::in(['unreleased']),
+            ],
+            'source_manager_id' => 'required',
+            'staff_visibility' => 'required_if:listing_status,private',
+            'is_released' => 'required|string'
+        ]);
 
         $job = Job::create($validated);
 
@@ -162,6 +170,7 @@ class JobController extends Controller
                 }
             }
         }
+
         $job->owner()->associate($request->user());
         $job->updater()->associate($request->user());
         $job->save();
@@ -192,7 +201,8 @@ class JobController extends Controller
             'skills' => Skill::all()->sortBy('name', SORT_NATURAL|SORT_FLAG_CASE),
             'role_type' => 'required',
             'viewers' => User::all()->sortBy('fname', SORT_NATURAL|SORT_FLAG_CASE),
-            'users' => User::all()->sortBy('fname', SORT_NATURAL|SORT_FLAG_CASE)
+            'users' => User::all()->sortBy('fname', SORT_NATURAL|SORT_FLAG_CASE),
+            'managers' => User::where('role', 'manager')->get(),
         ]);
     }
 
@@ -202,27 +212,53 @@ class JobController extends Controller
     public function update(Request $request, Job $job): RedirectResponse
     {
         $this->authorize('update', Job::class);
+
         if ($request->id == $job->id) {
             $validated = $request->validate([
                 'id' => ['required', 'integer'],
                 'role_name' => 'required|string|max:255',
                 'description' => 'required|string',
-                'deadline' => ['required', 'date', 'after:now'], // pls change now role_listing_open when implemented
+                'role_listing_open' => ['required', 'date', new AfterOrEqualCreatedDate($job->id)],
+                'deadline' => ['required', 'date', 'after_or_equal:role_listing_open'],
                 'skills' => 'required',
                 'role_type' => 'required',
-                'listing_status' => 'required',
+                // 'listing_status' => 'required',
+                'listing_status' => [
+                    'required',
+                    // Rule::requiredIf(function () use ($request, $job){
+                    //     $roleListingOpen = new \DateTime($request->input('role_listing_open'));
+                    //     return $roleListingOpen > $job->created_at;
+                    // }),
+                    // Rule::in(['unreleased']),
+                ],
+                'source_manager_id' => 'required',
+                'staff_visibility' => 'required_if:listing_status,private',
+                'is_released' => 'required|string'
             ]);
         } else {
             $validated = $request->validate([
                 'id' => ['required', 'integer', 'unique:jobs'],
                 'role_name' => 'required|string|max:255',
                 'description' => 'required|string',
-                'deadline' => ['required', 'date', 'after:now'], // pls change now role_listing_open when implemented
+                'role_listing_open' => ['required', 'date', new AfterOrEqualCreatedDate($job->id)],
+                'deadline' => ['required', 'date', 'after_or_equal:role_listing_open'],
                 'skills' => 'required',
                 'role_type' => 'required',
-                'listing_status' => 'required',
+                // 'listing_status' => 'required',
+                'listing_status' => [
+                    'required',
+                    // Rule::requiredIf(function () use ($request, $job){
+                    //     $roleListingOpen = new \DateTime($request->input('role_listing_open'));
+                    //     return $roleListingOpen > $job->created_at;
+                    // }),
+                    // Rule::in(['unreleased']),
+                ],
+                'source_manager_id' => 'required',
+                'staff_visibility' => 'required_if:listing_status,private',
+                'is_released' => 'required|string'
             ]);
         }
+        
 
         foreach ($job->skills as $skill) {
             $skill = Skill::find($skill);
@@ -272,6 +308,15 @@ class JobController extends Controller
 
     public function apply(Request $request, Job $job): RedirectResponse
     {
+        // $this->authorize('apply', Job::class);
+
+        // $validated = $request->validate([
+        //     'start_date' => 'required',
+        //     'additional_remarks' => 'required|string',
+        // ]);
+
+        // dd($request);
+        
         if (!(new Carbon($job->deadline))->isPast()) {
             $job->applicants()->attach($request->user());
 
@@ -280,15 +325,6 @@ class JobController extends Controller
         
         
         return redirect(route('jobs.index'));
-
-        // if(!$job->applicants->contains($request->user()) && !(new Carbon($job->deadline))->isPast()) {
-        //     dd($request);
-        //     $job->applicants()->attach($request->user());
-            
-        //     return redirect(route('jobs.index'))->with('status', 'job-applied');
-        // }
-
-        // return redirect(route('jobs.index'));
     }
 
     public function handle()

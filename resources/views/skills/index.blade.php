@@ -23,16 +23,10 @@
                             <div class="text-md text-gray-900">
                                 Filter Options:
                             </div>
-                        <form action="{{ route('skills.index') }}" method="GET">
-                            <input type="hidden" name="search" placeholder="Search...">
-                            <div class="mt-3">
-                                <x-primary-button type="submit">Reset Search</x-primary-button>
-                            </div>
-                        </form>
                         </div>
                         <div class="col-md-8">
                             <form action="{{ route('skills.index') }}" method="GET">
-                                <div>
+                                <div class="mt-3">
                                 <x-input-label for="search" :value="__('Search')" />
                                 <input type="text" name="search" placeholder="Search..." value="{{ session('search') }}">
                                 </div>
@@ -40,6 +34,12 @@
                                     <x-primary-button type="submit">Search</x-primary-button>
                                 </div>
                             </form>
+                            <form action="{{ route('skills.index') }}" method="GET">
+                            <input type="hidden" name="search" placeholder="Search...">
+                            <div class="mt-3">
+                                <x-primary-button type="submit">Reset Search</x-primary-button>
+                            </div>
+                        </form>
                                 </div>
 
                         </div>

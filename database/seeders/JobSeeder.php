@@ -22,9 +22,11 @@ class JobSeeder extends Seeder
             'owner_id' => '7',
             'update_user_id' => '7',
             'deadline' => '2024-02-22 15:00:00',
-            'source_manager' => '2',
+            'role_listing_open' => '2023-11-04 15:20:52',
+            'source_manager_id' => '12',
             'created_at' => '2023-11-04 15:19:52',
             'updated_at' => '2023-11-04 15:19:52',
+            'is_released' => "true",
         ]);
         Job::factory()->create([
             'id' => '2',
@@ -35,9 +37,11 @@ class JobSeeder extends Seeder
             'owner_id' => '7',
             'update_user_id' => '7',
             'deadline' => '2024-01-29 15:00:00',
-            'source_manager' => '11',
+            'role_listing_open' => '2023-10-23 09:21:23',
+            'source_manager_id' => '12',
             'created_at' => '2023-10-23 09:21:23',
             'updated_at' => '2023-10-23 17:30:03',
+            'is_released' => "true",
         ]);
         Job::factory()->create([
             'id' => '3',
@@ -48,9 +52,11 @@ class JobSeeder extends Seeder
             'owner_id' => '7',
             'update_user_id' => '7',
             'deadline' => '2024-01-17 15:00:00',
-            'source_manager' => '12',
+            'role_listing_open' => '2023-09-21 12:43:25',
+            'source_manager_id' => '12',
             'created_at' => '2023-09-21 12:43:25',
             'updated_at' => '2023-09-21 12:43:25',
+            'is_released' => "true",
         ]);
         Job::factory()->create([
             'id' => '4',
@@ -61,9 +67,11 @@ class JobSeeder extends Seeder
             'owner_id' => '7',
             'update_user_id' => '7',
             'deadline' => '2024-01-21 15:00:00',
-            'source_manager' => '12',
+            'role_listing_open' => '2023-08-25 16:42:11',
+            'source_manager_id' => '12',
             'created_at' => '2023-08-25 16:42:11',
             'updated_at' => '2023-08-25 16:42:11',
+            'is_released' => "true",
         ]);
         Job::factory()->create([
             'id' => '5',
@@ -74,9 +82,11 @@ class JobSeeder extends Seeder
             'owner_id' => '7',
             'update_user_id' => '7',
             'deadline' => '2024-03-14 15:00:00',
-            'source_manager' => '13',
+            'role_listing_open' => '2023-07-25 08:32:25',
+            'source_manager_id' => '12',
             'created_at' => '2023-07-25 08:32:25',
             'updated_at' => '2023-07-25 08:32:25',
+            'is_released' => "true",
         ]);
         Job::factory()->create([
             'id' => '6',
@@ -87,9 +97,11 @@ class JobSeeder extends Seeder
             'owner_id' => '7',
             'update_user_id' => '7',
             'deadline' => '2024-01-21 15:00:00',
-            'source_manager' => '13',
+            'role_listing_open' => '2023-08-25 16:42:11',
+            'source_manager_id' => '12',
             'created_at' => '2023-08-25 16:42:11',
             'updated_at' => '2023-08-25 16:42:11',
+            'is_released' => "true",
         ]);
         Job::factory()->create([
             'id' => '7',
@@ -100,9 +112,11 @@ class JobSeeder extends Seeder
             'owner_id' => '7',
             'update_user_id' => '7',
             'deadline' => '2024-02-19 15:00:00',
-            'source_manager' => '10',
+            'role_listing_open' => '2023-10-24 12:24:01',
+            'source_manager_id' => '12',
             'created_at' => '2023-10-24 12:24:01',
             'updated_at' => '2023-10-24 12:24:01',
+            'is_released' => "true",
         ]);
         Job::factory()->create([
             'id' => '8',
@@ -113,9 +127,11 @@ class JobSeeder extends Seeder
             'owner_id' => '7',
             'update_user_id' => '7',
             'deadline' => '2024-02-11 15:00:00',
-            'source_manager' => '12',
+            'role_listing_open' => '2023-10-19 08:51:37',
+            'source_manager_id' => '12',
             'created_at' => '2023-10-19 08:51:37',
             'updated_at' => '2023-10-19 16:20:49',
+            'is_released' => "true",
         ]);
         Job::factory()->create([
             'id' => '9',
@@ -126,9 +142,11 @@ class JobSeeder extends Seeder
             'owner_id' => '7',
             'update_user_id' => '7',
             'deadline' => '2024-01-15 15:00:00',
-            'source_manager' => '10',
+            'role_listing_open' => '2023-11-01 09:45:13',
+            'source_manager_id' => '12',
             'created_at' => '2023-11-01 09:45:13',
             'updated_at' => '2023-11-01 09:45:13',
+            'is_released' => "true",
         ]);
         Job::factory()->create([
             'id' => '10',
@@ -139,9 +157,11 @@ class JobSeeder extends Seeder
             'owner_id' => '7',
             'update_user_id' => '7',
             'deadline' => '2024-02-10 15:00:00',
-            'source_manager' => '11',
+            'role_listing_open' => '2023-11-02 12:41:30',
+            'source_manager_id' => '12',
             'created_at' => '2023-11-02 12:41:30',
             'updated_at' => '2023-11-02 12:41:30',
+            'is_released' => "true",
         ]);
     }
 }

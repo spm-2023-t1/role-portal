@@ -23,6 +23,17 @@ class Kernel extends ConsoleKernel
                 $job->save();
             }
         })->everyMinute();
+
+        $schedule->call(function () {
+            $jobs = Job::where('role_listing_open', '<=', \Carbon\Carbon::now())->get();
+
+            foreach($jobs as $job)
+            {
+                //Update each application as you want to
+                $job->is_released = 'true';
+                $job->save();
+            }
+        })->everyMinute();
     }
 
     /**
