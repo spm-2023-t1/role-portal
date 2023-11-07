@@ -1,5 +1,6 @@
 @php
     use App\Enums\JobStatus;
+    use App\Enums\UserRole;
 @endphp
 
 <x-app-layout>
@@ -21,12 +22,6 @@
                     <x-primary-button-link class="h-10 mt-4 sm:mt-0 sm:ml-2" :href="route('jobs.create')">{{ __('Create New Job Listing') }}</x-primary-button-link>
                     @endcan
                 </header>
-                <!-- Javascript code for back button -->
-                <!-- <script>
-                    function goBack() {
-                        window.history.back();
-                    }
-                </script> -->
 
                 <div class="rounded-lg bg-gray-200 p-4 mb-4">
                 <div class="col">
@@ -70,10 +65,6 @@
                                     </select>
                                 </div>
                             </div>
-                           
-                            
-                            
-                            
                             
                             <div class="flex">
                                 <div class=" flex-1 mt-3">
@@ -121,11 +112,8 @@
                     @else
                     <div class="divide-y">
                         @foreach ($jobs as $job)
-                        <!-- <div> {{ $job->viewers }}</div>
-                            @if(count($job->viewers) > 0)
-                            @foreach($job->viewers as $v) {{ $v->id }}
-                            @endforeach
-                            @endif -->
+                        <!-- conditions: HR sees all, Staff only sees open and private, Managers sees open, private, and those they are source_managers of-->
+                        @can('viewJobs', $job)
                             <div class="flex py-4">
                                 <div class="h-12 w-12 p-2 rounded-md border bg-gray-50 flex align-middle justify-center">
                                     <svg class="w-5" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 24 24"><path d="M20 6h-4V4c0-1.11-.89-2-2-2h-4c-1.11 0-2 .89-2 2v2H4c-1.11 0-1.99.89-1.99 2L2 19c0 1.11.89 2 2 2h16c1.11 0 2-.89 2-2V8c0-1.11-.89-2-2-2zm-6 0h-4V4h4v2z" fill="currentColor"></path></svg>
@@ -133,11 +121,11 @@
                                 <div class="flex-1 ml-4">
                                     <div class="text-xl text-gray-900">{{ $job->role_name }}</div>
                                     <div class="mt-1 text-gray-800">{{ $job->description }}</div>
-                                    <div class="mt-1 text-gray-800">Total applicants: {{ count($job->applicants) }}</div>
-                                    <div class="mt-1 text-gray-800">Application deadline: {{ $job->deadline }}</div>
-                                    <div class="mt-1 text-gray-800">Source Manager: {{ $job->source_manager }}</div>
-                                    <div class="mt-1 text-gray-800">Job Status: {{ ucfirst($job->listing_status) }}</div>
-                                    <div class="mt-1 text-gray-600">Skills required:</div>
+                                    <div class="mt-1 text-gray-800"><strong>Application deadline:</strong> {{ $job->deadline }}</div>
+                                    <div class="mt-1 text-gray-800"><strong>Role Listing Open Date:</strong> {{ $job->role_listing_open }}</div>
+                                    <div class="mt-1 text-gray-800"><strong>Source Manager:</strong> {{ $job->source_manager->fname }} {{ $job->source_manager->lname }}</div>
+                                    <div class="mt-1 text-gray-800"><strong>Job Status:</strong> {{ ucfirst($job->listing_status) }}</div>
+                                    <div class="mt-1 text-gray-800"><strong>Skills required:</strong></div>
                                     <div class="mt-1 flex">
                                         @foreach($job->skills as $skill)
                                             @if(collect(Auth::user()->skills)->contains('id', $skill->id))
@@ -151,6 +139,7 @@
                                             @endif
                                         @endforeach
                                     </div>
+                                    <div class="mt-1 text-gray-800"><strong>Total applicants:</strong> {{ count($job->applicants) }}</div>
                                     <div class="mt-3">
                                         <x-primary-button onclick="openJobDetailsModal({{ $job->id }})">Show All Details</x-primary-button>
                                     </div>
@@ -162,19 +151,25 @@
                                             <div class="bg-white p-8 rounded-lg shadow-lg relative">
                                                 <button class="absolute top-0 right-0 p-4" onclick="closeJobDetailsModal({{ $job->id }})">Close</button>
                                                 <h2 class="text-lg font-medium text-gray-900">{{ $job->role_name }}</h2>
-                                                <p class="mt-2 text-gray-800">ID: {{ $job->id }}</p>
-                                                <p class="mt-2 text-gray-800">Name: {{ $job->role_name }}</p>
-                                                <p class="mt-2 text-gray-800">Description: {{ $job->description }}</p>
-                                                <p class="mt-2 text-gray-800">Type: {{ ucfirst($job->role_type) }}</p>
-                                                <p class="mt-2 text-gray-800">Status: {{ ucfirst($job->listing_status) }}</p>
-                                                <p class="mt-2 text-gray-800">Created on: {{ $job->created_at }}</p>
-                                                <p class="mt-2 text-gray-800">Created by: {{ $job->owner->fname ?? 'UNKNOWN' }}</p>
-                                                <p class="mt-2 text-gray-800">Application deadline: {{ $job->deadline }}</p>
+                                                <p class="mt-2 text-gray-800"><strong>ID:</strong> {{ $job->id }}</p>
+                                                <p class="mt-2 text-gray-800"><strong>Name:</strong> {{ $job->role_name }}</p>
+                                                <p class="mt-2 text-gray-800"><strong>Description:</strong> {{ $job->description }}</p>
+                                                <p class="mt-2 text-gray-800"><strong>Type:</strong> {{ ucfirst($job->role_type) }}</p>
+                                                <p class="mt-2 text-gray-800"><strong>Status:</strong> {{ ucfirst($job->listing_status) }}</p>
+                                                <p class="mt-2 text-gray-800"><strong>Created on:</strong> {{ $job->created_at }}</p>
+                                                <p class="mt-2 text-gray-800"><strong>Created by:</strong> {{ $job->owner->fname ?? 'UNKNOWN' }} {{ $job->owner->lname ?? 'UNKNOWN' }}</p>
+                                                <p class="mt-2 text-gray-800"><strong>Email of Creator:</strong> {{ $job->owner->email }}</p>
+                                                <p class="mt-2 text-gray-800"><strong>Application deadline:</strong> {{ $job->deadline }}</p>
+                                                @can('viewRoleListingOpen', \App\Models\Job::class)
+                                                <p class="mt-2 text-gray-800"><strong>Role Listing Open Date:</strong> {{ $job->role_listing_open }}</p>
+                                                @endcan
                                                 @if ($job->updated_at != $job->created_at)
-                                                    <p class="mt-2 text-gray-800">Updated by: {{ $job->updater->fname }}</p>
-                                                    <p class="mt-2 text-gray-800">Time of last edit: {{ $job->updated_at }}</p>
+                                                    <p class="mt-2 text-gray-800"><strong>Updated by:</strong> {{ $job->updater->fname }} {{ $job->updater->lname ?? 'UNKNOWN' }}</p>
+                                                    <p class="mt-2 text-gray-800"><strong>Time of last edit:</strong> {{ $job->updated_at }}</p>
                                                 @endif
-                                                <p class="mt-2 text-gray-800">Total applicants: {{ count($job->applicants) }}</p>
+                                                <p class="mt-2 text-gray-800"><strong>Total applicants:</strong> {{ count($job->applicants) }}</p>
+                                                <p class="mt-2 text-gray-800"><strong>Source Manager:</strong> {{ $job->source_manager->fname }} {{ $job->source_manager->lname }}</p>
+                                                <p class="mt-2 text-gray-800"><strong>Source Manager Email:</strong> {{ $job->source_manager->email }}</p>
                                             </div>
                                         </div>
                                     </div>
@@ -195,7 +190,7 @@
                                         }
                                     </script>
 
-                                    @if($job->listing_status == 'open')
+                                    @if($job->listing_status == 'open' || $job->listing_status == 'private')
                                     <div class="mt-3">
                                         @if(collect(Auth::user()->applications)->contains('id', $job->id))
                                             <div class="text-green-600">Applied successfully.</div>
@@ -226,7 +221,7 @@
                                                 <form action="{{ route('jobs.apply', ['job' => $job->id]) }}" method="POST">
                                                 @csrf
                                                 @method('patch')
-                                                <input type="hidden" name="_method" value="PATCH"> <!-- this line is to ensure form sends a PATCH request -->
+                                                <input type="hidden" name="_method" value="PATCH"> 
                                                 <div>
                                                         <h2 class="text-lg font-medium text-gray-900">
                                                             {{ __('Application Form') }}
@@ -258,8 +253,17 @@
                                                         <x-text-input id="additional_remarks" name="additional_remarks" type="text" class="mt-1 block w-full" value="{{ old('additional_remarks') }}" />
                                                         <x-input-error :messages="$errors->get('additional_remarks')" class="mt-2" />
                                                     </div>
+                                                    <!-- <div class="mt-3">
+                                                    <x-text-input id="job_id" name="job_id" type="hidden" class="mt-1 block w-full" value="{{ $job->id }}" />
+                                                    </div>
+                                                    <div class="mt-3">
+                                                    <x-text-input id="user_id" name="user_id" type="hidden" class="mt-1 block w-full" value="{{ Auth::user()->id }}" />
+                                                    </div> -->
+                                                    <div class="mt-3">
+                                                    <x-text-input id="role_app_status" name="role_app_status" type="hidden" class="mt-1 block w-full" value="applied" />
+                                                    </div>
                                                     <!-- <x-primary-button class="mt-3" onclick="event.preventDefault(); this.closest('form').submit();">{{ __('Submit Application Form') }}</x-primary-button> -->
-                                                    <x-primary-button class="mt-3" type="submit">{{ __('Submit Application Form') }}</x-primary-button>
+                                                    <x-primary-button class="mt-3">{{ __('Submit Application Form') }}</x-primary-button>
                                                 </form>
                                             </div>
                                         </div>
@@ -318,8 +322,10 @@
                                         <x-primary-button>Edit</x-primary-button>
                                         </a>
                                     </div>
-                                    @endcan
+                                @endcan
                             </div>
+                            <!-- </div> -->
+                            @endcan
                         @endforeach
                     </div>
                     @endif

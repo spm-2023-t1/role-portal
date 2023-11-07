@@ -73,4 +73,25 @@ class User extends Authenticatable
     {
         return $this->belongsToMany(Job::class, 'job_user')->withTimestamps();
     }
+
+    public function manage_sources(): HasMany
+    {
+        return $this->hasMany(Job::class);
+    }
+
+    public function isHR()
+    {
+        // dd($this->role == UserRole::HumanResource);
+        return $this->role == UserRole::HumanResource;
+    }
+
+    public function isStaff()
+    {
+        return $this->role == UserRole::Staff;
+    }
+
+    public function isManager()
+    {
+        return $this->role == UserRole::Manager;
+    }
 }
