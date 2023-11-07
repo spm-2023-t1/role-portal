@@ -19,6 +19,8 @@ class SkillFactory extends Factory
     {
         return [
             'name' => fake()->word(),
+            'created_by' => 1,
+            'updated_by' => 1,
         ];
     }
 }

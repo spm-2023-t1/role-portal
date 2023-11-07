@@ -12,11 +12,11 @@ use Illuminate\Http\Response;
 use Illuminate\Support\Facades\Hash;
 
 
-class Sprint2Test extends TestCase
+class Sprint3Test extends TestCase
 {
     use RefreshDataBase;
 
-    public function test_sprint2_us6_t1_staff_can_view_role_listing_and_details(): void
+    public function test_sprint3_us8_t1_hr_can_filter_role_listing_by_skills(): void
     {
         $this->actingAs(User::factory()->create([
             'fname' => 'John',
@@ -41,22 +41,17 @@ class Sprint2Test extends TestCase
         $response->assertStatus(Response::HTTP_OK);
     }
 
-    public function test_sprint2_us7_t2_staff_can_apply_for_job_role(): void
+    public function test_sprint3_us8_t2_hr_cannot_filter_candidates_without_filter(): void
     {
 
     }
 
-    public function test_sprint2_us26_t3_hr_staff_can_view_skill_sets_of_other_staff(): void
+    public function test_sprint3_us108_t3_hr_staff_can_view_skill_sets_of_job_applicants(): void
     {
 
     }
 
-    public function test_sprint2_us30_t4_hr_staff_can_edit_job_application(): void
-    {
-
-    }
-
-    public function test_sprint2_us30_t5_hr_staff_cannot_apply_for_job_role_with_empty_field(): void
+    public function test_sprint3_us32_t4_staff_can_view_their_own_skill_sets(): void
     {
 
     }
