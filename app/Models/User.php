@@ -72,7 +72,9 @@ class User extends Authenticatable
 
     public function applications(): BelongsToMany
     {
-        return $this->belongsToMany(Job::class, 'job_user')->withTimestamps();
+        return $this->belongsToMany(Job::class, 'job_user')
+        ->withTimestamps()
+        ->withPivot(['start_date', 'remarks', 'role_app_status']);
     }
 
     public function manage_sources(): HasMany

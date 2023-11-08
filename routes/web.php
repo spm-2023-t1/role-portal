@@ -31,6 +31,7 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
     Route::patch('/profile/skills', [ProfileController::class, 'editSkills'])->name('profile.skills.edit');
     Route::patch('/jobs/apply/{job}', [JobController::class, 'apply'])->name('jobs.apply');
+    Route::patch('/jobs/withdraw/{job}', [JobController::class, 'withdraw'])->name('jobs.withdraw');
 });
 
 Route::resource('jobs', JobController::class)

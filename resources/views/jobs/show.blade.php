@@ -45,7 +45,7 @@
                         <div class="flex-1 ml-4">
                                     <div class="text-xl text-gray-900">{{ $job->role_name }}</div>
                                     <div class="mt-1 text-gray-800">{{ $job->description }}</div>
-                                    <div class="mt-1 text-gray-800">Total applicants: {{ count($job->applicants) }}</div>
+                                    <div class="mt-1 text-gray-800">Total applicants: {{ count($job->applicants->where('pivot.role_app_status', 'applied')) }}</div>
                                     <div class="mt-1 text-gray-800">Application deadline: {{ $job->deadline }}</div>
                                     <div class="mt-1 text-gray-800">Job Status: {{ ucfirst($job->listing_status) }}</div>
                                     <div class="mt-1 text-gray-600">Skills required:</div>
@@ -95,8 +95,8 @@
                     @if (Auth::user()->role === \App\Enums\UserRole::HumanResource || \App\Enums\UserRole::Manager)
                         <!-- <div class="text-gray-900">Applicants</div> -->
                         <div class="divide-y">
-                            <div class="text-lg text-black-900">Total applicants: {{ count($job->applicants) }}</div>
-                            @foreach($job->applicants as $applicant)
+                            <div class="text-lg text-black-900">Total applicants: {{ count($job->applicants->where('pivot.role_app_status', 'applied')) }}</div>
+                            @foreach($job->applicants->where('pivot.role_app_status', 'applied') as $applicant)
                                 <div class="py-2">
                                     <div><span class="font-medium">Applicant {{ $loop->index + 1 }}'s Name:</span> {{ $applicant->fname }}  {{ $applicant->lname }} </div>
                                     <div><span class="font-medium">Skills:</span>
@@ -124,7 +124,7 @@
                             @endforeach
                         </div>
                     @else
-                        <div class="text-gray-900">Total applications: {{ count($job->applicants) }}</div>
+                        <div class="text-gray-900">Total applications: {{ count($job->applicants->where('pivot.role_app_status', 'applied')) }}</div>
                     @endif
                 </div>
             </section>

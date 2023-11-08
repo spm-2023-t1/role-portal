@@ -283,24 +283,52 @@ class JobController extends Controller
 
     public function apply(Request $request, Job $job): RedirectResponse
     {
-        // $this->authorize('apply', Job::class);
+        $user = Auth::user();
 
-        // $validated = $request->validate([
-        //     'start_date' => 'required',
-        //     'additional_remarks' => 'required|string',
-        // ]);
+        $request->validate([
+            'start_date' => 'required|date',
+            'remarks' => 'nullable|string|max:500',
+            'role_app_status' => 'required|in:applied,withdrawn',
+        ]);
 
-        // dd($request);
-        
-        if (!(new Carbon($job->deadline))->isPast()) {
-            $job->applicants()->attach($request->user());
-
-            return redirect(route('jobs.index'))->with('status', 'job-applied');
+        if ($job->listing_status !== 'open' || $job->deadline < now()) {
+            return redirect()->route('jobs.index')->with('error', 'Job application is not available for this job.');
         }
-        
-        
-        return redirect(route('jobs.index'));
+
+        $user->applications()->attach($job, [
+            'start_date' => $request->start_date,
+            'remarks' => $request->remarks,
+            'role_app_status' => $request->role_app_status,
+        ]);
+
+        return redirect()->route('jobs.index')->with('success', 'Job application submitted successfully.');
     }
+
+    public function withdraw(Job $job)
+    {
+        // // Assuming that you have a "withdrawn" status in your JobStatus enum
+        // $job->status = "withdrawn";
+        // $job->save();
+
+        // // You can also add additional logic here if needed
+
+        // return redirect()->back()->with('success', 'Application withdrawn successfully');
+
+        $user = Auth::user();
+        // $application = collect($user->applications)->contains('id', $job->id)->pivot;
+        $applications = collect($user->applications);
+
+        foreach($applications as $application) {
+            if($application->id == $job->id) {
+                if($application->pivot->role_app_status == 'applied') {
+                    $application->pivot->update(['role_app_status' => 'withdrawn']);
+                    return redirect()->back()->with('success', 'Application has been withdrawn.');
+                }
+            }
+        }
+
+    }
+
 
     public function handle()
     {
