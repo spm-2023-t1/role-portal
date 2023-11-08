@@ -148,8 +148,8 @@
                     </div>
 
                     <div>
-                        <x-input-label for="is_released" :value="__('Is Job Released for Viewing')"/>
-                        <x-text-input id="is_released" name="is_released" class="mt-1 block w-full" value="{{ old('is_released', $job->is_released) }}"/>
+                        <!-- <x-input-label for="is_released" :value="__('Is Job Released for Viewing')"/> -->
+                        <x-text-input id="is_released" name="is_released" class="mt-1 block w-full" value="{{ old('is_released', $job->is_released) }}" type="hidden"/>
                         <x-input-error :messages="$errors->get('is_released')" class="mt-2" />
                     </div>
 

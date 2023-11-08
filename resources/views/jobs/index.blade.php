@@ -139,7 +139,8 @@
                                             @endif
                                         @endforeach
                                     </div>
-                                    <div class="mt-1 text-gray-800"><strong>Total applicants:</strong> {{ count($job->applicants) }}</div>
+                                    <div class="mt-1 text-gray-800"><strong>Total applicants:</strong> {{ count($job->applicants->where('pivot.role_app_status', 'applied')) }}</div>
+                                    <!-- {{count($job->applicants->where('pivot.role_app_status', 'applied'))}} -->
                                     <div class="mt-3">
                                         <x-primary-button onclick="openJobDetailsModal({{ $job->id }})">Show All Details</x-primary-button>
                                     </div>
@@ -167,7 +168,8 @@
                                                     <p class="mt-2 text-gray-800"><strong>Updated by:</strong> {{ $job->updater->fname }} {{ $job->updater->lname ?? 'UNKNOWN' }}</p>
                                                     <p class="mt-2 text-gray-800"><strong>Time of last edit:</strong> {{ $job->updated_at }}</p>
                                                 @endif
-                                                <p class="mt-2 text-gray-800"><strong>Total applicants:</strong> {{ count($job->applicants) }}</p>
+                                                <!-- <p class="mt-2 text-gray-800"><strong>Total applicants:</strong> {{ count($job->applicants) }}</p> -->
+                                                <p class="mt-2 text-gray-800"><strong>Total applicants:</strong> {{count($job->applicants->where('pivot.role_app_status', 'applied')) }}</p>
                                                 <p class="mt-2 text-gray-800"><strong>Source Manager:</strong> {{ $job->source_manager->fname }} {{ $job->source_manager->lname }}</p>
                                                 <p class="mt-2 text-gray-800"><strong>Source Manager Email:</strong> {{ $job->source_manager->email }}</p>
                                             </div>
@@ -189,12 +191,23 @@
                                             }
                                         }
                                     </script>
-
-                                    @if($job->listing_status == 'open' || $job->listing_status == 'private')
+                
+                                    @if(
+                                        ($job->listing_status == 'open' and $job->is_released == 'true') || 
+                                        ($job->listing_status == 'private' and $job->is_released == 'true' and in_array(Auth::user()->id, array_column($job->viewers->toArray(), 'id'))))
+                                        <!-- (in_array(Auth::user()->id, array_column($job->viewers->toArray(), 'id')))) -->
                                     <div class="mt-3">
-                                        @if(collect(Auth::user()->applications)->contains('id', $job->id))
-                                            <div class="text-green-600">Applied successfully.</div>
-                                        @else
+                                    <!-- {{collect(Auth::user()->applications)}} -->
+                                    @if(collect(Auth::user()->applications)->contains(function ($value, $key) use ($job) {
+                                        return $value['id'] === $job->id && $value['pivot']['role_app_status'] === 'applied';
+                                    }))
+                                            <!-- <div class="text-green-600">Applied successfully.</div> -->
+                                            <form action="{{ route('jobs.withdraw', ['job' => $job->id]) }}" method="POST" onsubmit="return confirm('Are you sure you want to withdraw this application?')">
+                                                @csrf
+                                                @method('patch')
+                                            <x-primary-button type="submit">{{ __('Withdraw Application') }}</x-primary-button>
+                                            </form>
+                                            @else
                                             <!-- <form method="post" action="{{ route('jobs.apply', $job) }}"> -->
                                                 <!-- @csrf
                                                 @method('patch') -->
@@ -221,7 +234,7 @@
                                                 <form action="{{ route('jobs.apply', ['job' => $job->id]) }}" method="POST">
                                                 @csrf
                                                 @method('patch')
-                                                <input type="hidden" name="_method" value="PATCH"> 
+                                                <!-- <input type="hidden" name="_method" value="PATCH">  -->
                                                 <div>
                                                         <h2 class="text-lg font-medium text-gray-900">
                                                             {{ __('Application Form') }}
@@ -249,16 +262,10 @@
                                                     </div>
                                                     
                                                     <div class="mt-3">
-                                                        <x-input-label for="additional_remarks" :value="__('Additional Remarks')" />
-                                                        <x-text-input id="additional_remarks" name="additional_remarks" type="text" class="mt-1 block w-full" value="{{ old('additional_remarks') }}" />
-                                                        <x-input-error :messages="$errors->get('additional_remarks')" class="mt-2" />
+                                                        <x-input-label for="remarks" :value="__('Additional Remarks')" />
+                                                        <x-text-input id="remarks" name="remarks" type="text" class="mt-1 block w-full" value="{{ old('remarks') }}" />
+                                                        <x-input-error :messages="$errors->get('remarks')" class="mt-2" />
                                                     </div>
-                                                    <!-- <div class="mt-3">
-                                                    <x-text-input id="job_id" name="job_id" type="hidden" class="mt-1 block w-full" value="{{ $job->id }}" />
-                                                    </div>
-                                                    <div class="mt-3">
-                                                    <x-text-input id="user_id" name="user_id" type="hidden" class="mt-1 block w-full" value="{{ Auth::user()->id }}" />
-                                                    </div> -->
                                                     <div class="mt-3">
                                                     <x-text-input id="role_app_status" name="role_app_status" type="hidden" class="mt-1 block w-full" value="applied" />
                                                     </div>
@@ -296,7 +303,7 @@
                                     @endcan
                                     
                                     @can('viewApplicationManager', $job)
-                                    @if (Auth::user()->id === $job->source_manager)
+                                    @if (Auth::user()->id === $job->source_manager->id)
                                         
                                     <div class="mt-3">
                                         <a href="{{ route('jobs.show', $job) }}">
