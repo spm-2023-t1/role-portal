@@ -286,10 +286,12 @@ class JobController extends Controller
         $user = Auth::user();
 
         $request->validate([
-            'start_date' => 'required|date',
+            'start_date' => 'nullable|date',
             'remarks' => 'nullable|string|max:500',
             'role_app_status' => 'required|in:applied,withdrawn',
         ]);
+
+        
 
         // if ($job->listing_status !== 'open' || $job->deadline < now()) {
         //     return redirect()->route('jobs.index')->with('error', 'Job application is not available for this job.');
@@ -301,6 +303,7 @@ class JobController extends Controller
             'role_app_status' => $request->role_app_status,
         ]);
 
+        
         return redirect()->route('jobs.index')->with('success', 'Job application submitted successfully.');
     }
 

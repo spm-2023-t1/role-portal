@@ -281,7 +281,6 @@
                                     <script>
                                         // JavaScript function to open the modal
                                         function openApplicationModal(jobId) {
-                                            console.log("test");
                                             const modalElement = document.getElementById(`job-application-modal-${jobId}`);
                                             if (modalElement) {
                                                 modalElement.classList.remove('hidden');
