@@ -31,7 +31,6 @@ class User extends Authenticatable
         'biz_address',
         'current_role',
         'reporting_officer_id',
-        // 'sys_role',
         'password',
     ];
 
@@ -95,7 +94,6 @@ class User extends Authenticatable
 
     public function isHR()
     {
-        // dd($this->role == UserRole::HumanResource);
         return $this->role == UserRole::HumanResource;
     }
 

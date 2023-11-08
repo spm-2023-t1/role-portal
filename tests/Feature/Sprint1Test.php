@@ -27,27 +27,45 @@ class Sprint1Test extends TestCase
             'biz_address' => 'this_is_just_some_dummy_data',
             'password' => Hash::make('password'),
             'role' => UserRole::HumanResource,
+            'reporting_officer_id' => 1,
         ]));
         $skills = Skill::factory()->count(3)->create()->pluck('id')->toArray();
         $data = [
-            'id' => 1,
+            'id' => 1000,
             'role_name' => 'Data Analyst',
             'description' => 'This is just some text to be used as dummy data.',
             'deadline' => now()->addDays(7)->format('Y-m-d'),
             'skills' => $skills,
             'role_type' => 'Permanent',
             'listing_status' => 'Open',
+            'owner_id' => '7',
+            'update_user_id' => '7',
+            'role_listing_open' => '2023-07-25 08:32:25',
+            'source_manager_id' => '12',
+            'created_at' => '2023-07-25 08:32:25',
+            'updated_at' => '2023-07-25 08:32:25',
+            'is_released' => "true",
+
         ];
         $response = $this->post(route('jobs.store'), $data);
         $response->assertStatus(Response::HTTP_FOUND);
         $response->assertRedirect(route('jobs.index'));
         $this->assertDatabaseHas('jobs', [
-            'id' => 1,
+            'id' => 1000,
             'role_name' => 'Data Analyst',
             'description' => 'This is just some text to be used as dummy data.',
             'deadline' => now()->addDays(7)->format('Y-m-d'),
             'role_type' => 'Permanent',
             'listing_status' => 'Open',
+            'owner_id' => '7',
+            'update_user_id' => '7',
+            'role_listing_open' => '2023-07-25 08:32:25',
+            'source_manager_id' => '12',
+            'created_at' => '2023-07-25 08:32:25',
+            'updated_at' => '2023-07-25 08:32:25',
+            'is_released' => "true",
+
+
         ]);
         $job = Job::find(1);
         $this->assertEquals($skills, $job->skills->pluck('id')->toArray());
@@ -64,16 +82,26 @@ class Sprint1Test extends TestCase
             'biz_address' => 'this_is_just_some_dummy_data',
             'password' => Hash::make('password'),
             'role' => UserRole::HumanResource,
+            'is_released' => "true",
         ]));
         $skills = Skill::factory()->count(3)->create()->pluck('id')->toArray();
         $data = [
-            'id' => 1,
+            'id' => 1000,
             'role_name' => '',
             'description' => '',
             'deadline' => now()->addDays(7)->format('Y-m-d'),
             'skills' => $skills,
             'role_type' => 'Permanent',
             'listing_status' => 'Open',
+            'owner_id' => '7',
+            'update_user_id' => '7',
+            'role_listing_open' => '2023-07-25 08:32:25',
+            'source_manager_id' => '12',
+            'created_at' => '2023-07-25 08:32:25',
+            'updated_at' => '2023-07-25 08:32:25',
+            'is_released' => "true",
+
+            
         ];
         $response = $this->post(route('jobs.store'), $data);
         $response->assertStatus(Response::HTTP_FOUND);
@@ -97,24 +125,39 @@ class Sprint1Test extends TestCase
             'biz_address' => 'this_is_just_some_dummy_data',
             'password' => Hash::make('password'),
             'role' => UserRole::HumanResource,
+            'reporting_officer_id' => 1,
         ]));
         Job::factory()->create([
-            'id' => 1,
+            'id' => 1000,
             'role_name' => 'Data Analyst',
             'description' => 'Join our dynamic team as a Data Analyst and make an impact by turning data into actionable insights.',
             'deadline' => now()->addDays(7)->format('Y-m-d'),
             'role_type' => 'Permanent',
             'listing_status' => 'Open',
+            'owner_id' => '7',
+            'update_user_id' => '7',
+            'role_listing_open' => '2023-07-25 08:32:25',
+            'source_manager_id' => '12',
+            'created_at' => '2023-07-25 08:32:25',
+            'updated_at' => '2023-07-25 08:32:25',
+            'is_released' => "true",
         ]);
         $skills = Skill::factory()->count(3)->create()->pluck('id')->toArray();
         $data = [
-            'id' => 1,
+            'id' => 1000,
             'role_name' => 'Data Analyst',
             'description' => 'Just another dummy data.',
             'deadline' => now()->addDays(7)->format('Y-m-d'),
             'skills' => $skills,
             'role_type' => 'Permanent',
             'listing_status' => 'Open',
+            'owner_id' => '7',
+            'update_user_id' => '7',
+            'role_listing_open' => '2023-07-25 08:32:25',
+            'source_manager_id' => '12',
+            'created_at' => '2023-07-25 08:32:25',
+            'updated_at' => '2023-07-25 08:32:25',
+            'is_released' => "true",
         ];
         $response = $this->post(route('jobs.store'), $data);
         $response->assertStatus(Response::HTTP_FOUND);
@@ -134,6 +177,7 @@ class Sprint1Test extends TestCase
             'biz_address' => 'this_is_just_some_dummy_data',
             'password' => Hash::make('password'),
             'role' => UserRole::Staff,
+            'reporting_officer_id' => 1,
         ]);
         $this->actingAs(User::factory()->create([
             'fname' => 'John',
@@ -144,10 +188,11 @@ class Sprint1Test extends TestCase
             'biz_address' => 'this_is_just_some_dummy_data',
             'password' => Hash::make('password'),
             'role' => UserRole::HumanResource,
+            'reporting_officer_id' => 1,
         ]));
         $skills = Skill::factory()->count(3)->create()->pluck('id')->toArray();
         $data = [
-            'id' => 1,
+            'id' => 1000,
             'role_name' => 'Data Analyst',
             'description' => 'This is just some text to be used as dummy data.',
             'deadline' => now()->addDays(7)->format('Y-m-d'),
@@ -155,11 +200,18 @@ class Sprint1Test extends TestCase
             'role_type' => 'Permanent',
             'listing_status' => 'Open',
             'staff_visibility' => User::where(['fname' => 'Leroy', 'lname' => 'Jenkins'])->pluck('id')->toArray(),
+            'owner_id' => '7',
+            'update_user_id' => '7',
+            'role_listing_open' => '2023-07-25 08:32:25',
+            'source_manager_id' => '12',
+            'created_at' => '2023-07-25 08:32:25',
+            'updated_at' => '2023-07-25 08:32:25',
+            'is_released' => "true",
         ];
         $response = $this->post(route('jobs.store'), $data);
         $response->assertStatus(Response::HTTP_FOUND);
         $this->assertDatabaseHas('job_viewer', [
-            'job_id' => 1,
+            'job_id' => 1000,
             'user_id' => $user->id,
         ]);
     }
@@ -175,16 +227,25 @@ class Sprint1Test extends TestCase
             'biz_address' => 'this_is_just_some_dummy_data',
             'password' => Hash::make('password'),
             'role' => UserRole::HumanResource,
+            'reporting_officer_id' => 1,
         ]));
         $skills = Skill::factory()->count(3)->create()->pluck('id')->toArray();
         $data = [
-            'id' => 1,
+            'id' => 1000,
             'role_name' => 'Data Analyst',
             'description' => 'This is just some text to be used as dummy data.',
             'deadline' => now()->subDays(1)->format('Y-m-d'),
             'skills' => $skills,
             'role_type' => 'Permanent',
             'listing_status' => 'Open',
+            'owner_id' => '7',
+            'update_user_id' => '7',
+            'role_listing_open' => '2023-07-25 08:32:25',
+            'source_manager_id' => '12',
+            'created_at' => '2023-07-25 08:32:25',
+            'updated_at' => '2023-07-25 08:32:25',
+            'is_released' => "true",
+
         ];
         $response = $this->post(route('jobs.store'), $data);
         $response->assertStatus(Response::HTTP_FOUND);
@@ -205,16 +266,24 @@ class Sprint1Test extends TestCase
             'biz_address' => 'this_is_just_some_dummy_data',
             'password' => Hash::make('password'),
             'role' => UserRole::HumanResource,
+            'reporting_officer_id' => 1,
         ]));
         $skills = Skill::factory()->count(3)->create()->pluck('id')->toArray();
         $data = [
-            'id' => 1,
+            'id' => 1000,
             'role_name' => '',
             'description' => 'Here is some dummy data.',
             'deadline' => now()->addDays(7)->format('Y-m-d'),
             'skills' => $skills,
             'role_type' => 'Permanent',
             'listing_status' => 'Open',
+            'owner_id' => '7',
+            'update_user_id' => '7',
+            'role_listing_open' => '2023-07-25 08:32:25',
+            'source_manager_id' => '12',
+            'created_at' => '2023-07-25 08:32:25',
+            'updated_at' => '2023-07-25 08:32:25',
+            'is_released' => "true",
         ];
         $response = $this->post(route('jobs.store'), $data);
         $response->assertStatus(Response::HTTP_FOUND);
@@ -235,16 +304,24 @@ class Sprint1Test extends TestCase
             'biz_address' => 'this_is_just_some_dummy_data',
             'password' => Hash::make('password'),
             'role' => UserRole::HumanResource,
+            'reporting_officer_id' => 1,
         ]));
         $skills = Skill::factory()->count(3)->create()->pluck('id')->toArray();
         $data = [
-            'id' => 1,
+            'id' => 1000,
             'role_name' => 'Data Analyst',
             'description' => 'Here is some dummy data.',
             'deadline' => '',
             'skills' => $skills,
             'role_type' => 'Permanent',
             'listing_status' => 'Open',
+            'owner_id' => '7',
+            'update_user_id' => '7',
+            'role_listing_open' => '2023-07-25 08:32:25',
+            'source_manager_id' => '12',
+            'created_at' => '2023-07-25 08:32:25',
+            'updated_at' => '2023-07-25 08:32:25',
+            'is_released' => "true",
         ];
         $response = $this->post(route('jobs.store'), $data);
         $response->assertStatus(Response::HTTP_FOUND);
@@ -265,16 +342,24 @@ class Sprint1Test extends TestCase
             'biz_address' => 'this_is_just_some_dummy_data',
             'password' => Hash::make('password'),
             'role' => UserRole::HumanResource,
+            'reporting_officer_id' => 1,
         ]));
         $skills = Skill::factory()->count(3)->create()->pluck('id')->toArray();
         $data = [
-            'id' => 1,
+            'id' => 1000,
             'role_name' => 'Data Analyst',
             'description' => '',
             'deadline' => now()->addDays(7)->format('Y-m-d'),
             'skills' => $skills,
             'role_type' => 'Permanent',
             'listing_status' => 'Open',
+            'owner_id' => '7',
+            'update_user_id' => '7',
+            'role_listing_open' => '2023-07-25 08:32:25',
+            'source_manager_id' => '12',
+            'created_at' => '2023-07-25 08:32:25',
+            'updated_at' => '2023-07-25 08:32:25',
+            'is_released' => "true",
         ];
         $response = $this->post(route('jobs.store'), $data);
         $response->assertStatus(Response::HTTP_FOUND);
@@ -297,6 +382,7 @@ class Sprint1Test extends TestCase
             'biz_address' => 'this_is_just_some_dummy_data',
             'password' => Hash::make('password'),
             'role' => UserRole::HumanResource,
+            'reporting_officer_id' => 1,
         ]));
         $skills = Skill::factory()->count(3)->create()->pluck('id')->toArray();
         $data = [
@@ -307,6 +393,13 @@ class Sprint1Test extends TestCase
             'skills' => null,
             'role_type' => 'Permanent',
             'listing_status' => 'Open',
+            'owner_id' => '7',
+            'update_user_id' => '7',
+            'role_listing_open' => '2023-07-25 08:32:25',
+            'source_manager_id' => '12',
+            'created_at' => '2023-07-25 08:32:25',
+            'updated_at' => '2023-07-25 08:32:25',
+            'is_released' => "true",
         ];
         $response = $this->post(route('jobs.store'), $data);
         $response->assertStatus(Response::HTTP_FOUND);

@@ -28,7 +28,6 @@ class SkillPolicy
      */
     public function create(User $user): bool
     {
-        // return $user->role === UserRole::HumanResource;
         return in_array($user->role, [UserRole::HumanResource, UserRole::Manager]);
     }
 

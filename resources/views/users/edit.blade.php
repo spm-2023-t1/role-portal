@@ -9,7 +9,7 @@
                     <div class="flex items-center">
                     <x-primary-button class="mr-2" title="Go back" onclick="goBack()">&lt;</x-primary-button>
                         <h2 class="text-lg font-medium text-gray-900">
-                            <!-- {{ __('Update Staff Information') }} -->
+                            
                             Update <strong>{{ $user->fname }} {{ $user->lname }}'s</strong> Information
                         </h2>
                     </div>
@@ -47,8 +47,6 @@
                             @foreach ($managers as $manager)
                             <option value="{{ $manager->id }}" @if(old('reporting_officer_id') and old('reporting_officer_id') == $manager->id) selected @elseif($user->reporting_officer_id == $manager->id) selected @endif>{{ $manager->fname." ".$manager->lname }}</option>
                             @endforeach
-
-                            <!-- @selected(collect(old('reporting_officer_id'))->contains('id', $manager->id)) -->
                         
                             </select>
                             <x-input-error :messages="$errors->get('reporting_officer_id')" class="mt-2" />

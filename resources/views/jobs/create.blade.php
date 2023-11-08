@@ -111,7 +111,7 @@
                     </div>
 
                     <div>
-                        <!-- <x-input-label for="is_released" :value="__('Is Job Released for Viewing')" type="hidden"/> -->
+                        
                         <x-text-input id="is_released" name="is_released" class="mt-1 block w-full" value="{{ old('is_released') }}" type="hidden"/>
                         <x-input-error :messages="$errors->get('is_released')" class="mt-2" />
                     </div>
@@ -125,9 +125,9 @@
                             if (roleListingOpenInput.value) {
                                 const roleListingOpenDate = new Date(roleListingOpenInput.value);
                                 const twoWeeksLater = new Date(roleListingOpenDate);
-                                twoWeeksLater.setDate(twoWeeksLater.getDate() + 14); // Add 14 days (two weeks)
+                                twoWeeksLater.setDate(twoWeeksLater.getDate() + 14); 
                                 
-                                // Format the date as YYYY-MM-DDTHH:MM
+                                
                                 const formattedDate = twoWeeksLater.toISOString().slice(0, 16);
                                 
                                 deadlineInput.value = formattedDate;
@@ -143,11 +143,7 @@
                         }
                     </script>
 
-                    <!-- while it doesn't show on the create page, the following information should be shown on the update and view page of the listing:
-                        1. Name of HR staff who created the job listing - based on the profile of user logged in
-                        2. Name of HR staff who last edited the job listing - based on profile of user logged in
-                        3. Time of last edit
-                    -->
+                    
 
                     <div class="flex items-center gap-4">
                         <x-primary-button id="save-button">{{ __('Save') }}</x-primary-button>
