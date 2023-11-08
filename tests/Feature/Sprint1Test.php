@@ -412,4 +412,259 @@ class Sprint1Test extends TestCase
         ]);
         $this->assertDatabaseMissing('jobs', array_diff_key($data, array_flip(["skills"])));
     }
+
+    public function test_5_1_hr_update_role_listing(): void
+    {
+        $this->actingAs(User::factory()->create([
+            'fname' => 'John',
+            'lname' => 'Doe',
+            'dept' => 'IT',
+            'email' => 'hr@example.com',
+            'phone_num' => '97889182',
+            'biz_address' => 'this_is_just_some_dummy_data',
+            'password' => Hash::make('password'),
+            'role' => UserRole::HumanResource,
+            'reporting_officer_id' => 1,
+        ]));
+        $skills = Skill::factory()->count(3)->create()->pluck('id')->toArray();
+        $data = [
+            'id' => 1000,
+            'role_name' => 'Data Analyst',
+            'description' => 'This is just some text to be used as dummy data.',
+            'deadline' => now()->addDays(7)->format('Y-m-d'),
+            'skills' => $skills,
+            'role_type' => 'Permanent',
+            'listing_status' => 'Open',
+            'owner_id' => '7',
+            'update_user_id' => '7',
+            'role_listing_open' => '2023-07-25 08:32:25',
+            'source_manager_id' => '12',
+            'created_at' => '2023-07-25 08:32:25',
+            'updated_at' => '2023-07-25 08:32:25',
+            'is_released' => "true",
+
+        ];
+        $response = $this->post(route('jobs.update'), $data);
+        $response->assertStatus(Response::HTTP_FOUND);
+        $response->assertRedirect(route('jobs.index'));
+        $this->assertDatabaseHas('jobs', [
+            'id' => 1000,
+            'role_name' => 'Data Analyst',
+            'description' => 'This is just some text to be used as dummy data.',
+            'deadline' => now()->addDays(7)->format('Y-m-d'),
+            'role_type' => 'Permanent',
+            'listing_status' => 'Open',
+            'owner_id' => '7',
+            'update_user_id' => '7',
+            'role_listing_open' => '2023-07-25 08:32:25',
+            'source_manager_id' => '12',
+            'created_at' => '2023-07-25 08:32:25',
+            'updated_at' => '2023-07-25 08:32:25',
+            'is_released' => "true",
+
+
+        ]);
+        $job = Job::find(1);
+        $this->assertEquals($skills, $job->skills->pluck('id')->toArray());
+    
+    }
+    public function test_5_2_hr_update_role_listing_with_missing_field(): void
+    {
+        $this->actingAs(User::factory()->create([
+            'fname' => 'John',
+            'lname' => 'Doe',
+            'dept' => 'IT',
+            'email' => 'hr@example.com',
+            'phone_num' => '97889182',
+            'biz_address' => 'this_is_just_some_dummy_data',
+            'password' => Hash::make('password'),
+            'role' => UserRole::HumanResource,
+            'reporting_officer_id' => 1,
+        ]));
+        $skills = Skill::factory()->count(3)->create()->pluck('id')->toArray();
+        $data = [
+            'id' => 1000,
+            'role_name' => '',
+            'description' => 'This is just some text to be used as dummy data.',
+            'deadline' => now()->addDays(7)->format('Y-m-d'),
+            'skills' => $skills,
+            'role_type' => 'Permanent',
+            'listing_status' => 'Open',
+            'owner_id' => '7',
+            'update_user_id' => '7',
+            'role_listing_open' => '2023-07-25 08:32:25',
+            'source_manager_id' => '12',
+            'created_at' => '2023-07-25 08:32:25',
+            'updated_at' => '2023-07-25 08:32:25',
+            'is_released' => "true",
+
+        ];
+        $response = $this->post(route('jobs.update'), $data);
+        $response->assertStatus(Response::HTTP_FOUND);
+        $response->assertSessionHasErrors([
+            'role_name' => 'The role name field is required.',
+        ]);
+        $this->assertDatabaseMissing('jobs', array_diff_key($data, array_flip(["skills"])));
+    
+    }
+    public function test_5_3_hr_update_role_listing_with_deadline_passed(): void
+    {
+        $this->actingAs(User::factory()->create([
+            'fname' => 'John',
+            'lname' => 'Doe',
+            'dept' => 'IT',
+            'email' => 'hr@example.com',
+            'phone_num' => '97889182',
+            'biz_address' => 'this_is_just_some_dummy_data',
+            'password' => Hash::make('password'),
+            'role' => UserRole::HumanResource,
+            'reporting_officer_id' => 1,
+        ]));
+        $skills = Skill::factory()->count(3)->create()->pluck('id')->toArray();
+        $data = [
+            'id' => 1000,
+            'role_name' => 'Data Analyst',
+            'description' => 'This is just some text to be used as dummy data.',
+            'deadline' => '2022-07-25 08:32:25',
+            'skills' => $skills,
+            'role_type' => 'Permanent',
+            'listing_status' => 'Open',
+            'owner_id' => '7',
+            'update_user_id' => '7',
+            'role_listing_open' => '2023-07-25 08:32:25',
+            'source_manager_id' => '12',
+            'created_at' => '2023-07-25 08:32:25',
+            'updated_at' => '2023-07-25 08:32:25',
+            'is_released' => "true",
+
+        ];
+        $response = $this->post(route('jobs.update'), $data);
+        $response->assertStatus(Response::HTTP_FOUND);
+        $response->assertSessionHasErrors([
+            'deadline' => 'The deadline date has already passed.',
+        ]);
+        
+    
+    }
+    
+    public function test_5_4_hr_update_role_listing_with_too_long_title(): void
+    {
+        $this->actingAs(User::factory()->create([
+            'fname' => 'John',
+            'lname' => 'Doe',
+            'dept' => 'IT',
+            'email' => 'hr@example.com',
+            'phone_num' => '97889182',
+            'biz_address' => 'this_is_just_some_dummy_data',
+            'password' => Hash::make('password'),
+            'role' => UserRole::HumanResource,
+            'reporting_officer_id' => 1,
+        ]));
+        $skills = Skill::factory()->count(3)->create()->pluck('id')->toArray();
+        $data = [
+            'id' => 1000,
+            'role_name' => 'Software Engineer Software Software Engineer Software Engineer Software Engineer Software Engineer Software Engineer Software Engineer Software Engineer  Software Engineer Software Engineer Software Engineer Software Engineer Software Engineer Software Engineer Software Engineer Software Engineer Software Engineer Software Engineer',
+            'description' => 'This is just some text to be used as dummy data.',
+            'deadline' => now()->addDays(7)->format('Y-m-d'),
+            'skills' => $skills,
+            'role_type' => 'Permanent',
+            'listing_status' => 'Open',
+            'owner_id' => '7',
+            'update_user_id' => '7',
+            'role_listing_open' => '2023-07-25 08:32:25',
+            'source_manager_id' => '12',
+            'created_at' => '2023-07-25 08:32:25',
+            'updated_at' => '2023-07-25 08:32:25',
+            'is_released' => "true",
+
+        ];
+        $response = $this->post(route('jobs.update'), $data);
+        $response->assertStatus(Response::HTTP_FOUND);
+        $response->assertSessionHasErrors([
+            'role_name' => 'The role name field is too long.',
+        ]);
+       
+    
+    }
+    
+    public function test_5_5_hr_update_role_listing_to_an_existing_id(): void
+    {
+        $this->actingAs(User::factory()->create([
+            'fname' => 'John',
+            'lname' => 'Doe',
+            'dept' => 'IT',
+            'email' => 'hr@example.com',
+            'phone_num' => '97889182',
+            'biz_address' => 'this_is_just_some_dummy_data',
+            'password' => Hash::make('password'),
+            'role' => UserRole::HumanResource,
+            'reporting_officer_id' => 1,
+        ]));
+        $skills = Skill::factory()->count(3)->create()->pluck('id')->toArray();
+        $data = [
+            'id' => 1,
+            'role_name' => 'Data Analyst',
+            'description' => 'This is just some text to be used as dummy data.',
+            'deadline' => now()->addDays(7)->format('Y-m-d'),
+            'skills' => $skills,
+            'role_type' => 'Permanent',
+            'listing_status' => 'Open',
+            'owner_id' => '7',
+            'update_user_id' => '7',
+            'role_listing_open' => '2023-07-25 08:32:25',
+            'source_manager_id' => '12',
+            'created_at' => '2023-07-25 08:32:25',
+            'updated_at' => '2023-07-25 08:32:25',
+            'is_released' => "true",
+
+        ];
+        $response = $this->post(route('jobs.update'), $data);
+        $response->assertStatus(Response::HTTP_FOUND);
+        $response->assertSessionHasErrors([
+            'id' => 'This ID already exists in the database.',
+        ]);
+    
+    }
+
+    public function test_30_1_hr_submit_application_for_job_listing(): void
+    {
+        $this->actingAs(User::factory()->create([
+            'fname' => 'John',
+            'lname' => 'Doe',
+            'dept' => 'IT',
+            'email' => 'hr@example.com',
+            'phone_num' => '97889182',
+            'biz_address' => 'this_is_just_some_dummy_data',
+            'password' => Hash::make('password'),
+            'role' => UserRole::HumanResource,
+            'reporting_officer_id' => 1,
+        ]));
+        $skills = Skill::factory()->count(3)->create()->pluck('id')->toArray();
+        
+        $response = $this->get(route('profile.edit'));
+        $response->assertStatus(Response::HTTP_FOUND);
+        $response->assertRedirect(route('jobs.index'));
+        $this->assertDatabaseHas('jobs', [
+            'id' => 1000,
+            'role_name' => 'Data Analyst',
+            'description' => 'This is just some text to be used as dummy data.',
+            'deadline' => now()->addDays(7)->format('Y-m-d'),
+            'role_type' => 'Permanent',
+            'listing_status' => 'Open',
+            'owner_id' => '7',
+            'update_user_id' => '7',
+            'role_listing_open' => '2023-07-25 08:32:25',
+            'source_manager_id' => '12',
+            'created_at' => '2023-07-25 08:32:25',
+            'updated_at' => '2023-07-25 08:32:25',
+            'is_released' => "true",
+
+
+        ]);
+        $job = Job::find(1);
+        $this->assertEquals($skills, $job->skills->pluck('id')->toArray());
+    
+    }
+
+
 }
