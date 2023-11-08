@@ -12,7 +12,7 @@
             <section>
                 <header class="flex justify-between flex-col sm:flex-row border-b pb-4">
                     <div class="flex items-center">
-                    <!-- <x-primary-button class="mr-2" title="Go back" onclick="goBack()">&lt;</x-primary-button> -->
+                    
                         <h2 class="text-lg font-medium text-gray-900">
                             {{ __('View All Job Listings') }}
                         </h2>
@@ -98,7 +98,7 @@
                 <div>
                     @if (session()->has('message'))
                     <div class="alert alert-warning alert-block">
-                        {{-- <button type="button" class="close" data-dismiss="alert">×</button>	 --}}
+                        
                         <strong>
                             {{ session('message') }}
                         </strong>
@@ -112,7 +112,6 @@
                     @else
                     <div class="divide-y">
                         @foreach ($jobs as $job)
-                        <!-- conditions: HR sees all, Staff only sees open and private, Managers sees open, private, and those they are source_managers of-->
                         @can('viewJobs', $job)
                             <div class="flex py-4">
                                 <div class="h-12 w-12 p-2 rounded-md border bg-gray-50 flex align-middle justify-center">
@@ -140,7 +139,7 @@
                                         @endforeach
                                     </div>
                                     <div class="mt-1 text-gray-800"><strong>Total applicants:</strong> {{ count($job->applicants->where('pivot.role_app_status', 'applied')) }}</div>
-                                    <!-- {{count($job->applicants->where('pivot.role_app_status', 'applied'))}} -->
+                                    
                                     <div class="mt-3">
                                         <x-primary-button onclick="openJobDetailsModal({{ $job->id }})">Show All Details</x-primary-button>
                                     </div>
@@ -168,7 +167,7 @@
                                                     <p class="mt-2 text-gray-800"><strong>Updated by:</strong> {{ $job->updater->fname }} {{ $job->updater->lname ?? 'UNKNOWN' }}</p>
                                                     <p class="mt-2 text-gray-800"><strong>Time of last edit:</strong> {{ $job->updated_at }}</p>
                                                 @endif
-                                                <!-- <p class="mt-2 text-gray-800"><strong>Total applicants:</strong> {{ count($job->applicants) }}</p> -->
+                                                
                                                 <p class="mt-2 text-gray-800"><strong>Total applicants:</strong> {{count($job->applicants->where('pivot.role_app_status', 'applied')) }}</p>
                                                 <p class="mt-2 text-gray-800"><strong>Source Manager:</strong> {{ $job->source_manager->fname }} {{ $job->source_manager->lname }}</p>
                                                 <p class="mt-2 text-gray-800"><strong>Source Manager Email:</strong> {{ $job->source_manager->email }}</p>
@@ -192,35 +191,31 @@
                                         }
                                     </script>
 
-                                    <!-- {{in_array(Auth::user()->id, array_column($job->viewers->toArray(), 'id'))}} -->
+                                    
                 
                                     @if(
                                         ($job->listing_status == 'open' and $job->is_released == 'true') || 
                                         ($job->listing_status == 'private' and $job->is_released == 'true' and in_array(Auth::user()->id, array_column($job->viewers->toArray(), 'id'))))
-                                        <!-- (in_array(Auth::user()->id, array_column($job->viewers->toArray(), 'id')))) -->
+                                       
                                     <div class="mt-3">
-                                    <!-- {{collect(Auth::user()->applications)}} -->
+                                    
                                     @if(collect(Auth::user()->applications)->contains(function ($value, $key) use ($job) {
                                         return $value['id'] === $job->id && $value['pivot']['role_app_status'] === 'applied';
                                     }))
-                                            <!-- <div class="text-green-600">Applied successfully.</div> -->
+                                           
                                             <form action="{{ route('jobs.withdraw', ['job' => $job->id]) }}" method="POST" onsubmit="return confirm('Are you sure you want to withdraw this application?')">
                                                 @csrf
                                                 @method('patch')
                                             <x-primary-button type="submit">{{ __('Withdraw Application') }}</x-primary-button>
                                             </form>
                                             @else
-                                            <!-- <form method="post" action="{{ route('jobs.apply', $job) }}"> -->
-                                                <!-- @csrf
-                                                @method('patch') -->
-                                                <!-- <x-primary-button onclick="event.preventDefault(); this.closest('form').submit();">{{ __('Apply for this job') }}</x-primary-button> -->
-                                                <!-- Button to Trigger Application Modal -->
+                                            
                                                 <div class="mt-3">
                                                     <x-primary-button onclick="openApplicationModal({{ $job->id }})">
                                                         Apply for this job
                                                     </x-primary-button>
                                                 </div>
-                                            <!-- </form> -->
+                                            
                                         @endif
                                     </div>
                                     @endif
@@ -236,7 +231,7 @@
                                                 <form action="{{ route('jobs.apply', ['job' => $job->id]) }}" method="POST">
                                                 @csrf
                                                 @method('patch')
-                                                <!-- <input type="hidden" name="_method" value="PATCH">  -->
+                                                
                                                 <div>
                                                         <h2 class="text-lg font-medium text-gray-900">
                                                             {{ __('Application Form') }}
@@ -271,7 +266,7 @@
                                                     <div class="mt-3">
                                                     <x-text-input id="role_app_status" name="role_app_status" type="hidden" class="mt-1 block w-full" value="applied" />
                                                     </div>
-                                                    <!-- <x-primary-button class="mt-3" onclick="event.preventDefault(); this.closest('form').submit();">{{ __('Submit Application Form') }}</x-primary-button> -->
+                                                   
                                                     <x-primary-button class="mt-3">{{ __('Submit Application Form') }}</x-primary-button>
                                                 </form>
                                             </div>
@@ -333,7 +328,7 @@
                                     </div>
                                 @endcan
                             </div>
-                            <!-- </div> -->
+                            
                             @endcan
                         @endforeach
                     </div>

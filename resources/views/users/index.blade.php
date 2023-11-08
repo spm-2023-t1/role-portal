@@ -15,9 +15,7 @@
                             {{ __('Manage Staff Data') }}
                         </h2>
                     </div>
-                    {{-- @can('create', \App\Models\Job::class)
-                        <x-primary-button-link class="h-10 mt-4 sm:mt-0 sm:ml-2" :href="route('jobs.create')">{{ __('Create New Job') }}</x-primary-button-link>
-                    @endcan --}}
+                   
                 </header>
 
                 <div class="row">
@@ -91,7 +89,7 @@
                     @foreach ($users as $user)
                         <div class="flex py-4">
                             <div class="h-12 w-12 p-2 rounded-md border bg-gray-50 flex align-middle justify-center">
-                                <!-- <svg class="w-5" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 24 24"><path d="M20 6h-4V4c0-1.11-.89-2-2-2h-4c-1.11 0-2 .89-2 2v2H4c-1.11 0-1.99.89-1.99 2L2 19c0 1.11.89 2 2 2h16c1.11 0 2-.89 2-2V8c0-1.11-.89-2-2-2zm-6 0h-4V4h4v2z" fill="currentColor"></path></svg> -->
+                                
                                 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><path d="M224 256A128 128 0 1 0 224 0a128 128 0 1 0 0 256zm-45.7 48C79.8 304 0 383.8 0 482.3C0 498.7 13.3 512 29.7 512H418.3c16.4 0 29.7-13.3 29.7-29.7C448 383.8 368.2 304 269.7 304H178.3z"/></svg>
                             </div>
                             <div class="flex-1 ml-4">
@@ -108,15 +106,7 @@
                                 
                                 <div class="mt-1 flex">
                                     @foreach($user->skills as $skill)
-                                        <!-- @if(collect(Auth::user()->skills)->contains('id', $skill->id))
-                                            <div class="bg-green-300 rounded mx-1 px-1">
-                                                {{ $skill->name }}
-                                            </div>
-                                        @else
-                                            <div class="bg-red-300 rounded mx-1 px-1">
-                                                {{ $skill->name }}
-                                            </div>
-                                        @endif -->
+                                        
                                         <div class="bg-gray-300 rounded mx-1 px-1">{{$skill->name}}</div>
                                     @endforeach
                                 </div>

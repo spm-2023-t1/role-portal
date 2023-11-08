@@ -32,7 +32,6 @@ class SkillController extends Controller
         $skills = $skills->get();
 
         return view('skills.index', compact('skills'), [
-            // 'skills' => Skill::all()->sortBy('name', SORT_NATURAL|SORT_FLAG_CASE),
         ]);
 
     }

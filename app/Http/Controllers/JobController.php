@@ -139,14 +139,9 @@ class JobController extends Controller
             'deadline' => ['required', 'date', 'after_or_equal:role_listing_open'],
             'skills' => 'required',
             'role_type' => 'required',
-            // 'listing_status' => 'required',
             'listing_status' => [
                 'required',
-                // Rule::requiredIf(function () use ($request){
-                //     $roleListingOpen = new \DateTime($request->input('role_listing_open'));
-                //     return $roleListingOpen > now();
-                // }),
-                // Rule::in(['unreleased']),
+               
             ],
             'source_manager_id' => 'required',
             'staff_visibility' => 'required_if:listing_status,private',
@@ -221,14 +216,10 @@ class JobController extends Controller
             'deadline' => ['required', 'date', 'after_or_equal:role_listing_open'],
             'skills' => 'required',
             'role_type' => 'required',
-            // 'listing_status' => 'required',
+            
             'listing_status' => [
                 'required',
-                // Rule::requiredIf(function () use ($request, $job){
-                //     $roleListingOpen = new \DateTime($request->input('role_listing_open'));
-                //     return $roleListingOpen > $job->created_at;
-                // }),
-                // Rule::in(['unreleased']),
+                
             ],
             'source_manager_id' => 'required',
             'staff_visibility' => 'required_if:listing_status,private',
@@ -291,10 +282,6 @@ class JobController extends Controller
             'role_app_status' => 'required|in:applied,withdrawn',
         ]);
 
-        // if ($job->listing_status !== 'open' || $job->deadline < now()) {
-        //     return redirect()->route('jobs.index')->with('error', 'Job application is not available for this job.');
-        // }
-
         $user->applications()->attach($job, [
             'start_date' => $request->start_date,
             'remarks' => $request->remarks,
@@ -306,16 +293,9 @@ class JobController extends Controller
 
     public function withdraw(Job $job)
     {
-        // // Assuming that you have a "withdrawn" status in your JobStatus enum
-        // $job->status = "withdrawn";
-        // $job->save();
-
-        // // You can also add additional logic here if needed
-
-        // return redirect()->back()->with('success', 'Application withdrawn successfully');
-
+        
         $user = Auth::user();
-        // $application = collect($user->applications)->contains('id', $job->id)->pivot;
+        
         $applications = collect($user->applications);
 
         foreach($applications as $application) {
