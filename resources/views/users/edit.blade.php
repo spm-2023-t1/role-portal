@@ -41,14 +41,14 @@
                         <x-input-error :messages="$errors->get('email')" class="mt-2" />
                     </div>
                     <div>
-                        <x-input-label for="reporting_officer" :value="__('Reporting Officer')" />
-                        <select name="reporting_officer" id="reporting_officer">
+                        <x-input-label for="reporting_officer_id" :value="__('Reporting Officer')" />
+                        <select name="reporting_officer_id" id="reporting_officer_id">
                             @foreach ($managers as $manager)
-                            <option value="{{ $manager->id }}" @selected(collect(old('reporting_officer'))->contains('id', $manager->id))>{{ $manager->fname." ".$manager->lname }}</option>
+                            <option value="{{ $manager->id }}" @selected(collect(old('reporting_officer_id'))->contains('id', $manager->id))>{{ $manager->fname." ".$manager->lname }}</option>
                             @endforeach
                         
                             </select>
-                            <x-input-error :messages="$errors->get('reporting_officer')" class="mt-2" />
+                            <x-input-error :messages="$errors->get('reporting_officer_id')" class="mt-2" />
                                 
                             </div>
                     <div>

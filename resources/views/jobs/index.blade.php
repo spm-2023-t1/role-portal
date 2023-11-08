@@ -191,6 +191,8 @@
                                             }
                                         }
                                     </script>
+
+                                    <!-- {{in_array(Auth::user()->id, array_column($job->viewers->toArray(), 'id'))}} -->
                 
                                     @if(
                                         ($job->listing_status == 'open' and $job->is_released == 'true') || 

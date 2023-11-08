@@ -291,9 +291,9 @@ class JobController extends Controller
             'role_app_status' => 'required|in:applied,withdrawn',
         ]);
 
-        if ($job->listing_status !== 'open' || $job->deadline < now()) {
-            return redirect()->route('jobs.index')->with('error', 'Job application is not available for this job.');
-        }
+        // if ($job->listing_status !== 'open' || $job->deadline < now()) {
+        //     return redirect()->route('jobs.index')->with('error', 'Job application is not available for this job.');
+        // }
 
         $user->applications()->attach($job, [
             'start_date' => $request->start_date,

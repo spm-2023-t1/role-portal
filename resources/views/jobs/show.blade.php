@@ -112,7 +112,7 @@
                                             @endif
                                         @endforeach
                                     </div>
-                                    <div><span class="font-medium">Additional Remarks:</span> NOT IMPLEMENTED YET </div>
+                                    <div><span class="font-medium">Additional Remarks:</span> {{$applicant['pivot']->remarks}} </div>
                                     <div><span class="font-medium">Department:</span> {{ $applicant->dept }} </div>
                                     <div><span class="font-medium">Current Role:</span> {{ $applicant->role }} </div>
                                     <div><span class="font-medium">Email:</span> {{ $applicant->email }} </div>

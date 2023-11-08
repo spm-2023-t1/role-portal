@@ -29,9 +29,9 @@ class User extends Authenticatable
         'phone_num',
         'biz_address',
         'current_role',
-        'reporting_officer',
+        'reporting_officer_id',
         // 'sys_role',
-        'password'
+        'password',
     ];
 
     /**
@@ -80,6 +80,11 @@ class User extends Authenticatable
     public function manage_sources(): HasMany
     {
         return $this->hasMany(Job::class);
+    }
+
+    public function reporting_officer(): HasOne
+    {
+        return $this->hasOne(User::class, 'reporting_officer_id');
     }
 
     public function isHR()
