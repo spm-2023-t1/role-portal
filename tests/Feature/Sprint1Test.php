@@ -324,37 +324,285 @@ class Sprint1Test extends TestCase
 
     public function test_sprint1_us5_t10_hr_staff_can_update_role_listing(): void
     {
-
+        $this->actingAs(User::factory()->create([
+            'fname' => 'John',
+            'lname' => 'Doe',
+            'dept' => 'IT',
+            'email' => 'hr@example.com',
+            'phone_num' => '97889182',
+            'biz_address' => 'this_is_just_some_dummy_data',
+            'password' => Hash::make('password'),
+            'role' => UserRole::HumanResource,
+        ]));
+        $skills = Skill::factory()->count(3)->create()->pluck('id')->toArray();
+        $job = Job::factory()->create([
+            'id' => 1,
+            'role_name' => 'Data Analyst',
+            'description' => 'This is just some text to be used as dummy data.',
+            'deadline' => now()->addDays(7)->format('Y-m-d'),
+            'role_type' => 'Permanent',
+            'listing_status' => 'Open',
+            'source_manager' => 1,
+        ]);
+        $updatedJob = [
+            'id' => 1,
+            'role_name' => 'Junior Data Analyst',
+            'description' => 'This is just some text to be used as dummy data.',
+            'deadline' => now()->addDays(7)->format('Y-m-d'),
+            'skills' => $skills,
+            'role_type' => 'Permanent',
+            'listing_status' => 'Open',
+        ];
+        $response = $this->patch(route('jobs.update', ['job' => 1]), $updatedJob);
+        $response->assertStatus(Response::HTTP_FOUND);
+        $response->assertRedirect(route('jobs.index'));
+        $this->assertDatabaseHas('jobs', [
+            'id' => 1,
+            'role_name' => 'Junior Data Analyst',
+            'description' => 'This is just some text to be used as dummy data.',
+            'deadline' => now()->addDays(7)->format('Y-m-d'),
+            'role_type' => 'Permanent',
+            'listing_status' => 'Open',
+        ]);
     }
 
     public function test_sprint1_us5_t11_hr_staff_cannot_update_role_listing_without_name(): void
     {
-        
+        $this->actingAs(User::factory()->create([
+            'fname' => 'John',
+            'lname' => 'Doe',
+            'dept' => 'IT',
+            'email' => 'hr@example.com',
+            'phone_num' => '97889182',
+            'biz_address' => 'this_is_just_some_dummy_data',
+            'password' => Hash::make('password'),
+            'role' => UserRole::HumanResource,
+        ]));
+        $skills = Skill::factory()->count(3)->create()->pluck('id')->toArray();
+        $job = Job::factory()->create([
+            'id' => 1,
+            'role_name' => 'Data Analyst',
+            'description' => 'This is just some text to be used as dummy data.',
+            'deadline' => now()->addDays(7)->format('Y-m-d'),
+            'role_type' => 'Permanent',
+            'listing_status' => 'Open',
+            'source_manager' => 1,
+        ]);
+        $data = [
+            'id' => 1,
+            'description' => 'This is just some text to be used as dummy data.',
+            'deadline' => now()->addDays(7)->format('Y-m-d'),
+            'skills' => $skills,
+            'role_type' => 'Permanent',
+            'listing_status' => 'Open',
+        ];
+        $response = $this->patch(route('jobs.update', ['job' => 1]), $data);
+        $response->assertStatus(Response::HTTP_FOUND);
+        $response->assertSessionHasErrors([
+            'role_name' => 'The role name field is required.',
+        ]);
     }
     
     public function test_sprint1_us5_t12_hr_staff_cannot_update_role_listing_with_past_deadline(): void
     {
-        
+        $this->actingAs(User::factory()->create([
+            'fname' => 'John',
+            'lname' => 'Doe',
+            'dept' => 'IT',
+            'email' => 'hr@example.com',
+            'phone_num' => '97889182',
+            'biz_address' => 'this_is_just_some_dummy_data',
+            'password' => Hash::make('password'),
+            'role' => UserRole::HumanResource,
+        ]));
+        $skills = Skill::factory()->count(3)->create()->pluck('id')->toArray();
+        $job = Job::factory()->create([
+            'id' => 1,
+            'role_name' => 'Data Analyst',
+            'description' => 'This is just some text to be used as dummy data.',
+            'deadline' => now()->addDays(7)->format('Y-m-d'),
+            'role_type' => 'Permanent',
+            'listing_status' => 'Open',
+            'source_manager' => 1,
+        ]);
+        $data = [
+            'id' => 1,
+            'role_name' => 'Data Analyst',
+            'description' => 'This is just some text to be used as dummy data.',
+            'deadline' => now()->subDays(1)->format('Y-m-d'),
+            'skills' => $skills,
+            'role_type' => 'Permanent',
+            'listing_status' => 'Open',
+        ];
+        $response = $this->patch(route('jobs.update', ['job' => 1]), $data);
+        $response->assertStatus(Response::HTTP_FOUND);
+        $response->assertSessionHasErrors([
+            'deadline' => 'The deadline field must be a date after now.',
+        ]);
     }
 
     public function test_sprint1_us5_t13_hr_staff_cannot_update_role_listing_with_invalid_name(): void
     {
-        
+        $this->actingAs(User::factory()->create([
+            'fname' => 'John',
+            'lname' => 'Doe',
+            'dept' => 'IT',
+            'email' => 'hr@example.com',
+            'phone_num' => '97889182',
+            'biz_address' => 'this_is_just_some_dummy_data',
+            'password' => Hash::make('password'),
+            'role' => UserRole::HumanResource,
+        ]));
+        $skills = Skill::factory()->count(3)->create()->pluck('id')->toArray();
+        $job = Job::factory()->create([
+            'id' => 1,
+            'role_name' => 'Data Analyst',
+            'description' => 'This is just some text to be used as dummy data.',
+            'deadline' => now()->addDays(7)->format('Y-m-d'),
+            'role_type' => 'Permanent',
+            'listing_status' => 'Open',
+            'source_manager' => 1,
+        ]);
+        $data = [
+            'id' => 1,
+            'role_name' => 'Software Engineer Software Software Engineer Software Engineer Software Engineer Software Engineer Software Engineer Software Engineer Software Engineer  Software Engineer Software Engineer Software Engineer Software Engineer Software Engineer Software Engineer Software Engineer Software Engineer Software Engineer Software Engineer',
+            'description' => 'This is just some text to be used as dummy data.',
+            'deadline' => now()->addDays(7)->format('Y-m-d'),
+            'skills' => $skills,
+            'role_type' => 'Permanent',
+            'listing_status' => 'Open',
+        ];
+        $response = $this->patch(route('jobs.update', ['job' => 1]), $data);
+        $response->assertStatus(Response::HTTP_FOUND);
+        $response->assertSessionHasErrors([
+            'role_name' => 'The role name field must not be greater than 255 characters.',
+        ]);
     }
 
     public function test_sprint1_us5_t14_hr_staff_cannot_update_role_listing_with_used_id(): void
     {
-        
+        $this->actingAs(User::factory()->create([
+            'fname' => 'John',
+            'lname' => 'Doe',
+            'dept' => 'IT',
+            'email' => 'hr@example.com',
+            'phone_num' => '97889182',
+            'biz_address' => 'this_is_just_some_dummy_data',
+            'password' => Hash::make('password'),
+            'role' => UserRole::HumanResource,
+        ]));
+        $skills = Skill::factory()->count(3)->create()->pluck('id')->toArray();
+        Job::factory()->create([
+            'id' => 1,
+            'role_name' => 'Data Analyst',
+            'description' => 'This is just some text to be used as dummy data.',
+            'deadline' => now()->addDays(7)->format('Y-m-d'),
+            'role_type' => 'Permanent',
+            'listing_status' => 'Open',
+            'source_manager' => 1,
+        ]);
+        $job = Job::factory()->create([
+            'id' => 2,
+            'role_name' => 'Data Analyst',
+            'description' => 'This is just some text to be used as dummy data.',
+            'deadline' => now()->addDays(7)->format('Y-m-d'),
+            'role_type' => 'Permanent',
+            'listing_status' => 'Open',
+            'source_manager' => 1,
+        ]);
+        $updatedJob = [
+            'id' => 1,
+            'role_name' => 'Data Analyst',
+            'description' => 'This is just some text to be used as dummy data.',
+            'deadline' => now()->addDays(7)->format('Y-m-d'),
+            'skills' => $skills,
+            'role_type' => 'Permanent',
+            'listing_status' => 'Open',
+        ];
+        $response = $this->patch(route('jobs.update', ['job' => 2]), $updatedJob);
+        $response->assertStatus(Response::HTTP_FOUND);
+        $response->assertSessionHasErrors([
+            'id' => 'The id has already been taken.',
+        ]);
+        $this->assertDatabaseHas('jobs', [
+            'id' => 2,
+            'role_name' => 'Data Analyst',
+            'description' => 'This is just some text to be used as dummy data.',
+            'deadline' => now()->addDays(7)->format('Y-m-d'),
+            'role_type' => 'Permanent',
+            'listing_status' => 'Open',
+        ]);
     }
 
-    public function test_sprint1_us5_t15_hr_staff_cannot_update_role_listing_with_other_hrs(): void
+    public function test_sprint1_us5_t15_hr_staff_can_update_role_listing_with_other_hrs(): void
     {
-        
+        $hrOne = User::factory()->create([
+            'fname' => 'John',
+            'lname' => 'Doe',
+            'dept' => 'IT',
+            'email' => 'hr@example.com',
+            'phone_num' => '97889182',
+            'biz_address' => 'this_is_just_some_dummy_data',
+            'password' => Hash::make('password'),
+            'role' => UserRole::HumanResource,
+        ]);
+        $hrTwo = User::factory()->create([
+            'fname' => 'Jane',
+            'lname' => 'Bond',
+            'dept' => 'HR',
+            'email' => 'hr2@example.com',
+            'phone_num' => '94281284',
+            'biz_address' => 'this_is_just_some_dummy_data',
+            'password' => Hash::make('password'),
+            'role' => UserRole::HumanResource,
+        ]);
+        $this->actingAs($hrOne);
+        $skills = Skill::factory()->count(3)->create()->pluck('id')->toArray();
+        $job = Job::factory()->create([
+            'id' => 1,
+            'role_name' => 'Data Analyst',
+            'description' => 'This is just some text to be used as dummy data.',
+            'deadline' => now()->addDays(7)->format('Y-m-d'),
+            'role_type' => 'Permanent',
+            'listing_status' => 'Open',
+            'source_manager' => 1,
+        ]);
+        $updatedJob = [
+            'id' => 1,
+            'role_name' => 'Data Analyst',
+            'description' => 'This is just some text to be used as dummy data.',
+            'deadline' => now()->addDays(7)->format('Y-m-d'),
+            'skills' => $skills,
+            'role_type' => 'Permanent',
+            'listing_status' => 'Private',
+            'staff_visibility' => [$hrOne, $hrTwo],
+        ];
+        $response = $this->patch(route('jobs.update', ['job' => 1]), $updatedJob);
+        $response->assertStatus(Response::HTTP_FOUND);
+        $response->assertRedirect(route('jobs.index'));
+        $this->assertDatabaseHas('job_viewer', [
+            'job_id' => 1,
+            'user_id' => $hrOne->id,
+        ]);
+        $this->assertDatabaseHas('job_viewer', [
+            'job_id' => 1,
+            'user_id' => $hrTwo->id,
+        ]);
     }
 
     public function test_sprint1_us23_t16_hr_staff_can_view_staff_profile(): void
     {
-        
+        // $this->actingAs(User::factory()->create([
+        //     'fname' => 'John',
+        //     'lname' => 'Doe',
+        //     'dept' => 'IT',
+        //     'email' => 'hr@example.com',
+        //     'phone_num' => '97889182',
+        //     'biz_address' => 'this_is_just_some_dummy_data',
+        //     'password' => Hash::make('password'),
+        //     'role' => UserRole::HumanResource,
+        // ]));
+        // $this->assertTrue(false);
     }
 
 }

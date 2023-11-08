@@ -202,15 +202,27 @@ class JobController extends Controller
     public function update(Request $request, Job $job): RedirectResponse
     {
         $this->authorize('update', Job::class);
-        $validated = $request->validate([
-            'id' => ['required', 'integer'],
-            'role_name' => 'required|string',
-            'description' => 'required|string',
-            'deadline' => ['required', 'date', 'after:now'], // pls change now role_listing_open when implemented
-            'skills' => 'required',
-            'role_type' => 'required',
-            'listing_status' => 'required',
-        ]);
+        if ($request->id == $job->id) {
+            $validated = $request->validate([
+                'id' => ['required', 'integer'],
+                'role_name' => 'required|string|max:255',
+                'description' => 'required|string',
+                'deadline' => ['required', 'date', 'after:now'], // pls change now role_listing_open when implemented
+                'skills' => 'required',
+                'role_type' => 'required',
+                'listing_status' => 'required',
+            ]);
+        } else {
+            $validated = $request->validate([
+                'id' => ['required', 'integer', 'unique:jobs'],
+                'role_name' => 'required|string|max:255',
+                'description' => 'required|string',
+                'deadline' => ['required', 'date', 'after:now'], // pls change now role_listing_open when implemented
+                'skills' => 'required',
+                'role_type' => 'required',
+                'listing_status' => 'required',
+            ]);
+        }
 
         foreach ($job->skills as $skill) {
             $skill = Skill::find($skill);
