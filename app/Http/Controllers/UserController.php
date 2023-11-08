@@ -121,7 +121,7 @@ class UserController extends Controller
             'lname' => 'required|string',
             'email' => 'required|string',
             'skills' => 'required',
-            'reporting_officer_id' => 'string',
+            'reporting_officer_id' => 'required|string',
             
 
         ]);

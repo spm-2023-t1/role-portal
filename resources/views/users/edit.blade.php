@@ -41,15 +41,17 @@
                         <x-input-error :messages="$errors->get('email')" class="mt-2" />
                     </div>
                     <div>
+                        {{old('reporting_officer_id')}}
                         <x-input-label for="reporting_officer_id" :value="__('Reporting Officer')" />
                         <select name="reporting_officer_id" id="reporting_officer_id">
                             @foreach ($managers as $manager)
-                            <option value="{{ $manager->id }}" @selected(collect(old('reporting_officer_id'))->contains('id', $manager->id))>{{ $manager->fname." ".$manager->lname }}</option>
+                            <option value="{{ $manager->id }}" @if(old('reporting_officer_id') and old('reporting_officer_id') == $manager->id) selected @elseif($user->reporting_officer_id == $manager->id) selected @endif>{{ $manager->fname." ".$manager->lname }}</option>
                             @endforeach
+
+                            <!-- @selected(collect(old('reporting_officer_id'))->contains('id', $manager->id)) -->
                         
                             </select>
                             <x-input-error :messages="$errors->get('reporting_officer_id')" class="mt-2" />
-                                
                             </div>
                     <div>
                         <x-input-label for="skills" :value="__('User Skills')" />

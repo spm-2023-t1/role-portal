@@ -118,8 +118,8 @@
                                     <div><span class="font-medium">Email:</span> {{ $applicant->email }} </div>
                                     {{-- <div><span class="font-medium">Phone Number:</span> {{ $applicant->phone_num }} </div> --}}
                                     <div><span class="font-medium">Business Address:</span> {{ $applicant->biz_address }} </div>
-                                    <!-- <div><span class="font-medium">Current RO:</span> {{$applicant->reporting_officer}} </div>
-                                    <div><span class="font-medium">Current RO's Email:</span> NOT IMPLEMENTED YET </div> -->
+                                    <div><span class="font-medium">Current RO:</span> {{Auth::user()->reporting_officer->fname}} {{Auth::user()->reporting_officer->lname}}</div>
+                                    <div><span class="font-medium">Current RO's Email:</span> {{Auth::user()->reporting_officer->email}}</div>
                                 </div>
                             @endforeach
                         </div>

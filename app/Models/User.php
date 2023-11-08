@@ -85,10 +85,10 @@ class User extends Authenticatable
 
     public function reporting_officer(): HasOne
     {
-        return $this->hasOne(User::class, 'reporting_officer_id', 'id');
+        return $this->hasOne(User::class, 'id', 'reporting_officer_id');
     }
 
-    public function ro(): BelongsToMany
+    public function report(): BelongsToMany
     {
         return $this->belongsToMany(User::class, 'reporting_officer_id');
     }
